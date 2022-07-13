@@ -1415,15 +1415,15 @@ module.exports = grammar({
     set_clause: $ => seq(kw("SET"), commaSep1($.assignment_expression)),
     assignment_expression: $ =>
       choice(
-        seq($._identifier, "=", $._expression),
+        seq(field("left", $._identifier), "=", field("right", $._expression)),
         seq(
-          $.identifier_list,
+          field("left", $.identifier_list),
           "=",
-          choice(
+          field("right", choice(
             $.select_subexpression,
             $.row_constructor,
             $.composite_expression,
-          ),
+          )),
         ),
       ),
 
@@ -1479,11 +1479,12 @@ module.exports = grammar({
     conditional_expression: $ =>
       seq(
         kw("CASE"),
-        optional($._expression),
-        repeat1(seq(kw("WHEN"), $._expression, kw("THEN"), $._expression)),
-        optional(seq(kw("ELSE"), $._expression)),
+        optional(field("subject", $._expression)),
+        repeat1($.conditional_case),
+        optional(seq(kw("ELSE"), field("default_value", $._expression))),
         kw("END"),
       ),
+    conditional_case: $ => seq(kw("WHEN"), field("condition", $._expression), kw("THEN"), field("value", $._expression)),
 
     in_expression: $ =>
       prec.left(
@@ -1628,9 +1629,9 @@ module.exports = grammar({
 
     boolean_expression: $ =>
       choice(
-        prec.left(PREC.unary, seq(kw("NOT"), $._expression)),
-        prec.left(PREC.and, seq($._expression, kw("AND"), $._expression)),
-        prec.left(PREC.or, seq($._expression, kw("OR"), $._expression)),
+        prec.left(PREC.unary, seq(kw("NOT"), field("argument",$._expression))),
+        prec.left(PREC.and, seq(field("left", $._expression), kw("AND"), field("right", $._expression))),
+        prec.left(PREC.or, seq(field("left", $._expression), kw("OR"), field("right", $._expression))),
       ),
     epoch_from_expression: $ => prec.left(seq(kw("EPOCH FROM"), $._expression)),
     at_time_zone_expression: $ =>
@@ -1699,7 +1700,7 @@ module.exports = grammar({
     type_cast: $ =>
       seq(
         // TODO: should be moved to basic expression or something
-        choice(
+        field("expression", choice(
           $._parenthesized_expression,
           $.string,
           $._identifier,
@@ -1707,7 +1708,7 @@ module.exports = grammar({
           $.array_constructor,
           $.type_cast,
           $.number,
-        ),
+        )),
         "::",
         field("type", $._type),
       ),
@@ -1716,10 +1717,16 @@ module.exports = grammar({
       seq(
         token(prec(1, kw("ARRAY"))),
         choice(
-          seq("[", commaSep($._expression), "]"),
+          seq("[", commaSep($._array_element), "]"),
           seq("(", $.select_statement, ")"),
         ),
       ),
+    _array_element: $ => choice(
+      $._expression,
+      alias($._compact_array_constructor, $.array_constructor)
+    ),
+    _compact_array_constructor: $ =>
+      seq("[", commaSep($._array_element), "]"),
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     comment: $ =>
@@ -1727,7 +1734,13 @@ module.exports = grammar({
         choice(seq("--", /.*/), seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
       ),
     array_element_access: $ =>
-      seq(choice($.identifier, $.argument_reference), "[", $._expression, "]"),
+    seq(
+      field("subject", choice($.identifier, $.argument_reference, $.array_element_access, $._parenthesized_expression)),
+      choice(
+        seq("[", field("subscript", $._expression), "]"),
+        seq("[", field("subscript", seq(optional($._expression), ":", optional($._expression))), "]"),
+      )
+    ),
 
     row_constructor: $ => seq(kw("ROW"), "(", commaSep($._expression), ")"),
     composite_expression: $ =>
@@ -1736,18 +1749,14 @@ module.exports = grammar({
     unary_expression: $ =>
       prec(
         PREC.unary,
-        seq(
-          field(
-            "operator",
-            choice(
-              "+",
-              "-",
-              "!!", // Factorial op (Removed in Postgres >= 14)
-              "~", // Bitwise not
-              "@", // Absolute value
-              "|/", // square root
-              "||/", // cube root
-            ),
+        seq(choice(
+            "+",
+            "-",
+            "!!", // Factorial op (Removed in Postgres >= 14)
+            "~", // Bitwise not
+            "@", // Absolute value
+            "|/", // square root
+            "||/", // cube root
           ),
           field("operand", $._expression),
         ),

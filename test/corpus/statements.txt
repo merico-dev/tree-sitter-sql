@@ -2969,16 +2969,18 @@ FROM foo;
       (select_clause_body
         (identifier)
         (conditional_expression
-          (binary_expression
-            (identifier)
-            (number))
-          (string
-            (content))
-          (binary_expression
-            (identifier)
-            (number))
-          (string
-            (content))
+          (conditional_case
+            (binary_expression
+              (identifier)
+              (number))
+            (string
+              (content)))
+          (conditional_case
+            (binary_expression
+              (identifier)
+              (number))
+            (string
+              (content)))
           (string
             (content)))))
     (from_clause
