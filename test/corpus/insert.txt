@@ -2,10 +2,10 @@
 INSERT statement
 ================================================================================
 
-INSERT INTO table1 VALUES (1, 'test')
-INSERT INTO table1 (col1) VALUES (1)
-INSERT INTO table1 ("Foo 1") VALUES (1)
-INSERT INTO table1 ("Foo 1", bar) VALUES (1, 2)
+INSERT INTO table1 VALUES (1, 'test');
+INSERT INTO table1 (col1) VALUES (1);
+INSERT INTO table1 ("Foo 1") VALUES (1);
+INSERT INTO table1 ("Foo 1", bar) VALUES (1, 2);
 INSERT INTO table2 SELECT * FROM generate_series(1, 100, 1);
 
 --------------------------------------------------------------------------------
@@ -45,14 +45,15 @@ INSERT INTO table2 SELECT * FROM generate_series(1, 100, 1);
     (identifier)
     (select_statement
       (select_clause
-        (select_clause_body
+        (select_item
           (asterisk_expression)))
       (from_clause
-        (function_call
-          (identifier)
-          (number)
-          (number)
-          (number))))))
+        (from_item
+          (function_call
+            (identifier)
+            (number)
+            (number)
+            (number)))))))
 
 ================================================================================
 INSERT statement values with multiple items
@@ -546,11 +547,12 @@ INSERT INTO table1 VALUES (1, 'a') RETURNING a + 1 AS r;
         (string
           (content))))
     (returning_clause
-      (binary_expression
-        (identifier)
-        (number))
-      (alias
-        (identifier))))
+      (aliased_expression
+        (binary_expression
+          (identifier)
+          (number))
+        (alias
+          (identifier)))))
   (insert_statement
     (identifier)
     (values_clause
@@ -559,8 +561,9 @@ INSERT INTO table1 VALUES (1, 'a') RETURNING a + 1 AS r;
         (string
           (content))))
     (returning_clause
-      (binary_expression
-        (identifier)
-        (number))
-      (alias
-        (identifier)))))
+      (aliased_expression
+        (binary_expression
+          (identifier)
+          (number))
+        (alias
+          (identifier))))))

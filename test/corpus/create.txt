@@ -20,82 +20,81 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
   (create_table_statement
     (if_not_exists)
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (auto_increment_constraint))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (auto_increment_constraint))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL)))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL)))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL)))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL)))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (primary_key
-        (column_names
-          (identifier))))))
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (primary_key
+      (column_names
+        (identifier)))))
 
 ================================================================================
 CREATE TABLE
@@ -120,82 +119,81 @@ CREATE TABLE IF NOT EXISTS tblsample
   (create_table_statement
     (if_not_exists)
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (auto_increment_constraint))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (auto_increment_constraint))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL)))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL)))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL)))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL)))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (string
-            (content))))
-      (primary_key
-        (column_names
-          (identifier))))))
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (string
+          (content))))
+    (primary_key
+      (column_names
+        (identifier)))))
 
 ================================================================================
 CREATE statement with array type
@@ -214,30 +212,29 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
   (create_table_statement
     (if_not_exists)
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (array_type
-          (type
-            (identifier))))
-      (table_column
-        (identifier)
-        (array_type
-          (type
-            (identifier))
-          (number)))
-      (table_column
-        (identifier)
-        (array_type
-          (type
-            (identifier))))
-      (table_column
-        (identifier)
-        (array_type
-          (type
-            (identifier))
-          (number)
-          (number))))))
+    (table_column
+      (identifier)
+      (array_type
+        (type
+          (identifier))))
+    (table_column
+      (identifier)
+      (array_type
+        (type
+          (identifier))
+        (number)))
+    (table_column
+      (identifier)
+      (array_type
+        (type
+          (identifier))))
+    (table_column
+      (identifier)
+      (array_type
+        (type
+          (identifier))
+        (number)
+        (number)))))
 
 ================================================================================
 CREATE statement with VARYING, PRECISION, WITH/WITHOUT TIME ZONE types
@@ -257,28 +254,27 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
   (create_table_statement
     (if_not_exists)
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)
-          (number)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier))))))
+        (number)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))))
 
 ================================================================================
 CREATE FUNCTION with return statement
@@ -295,12 +291,12 @@ CREATE FUNCTION add(a INTEGER, b INTEGER) RETURNS INTEGER
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (identifier)
         (type
           (identifier)))
-      (create_function_parameter
+      (function_parameter
         (identifier)
         (type
           (identifier))))
@@ -329,14 +325,14 @@ SELECT 0;
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters)
+    (function_parameters)
     (type
       (identifier))
     (deterministic_hint)
     (function_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))))
 
 ================================================================================
@@ -356,8 +352,8 @@ END;
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (identifier)
         (type
           (identifier))))
@@ -371,7 +367,7 @@ END;
     (function_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (function_call
               (identifier)
               (string
@@ -394,8 +390,9 @@ END
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
+        (function_argmode)
         (identifier)
         (type
           (identifier))))
@@ -413,11 +410,12 @@ END
           (number)))
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (identifier)
             (identifier)))
         (from_clause
-          (identifier))
+          (from_item
+            (identifier)))
         (where_clause
           (binary_expression
             (identifier)
@@ -441,8 +439,9 @@ END
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
+        (function_argmode)
         (identifier)
         (type
           (identifier)
@@ -467,19 +466,17 @@ CREATE FUNCTION add(a INTEGER = 1, b INTEGER = 2) RETURNS INTEGER
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (identifier)
         (type
           (identifier))
-        (default_value
-          (number)))
-      (create_function_parameter
+        (number))
+      (function_parameter
         (identifier)
         (type
           (identifier))
-        (default_value
-          (number))))
+        (number)))
     (type
       (identifier))
     (language)
@@ -501,12 +498,12 @@ CREATE PROCEDURE foo()
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters)
+    (function_parameters)
     (function_body
       (return_statement
         (select_statement
           (select_clause
-            (select_clause_body
+            (select_item
               (number))))))))
 
 ================================================================================
@@ -719,7 +716,8 @@ CREATE TRIGGER testref BEFORE INSERT ON test1
               (identifier)))))
       (delete_statement
         (from_clause
-          (identifier))
+          (from_item
+            (identifier)))
         (where_clause
           (binary_expression
             (identifier)
@@ -759,7 +757,7 @@ CREATE TEMP VIEW foo AS SELECT 1;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number))))))
   (create_view_statement
     (identifier)
@@ -767,28 +765,28 @@ CREATE TEMP VIEW foo AS SELECT 1;
       (select_subexpression
         (select_statement
           (select_clause
-            (select_clause_body
+            (select_item
               (number)))))))
   (create_view_statement
     (identifier)
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number))))))
   (create_view_statement
     (identifier)
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number))))))
   (create_view_statement
     (identifier)
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))))
 
 ================================================================================
@@ -802,19 +800,22 @@ CREATE VIEW foo(a, b) AS SELECT 1 a, 2 b;
 (source_file
   (create_view_statement
     (identifier)
-    (identifier_list
+    (column_names
       (identifier)
       (identifier))
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
-            (number)
-            (alias
-              (identifier))
-            (number)
-            (alias
-              (identifier))))))))
+          (select_item
+            (aliased_expression
+              (number)
+              (alias
+                (identifier))))
+          (select_item
+            (aliased_expression
+              (number)
+              (alias
+                (identifier)))))))))
 
 ================================================================================
 CREATE VIEW by value clause
@@ -850,7 +851,7 @@ CREATE VIEW foo WITH(security_barrier) AS SELECT 1;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))))
 
 ================================================================================
@@ -869,7 +870,7 @@ CREATE VIEW foo AS SELECT 1 WITH CASCADED CHECK OPTION;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))
     (view_check_option))
   (create_view_statement
@@ -877,7 +878,7 @@ CREATE VIEW foo AS SELECT 1 WITH CASCADED CHECK OPTION;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))
     (view_check_option))
   (create_view_statement
@@ -885,7 +886,7 @@ CREATE VIEW foo AS SELECT 1 WITH CASCADED CHECK OPTION;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))
     (view_check_option)))
 
@@ -904,7 +905,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS foo AS SELECT 1;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number))))))
   (create_materialized_view_statement
     (if_not_exists)
@@ -912,7 +913,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS foo AS SELECT 1;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))))
 
 ================================================================================
@@ -926,19 +927,22 @@ CREATE MATERIALIZED VIEW foo(a, b) AS SELECT 1 a, 2 b;
 (source_file
   (create_materialized_view_statement
     (identifier)
-    (identifier_list
+    (column_names
       (identifier)
       (identifier))
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
-            (number)
-            (alias
-              (identifier))
-            (number)
-            (alias
-              (identifier))))))))
+          (select_item
+            (aliased_expression
+              (number)
+              (alias
+                (identifier))))
+          (select_item
+            (aliased_expression
+              (number)
+              (alias
+                (identifier)))))))))
 
 ================================================================================
 CREATE MATERIALIZED VIEW with using clause
@@ -956,7 +960,7 @@ CREATE MATERIALIZED VIEW foo USING method1 AS SELECT 1;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))))
 
 ================================================================================
@@ -988,7 +992,7 @@ CREATE MATERIALIZED VIEW foo WITH (
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))))
 
 ================================================================================
@@ -1007,7 +1011,7 @@ CREATE MATERIALIZED VIEW foo TABLESPACE tbsp AS SELECT 1;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))))
 
 ================================================================================
@@ -1025,7 +1029,7 @@ CREATE MATERIALIZED VIEW foo AS SELECT 1 WITH NO DATA;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))
     (data_hint))
   (create_materialized_view_statement
@@ -1033,7 +1037,7 @@ CREATE MATERIALIZED VIEW foo AS SELECT 1 WITH NO DATA;
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
+          (select_item
             (number)))))
     (data_hint)))
 
@@ -1058,7 +1062,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS foo(a, b)
   (create_materialized_view_statement
     (if_not_exists)
     (identifier)
-    (identifier_list
+    (column_names
       (identifier)
       (identifier))
     (using_clause
@@ -1079,11 +1083,14 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS foo(a, b)
     (view_body
       (select_statement
         (select_clause
-          (select_clause_body
-            (number)
-            (alias
-              (identifier))
-            (number)
-            (alias
-              (identifier))))))
+          (select_item
+            (aliased_expression
+              (number)
+              (alias
+                (identifier))))
+          (select_item
+            (aliased_expression
+              (number)
+              (alias
+                (identifier)))))))
     (data_hint)))
