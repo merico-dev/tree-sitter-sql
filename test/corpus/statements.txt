@@ -9,14 +9,19 @@ SELECT 1, 1.2, -5, -1.3, 1E-37, 1E+37;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (number)
-        (number)
+      (select_item
+        (number))
+      (select_item
+        (number))
+      (select_item
         (unary_expression
-          (number))
+          (number)))
+      (select_item
         (unary_expression
-          (number))
-        (number)
+          (number)))
+      (select_item
+        (number))
+      (select_item
         (number)))))
 
 ================================================================================
@@ -33,7 +38,7 @@ SELECT interval '1 minute';
     (select_clause))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (interval_expression
           (string
             (content)))))))
@@ -49,7 +54,7 @@ SELECT 1 IS DISTINCT FROM NULL;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (is_expression
           (number)
           (distinct_from
@@ -66,11 +71,13 @@ SELECT a, b FROM table1;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier))))
+      (from_item
+        (identifier)))))
 
 ================================================================================
 SELECT statement with SELECT subexpression
@@ -83,14 +90,15 @@ SELECT (SELECT 1) AS a
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (select_subexpression
-          (select_statement
-            (select_clause
-              (select_clause_body
-                (number)))))
-        (alias
-          (identifier))))))
+      (select_item
+        (aliased_expression
+          (select_subexpression
+            (select_statement
+              (select_clause
+                (select_item
+                  (number)))))
+          (alias
+            (identifier)))))))
 
 ================================================================================
 SELECT statement with aliases
@@ -103,15 +111,19 @@ SELECT a, b AS c FROM table1 AS t;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
-        (identifier)
-        (alias
-          (identifier))))
+      (select_item
+        (identifier))
+      (select_item
+        (aliased_expression
+          (identifier)
+          (alias
+            (identifier)))))
     (from_clause
-      (identifier)
-      (alias
-        (identifier)))))
+      (from_item
+        (aliased_expression
+          (identifier)
+          (alias
+            (identifier)))))))
 
 ================================================================================
 SELECT statement with group by
@@ -126,11 +138,13 @@ GROUP BY lower(a), b;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier))
+      (from_item
+        (identifier)))
     (group_by_clause
       (grouping_expression
         (function_call
@@ -154,11 +168,13 @@ SELECT a, b FROM table1 ORDER BY a ASC NULLS FIRST, b DESC NULLS LAST;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier))
+      (from_item
+        (identifier)))
     (order_by_clause
       (order_expression
         (function_call
@@ -168,11 +184,13 @@ SELECT a, b FROM table1 ORDER BY a ASC NULLS FIRST, b DESC NULLS LAST;
         (identifier))))
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier))
+      (from_item
+        (identifier)))
     (order_by_clause
       (order_expression
         (function_call
@@ -183,11 +201,13 @@ SELECT a, b FROM table1 ORDER BY a ASC NULLS FIRST, b DESC NULLS LAST;
         (order))))
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier))
+      (from_item
+        (identifier)))
     (order_by_clause
       (order_expression
         (function_call
@@ -198,11 +218,13 @@ SELECT a, b FROM table1 ORDER BY a ASC NULLS FIRST, b DESC NULLS LAST;
         (order))))
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier))
+      (from_item
+        (identifier)))
     (order_by_clause
       (order_expression
         (identifier)
@@ -212,11 +234,13 @@ SELECT a, b FROM table1 ORDER BY a ASC NULLS FIRST, b DESC NULLS LAST;
         (order))))
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier))
+      (from_item
+        (identifier)))
     (order_by_clause
       (order_expression
         (identifier)
@@ -238,12 +262,15 @@ SELECT a, b FROM table1, table2;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))
     (from_clause
-      (identifier)
-      (identifier))))
+      (from_item
+        (identifier))
+      (from_item
+        (identifier)))))
 
 ================================================================================
 SELECT statement with numbers
@@ -256,8 +283,9 @@ SELECT 1, 2;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (number)
+      (select_item
+        (number))
+      (select_item
         (number)))))
 
 ================================================================================
@@ -271,7 +299,7 @@ SELECT 1 + 2;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (binary_expression
           (number)
           (number))))))
@@ -287,7 +315,7 @@ SELECT '';
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (string
           (content))))))
 
@@ -302,7 +330,7 @@ SELECT $$hey$$;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (string
           (content))))))
 
@@ -317,7 +345,7 @@ SELECT $$(a + b)$$;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (string
           (content))))))
 
@@ -332,7 +360,7 @@ SELECT ''::JSONB;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (type_cast
           (string
             (content))
@@ -350,8 +378,9 @@ SELECT a, b;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (identifier)))))
 
 ================================================================================
@@ -365,7 +394,7 @@ SELECT 1 < 2;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (binary_expression
           (number)
           (number))))))
@@ -381,13 +410,15 @@ SELECT a IS TRUE, b IS NOT NULL, c IS FALSE;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (is_expression
           (identifier)
-          (TRUE))
+          (TRUE)))
+      (select_item
         (is_expression
           (identifier)
-          (NULL))
+          (NULL)))
+      (select_item
         (is_expression
           (identifier)
           (FALSE))))))
@@ -403,12 +434,13 @@ SELECT foo.bar FROM a;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (dotted_name
           (identifier)
           (identifier))))
     (from_clause
-      (identifier))))
+      (from_item
+        (identifier)))))
 
 ================================================================================
 Operator precedence
@@ -425,27 +457,30 @@ SELECT @ - 2;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (binary_expression
           (number)
           (unary_expression
-            (number)))
+            (number))))
+      (select_item
         (binary_expression
           (number)
           (number)))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (binary_expression
           (binary_expression
             (number)
             (number))
-          (number))
+          (number)))
+      (select_item
         (binary_expression
           (number)
           (binary_expression
             (number)
-            (number)))
+            (number))))
+      (select_item
         (binary_expression
           (binary_expression
             (number)
@@ -453,17 +488,19 @@ SELECT @ - 2;
           (number)))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (binary_expression
           (binary_expression
             (number)
             (number))
-          (number))
+          (number)))
+      (select_item
         (binary_expression
           (number)
           (binary_expression
             (number)
-            (number)))
+            (number))))
+      (select_item
         (binary_expression
           (binary_expression
             (number)
@@ -471,24 +508,30 @@ SELECT @ - 2;
           (number)))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (unary_expression
-          (number))
+          (number)))
+      (select_item
         (unary_expression
-          (number))
+          (number)))
+      (select_item
         (unary_expression
-          (number))
+          (number)))
+      (select_item
         (unary_expression
-          (number))
+          (number)))
+      (select_item
         (unary_expression
-          (number))
+          (number)))
+      (select_item
         (unary_expression
-          (number))
+          (number)))
+      (select_item
         (unary_expression
           (number)))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (unary_expression
           (unary_expression
             (number)))))))
@@ -504,7 +547,7 @@ SELECT 1 < 2 IS TRUE;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (is_expression
           (binary_expression
             (number)
@@ -522,7 +565,7 @@ SELECT foo(bar, baz) < 10;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (binary_expression
           (function_call
             (identifier)
@@ -541,9 +584,10 @@ SELECT foo(), test.bar(1, 2, 3);
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (function_call
-          (identifier))
+          (identifier)))
+      (select_item
         (function_call
           (dotted_name
             (identifier)
@@ -563,7 +607,7 @@ SELECT TRUE AND foo(1) OR FALSE AND NOT a = b.c;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (boolean_expression
           (boolean_expression
             (TRUE)
@@ -590,7 +634,7 @@ SELECT (TRUE);
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (TRUE)))))
 
 ================================================================================
@@ -604,7 +648,7 @@ SELECT TRUE AND (foo(1) OR FALSE);
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (boolean_expression
           (TRUE)
           (boolean_expression
@@ -624,7 +668,7 @@ SELECT 'aaaa'
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (string
           (content))))))
 
@@ -639,7 +683,7 @@ SELECT '%{a.b}'
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (string
           (content))))))
 
@@ -654,7 +698,7 @@ SELECT foo->>'bar'
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (json_access
           (identifier)
           (string
@@ -671,7 +715,7 @@ SELECT 1 IN (1, 2);
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (in_expression
           (number)
           (tuple
@@ -1136,29 +1180,26 @@ CREATE TEMPORARY TABLE my_table2 (col1 INT, col2 INT);
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)))))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier))))
+  (create_table_statement
+    (identifier))
   (create_table_statement
     (identifier)
-    (table_parameters))
-  (create_table_statement
-    (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))))
 
 ================================================================================
 CREATE TABLE with timestamp
@@ -1177,33 +1218,32 @@ CREATE TABLE public.my_table (
     (dotted_name
       (identifier)
       (identifier))
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (primary_key_constraint))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier))
-        (primary_key_constraint))
-      (table_column
+        (number))
+      (null_constraint
+        (NULL)))
+    (table_column
+      (identifier)
+      (type
         (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)
-          (number))
-        (null_constraint
-          (NULL))
-        (default_clause
-          (binary_expression
-            (function_call
-              (identifier))
-            (interval_expression
-              (string
-                (content)))))))))
+        (number))
+      (null_constraint
+        (NULL))
+      (default_clause
+        (binary_expression
+          (function_call
+            (identifier))
+          (interval_expression
+            (string
+              (content))))))))
 
 ================================================================================
 CREATE TABLE with not null constraint
@@ -1216,13 +1256,12 @@ CREATE TABLE my_table (col1 INT NOT NULL)
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (null_constraint
-          (NULL))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (null_constraint
+        (NULL)))))
 
 ================================================================================
 CREATE TABLE with default
@@ -1235,14 +1274,13 @@ CREATE TABLE my_table (col1 INT DEFAULT get_num())
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (default_clause
-          (function_call
-            (identifier)))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (default_clause
+        (function_call
+          (identifier))))))
 
 ================================================================================
 CREATE TABLE with default string
@@ -1255,14 +1293,13 @@ CREATE TABLE my_table (col1 INT DEFAULT 'hey')
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (default_clause
-          (string
-            (content)))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (default_clause
+        (string
+          (content))))))
 
 ================================================================================
 CREATE TABLE with primary key constraint
@@ -1275,12 +1312,11 @@ CREATE TABLE my_table (col1 INT PRIMARY KEY)
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (primary_key_constraint)))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (primary_key_constraint))))
 
 ================================================================================
 CREATE TABLE with references constraint
@@ -1293,13 +1329,12 @@ CREATE TABLE my_table (col1 INT REFERENCES table1)
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (references_constraint
-          (identifier))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (references_constraint
+        (identifier)))))
 
 ================================================================================
 CREATE TABLE with references constraint with column specified
@@ -1312,15 +1347,14 @@ CREATE TABLE my_table (col1 INT REFERENCES table1(col1))
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (references_constraint
         (identifier)
-        (type
-          (identifier))
-        (references_constraint
-          (identifier)
-          (identifier_list
-            (identifier)))))))
+        (identifier_list
+          (identifier))))))
 
 ================================================================================
 CREATE TABLE with references constraint with actions
@@ -1333,17 +1367,16 @@ CREATE TABLE my_table (col1 INT REFERENCES table1(col1) ON DELETE SET NULL ON UP
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (references_constraint
         (identifier)
-        (type
+        (identifier_list
           (identifier))
-        (references_constraint
-          (identifier)
-          (identifier_list
-            (identifier))
-          (on_delete_action)
-          (on_update_action))))))
+        (on_delete_action)
+        (on_update_action)))))
 
 ================================================================================
 CREATE TABLE with unique constraint
@@ -1356,12 +1389,11 @@ CREATE TABLE my_table (col1 INT UNIQUE)
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (unique_constraint)))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (unique_constraint))))
 
 ================================================================================
 CREATE TABLE with multiple constaints
@@ -1374,16 +1406,15 @@ CREATE TABLE my_table (col1 INT DEFAULT get_val() NOT NULL)
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (default_clause
-          (function_call
-            (identifier)))
-        (null_constraint
-          (NULL))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (default_clause
+        (function_call
+          (identifier)))
+      (null_constraint
+        (NULL)))))
 
 ================================================================================
 CREATE TABLE with check in constaint, rule precedence
@@ -1396,17 +1427,16 @@ CREATE TABLE my_table (col1 INT CHECK(col1 IN (1, 2)));
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (check_constraint
-          (in_expression
-            (identifier)
-            (tuple
-              (number)
-              (number))))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (check_constraint
+        (in_expression
+          (identifier)
+          (tuple
+            (number)
+            (number)))))))
 
 ================================================================================
 CREATE TABLE with foreign key constraint
@@ -1424,28 +1454,27 @@ CREATE TABLE my_table (
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (foreign_key
-        (column_names
-          (identifier)
-          (identifier))
-        (references_constraint
-          (identifier)))
+    (table_column
       (identifier)
-      (foreign_key
-        (column_names
-          (identifier)
-          (identifier))
-        (references_constraint
-          (identifier))))))
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (foreign_key
+      (column_names
+        (identifier)
+        (identifier))
+      (references_constraint
+        (identifier)))
+    (identifier)
+    (foreign_key
+      (column_names
+        (identifier)
+        (identifier))
+      (references_constraint
+        (identifier)))))
 
 ================================================================================
 CREATE TABLE with multiple constraints
@@ -1462,37 +1491,36 @@ CREATE TABLE foo(
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (null_constraint
+        (NULL))
+      (references_constraint
         (identifier)
-        (type
+        (identifier_list
           (identifier))
-        (null_constraint
-          (NULL))
-        (references_constraint
-          (identifier)
-          (identifier_list
-            (identifier))
-          (on_update_action)
-          (on_delete_action)))
-      (table_column
+        (on_update_action)
+        (on_delete_action)))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (null_constraint
+        (NULL))
+      (references_constraint
         (identifier)
-        (type
-          (identifier))
-        (null_constraint
-          (NULL))
-        (references_constraint
-          (identifier)
-          (on_update_action)))
-      (table_column
+        (on_update_action)))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (null_constraint
+        (NULL))
+      (references_constraint
         (identifier)
-        (type
-          (identifier))
-        (null_constraint
-          (NULL))
-        (references_constraint
-          (identifier)
-          (on_delete_action))))))
+        (on_delete_action)))))
 
 ================================================================================
 CREATE TABLE with unique constraint
@@ -1505,19 +1533,18 @@ CREATE TABLE foo(col1 INT, col2 INT, UNIQUE(col1, col2))
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (unique
+      (column_names
         (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (unique
-        (column_names
-          (identifier)
-          (identifier))))))
+        (identifier)))))
 
 ================================================================================
 CREATE TABLE with direction
@@ -1533,21 +1560,20 @@ CREATE TABLE foo(
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (null_constraint
-          (NULL))
-        (primary_key_constraint))
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (default_clause
-          (identifier))
-        (order)))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (null_constraint
+        (NULL))
+      (primary_key_constraint))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (default_clause
+        (identifier))
+      (order))))
 
 ================================================================================
 Comment
@@ -1584,13 +1610,12 @@ CREATE TABLE foo(col1 INT CONSTRAINT col1_constraint)
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier))
-        (named_constraint
-          (identifier))))))
+    (table_column
+      (identifier)
+      (type
+        (identifier))
+      (named_constraint
+        (identifier)))))
 
 ================================================================================
 CREATE TABLE with composite primary key
@@ -1603,19 +1628,18 @@ CREATE TABLE foo(col1 INT, col2 INT, PRIMARY KEY(col1, col2))
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (primary_key
+      (column_names
         (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (primary_key
-        (column_names
-          (identifier)
-          (identifier))))))
+        (identifier)))))
 
 ================================================================================
 CREATE TABLE with exclude contraint
@@ -1628,25 +1652,24 @@ CREATE TABLE foo(col1 INT, col2 VARCHAR, EXCLUDE USING GIST (col1 WITH =, col2 v
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (exclude
+      (identifier)
+      (exclude_entry
         (identifier)
-        (type
-          (identifier)))
-      (table_column
+        (binary_operator))
+      (exclude_entry
         (identifier)
-        (type
-          (identifier)))
-      (exclude
-        (identifier)
-        (exclude_entry
-          (identifier)
-          (binary_operator))
-        (exclude_entry
-          (identifier)
-          (op_class
-            (identifier))
-          (binary_operator))))))
+        (op_class
+          (identifier))
+        (binary_operator)))))
 
 ================================================================================
 CREATE TABLE with array type column
@@ -1659,12 +1682,11 @@ CREATE TABLE foo(col1 INT[])
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (array_type
-          (type
-            (identifier)))))))
+    (table_column
+      (identifier)
+      (array_type
+        (type
+          (identifier))))))
 
 ================================================================================
 CREATE TABLE with check constraint
@@ -1682,28 +1704,27 @@ CREATE TABLE foo(
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (table_column
-        (identifier)
-        (type
-          (identifier)))
-      (check
-        (binary_expression
-          (identifier)
-          (identifier)))
+    (table_column
       (identifier)
-      (check
-        (binary_expression
-          (function_call
-            (identifier)
-            (identifier))
-          (interval_expression
-            (string
-              (content))))))))
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (check
+      (binary_expression
+        (identifier)
+        (identifier)))
+    (identifier)
+    (check
+      (binary_expression
+        (function_call
+          (identifier)
+          (identifier))
+        (interval_expression
+          (string
+            (content)))))))
 
 ================================================================================
 CREATE TABLE with foreign key constraint with columns specified
@@ -1720,24 +1741,23 @@ CREATE TABLE my_table (
 (source_file
   (create_table_statement
     (identifier)
-    (table_parameters
-      (table_column
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (foreign_key
+      (column_names
         (identifier)
-        (type
-          (identifier)))
-      (table_column
+        (identifier))
+      (references_constraint
         (identifier)
-        (type
-          (identifier)))
-      (foreign_key
-        (column_names
+        (identifier_list
           (identifier)
-          (identifier))
-        (references_constraint
-          (identifier)
-          (identifier_list
-            (identifier)
-            (identifier)))))))
+          (identifier))))))
 
 ================================================================================
 CREATE FUNCTION
@@ -1755,11 +1775,11 @@ CREATE FUNCTION add(integer, integer) RETURNS integer
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier)))
-      (create_function_parameter
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -1770,11 +1790,11 @@ CREATE FUNCTION add(integer, integer) RETURNS integer
     (language))
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier)))
-      (create_function_parameter
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -1797,11 +1817,11 @@ CREATE OR REPLACE FUNCTION add(integer, integer) RETURNS integer
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier)))
-      (create_function_parameter
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -1824,8 +1844,8 @@ CREATE FUNCTION foo(int) RETURNS integer
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -1851,17 +1871,21 @@ CREATE FUNCTION add(IN int, OUT int, INOUT int, VARIADIC int) RETURNS int
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
+        (function_argmode)
         (type
           (identifier)))
-      (create_function_parameter
+      (function_parameter
+        (function_argmode)
         (type
           (identifier)))
-      (create_function_parameter
+      (function_parameter
+        (function_argmode)
         (type
           (identifier)))
-      (create_function_parameter
+      (function_parameter
+        (function_argmode)
         (type
           (identifier))))
     (type
@@ -1884,8 +1908,8 @@ CREATE FUNCTION add(text) RETURNS SETOF int
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier))))
     (setof
@@ -1909,8 +1933,8 @@ CREATE FUNCTION add(text) RETURNS SETOF int NOT NULL
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier))))
     (setof
@@ -1935,8 +1959,8 @@ CREATE FUNCTION add(integer) RETURNS integer LANGUAGE SQL AS 'select $1';
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -1957,8 +1981,8 @@ CREATE FUNCTION add(integer) RETURNS integer STABLE LANGUAGE SQL AS 'select $1';
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -1980,8 +2004,8 @@ CREATE FUNCTION add(integer NOT NULL) RETURNS integer STABLE LANGUAGE SQL AS 'se
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (constrained_type
           (type
             (identifier))
@@ -2006,8 +2030,8 @@ create function add(integer) returns integer language sql as 'select $1';
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -2028,8 +2052,8 @@ create function add(integer) returns integer language sql as 'select a, b';
 (source_file
   (create_function_statement
     (identifier)
-    (create_function_parameters
-      (create_function_parameter
+    (function_parameters
+      (function_parameter
         (type
           (identifier))))
     (type
@@ -2114,34 +2138,38 @@ SELECT COUNT(a.*) FROM Customers;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (asterisk_expression)))
     (from_clause
-      (identifier)))
+      (from_item
+        (identifier))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (asterisk_expression
           (identifier))))
     (from_clause
-      (identifier)))
+      (from_item
+        (identifier))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (function_call
           (identifier)
           (asterisk_expression))))
     (from_clause
-      (identifier)))
+      (from_item
+        (identifier))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (function_call
           (identifier)
           (asterisk_expression
             (identifier)))))
     (from_clause
-      (identifier))))
+      (from_item
+        (identifier)))))
 
 ================================================================================
 CREATE EXTENSION
@@ -2899,30 +2927,36 @@ SELECT a.`test 1`;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (asterisk_expression
-          (identifier))
+          (identifier)))
+      (select_item
         (dotted_name
           (identifier)
-          (identifier))
+          (identifier)))
+      (select_item
         (dotted_name
           (identifier)
-          (identifier))
+          (identifier)))
+      (select_item
         (asterisk_expression
           (dotted_name
             (identifier)
-            (identifier)))
+            (identifier))))
+      (select_item
         (dotted_name
           (identifier)
-          (identifier))
+          (identifier)))
+      (select_item
         (asterisk_expression
           (dotted_name
             (identifier)
             (identifier))))))
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (dotted_name
           (identifier)
           (identifier))))))
@@ -2938,15 +2972,19 @@ SELECT $$a$$, $a$baz$a$, $a$$$$a$, $a$b$$a$, $TAG$afasf    $$TAG$;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
           (content))))))
 
@@ -2966,8 +3004,9 @@ FROM foo;
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
-        (identifier)
+      (select_item
+        (identifier))
+      (select_item
         (conditional_expression
           (conditional_case
             (binary_expression
@@ -2984,7 +3023,8 @@ FROM foo;
           (string
             (content)))))
     (from_clause
-      (identifier))))
+      (from_item
+        (identifier)))))
 
 ================================================================================
 Escaping quotes
@@ -2997,15 +3037,19 @@ SELECT 'O''Connor', '''', '''''', ' '' ', ' '' a'' ';
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
-          (content))
+          (content)))
+      (select_item
         (string
           (content))))))
 
@@ -3020,7 +3064,7 @@ SELECT '2001-02-16 20:38:40'::TIMESTAMP AT TIME ZONE 'America/Denver';
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (at_time_zone_expression
           (type_cast
             (string
@@ -3251,29 +3295,15 @@ SELECT
 (source_file
   (select_statement
     (select_clause
-      (select_clause_body
+      (select_item
         (json_access
           (type_cast
             (string
               (content))
             (type
               (identifier)))
-          (number))
-        (json_access
-          (type_cast
-            (string
-              (content))
-            (type
-              (identifier)))
-          (string
-            (content)))
-        (json_access
-          (type_cast
-            (string
-              (content))
-            (type
-              (identifier)))
-          (number))
+          (number)))
+      (select_item
         (json_access
           (type_cast
             (string
@@ -3281,7 +3311,16 @@ SELECT
             (type
               (identifier)))
           (string
-            (content)))
+            (content))))
+      (select_item
+        (json_access
+          (type_cast
+            (string
+              (content))
+            (type
+              (identifier)))
+          (number)))
+      (select_item
         (json_access
           (type_cast
             (string
@@ -3289,7 +3328,17 @@ SELECT
             (type
               (identifier)))
           (string
-            (content)))
+            (content))))
+      (select_item
+        (json_access
+          (type_cast
+            (string
+              (content))
+            (type
+              (identifier)))
+          (string
+            (content))))
+      (select_item
         (json_access
           (type_cast
             (string

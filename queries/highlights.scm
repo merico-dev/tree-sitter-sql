@@ -17,13 +17,12 @@
   (create_function_statement
    (type (identifier) @type.builtin))
   (create_function_statement
-   (create_function_parameters
-     (create_function_parameter (type (identifier) @type.builtin))))
+   (function_parameters
+     (function_parameter (type (identifier) @type.builtin))))
   (create_type_statement
     (type_spec_composite (type (identifier) @type.builtin)))
   (create_table_statement
-   (table_parameters
-     (table_column (type (identifier) @type.builtin))))
+    (table_column (type (identifier) @type.builtin)))
  ]
  (#match?
    @type.builtin

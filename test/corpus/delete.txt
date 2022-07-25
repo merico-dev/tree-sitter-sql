@@ -10,10 +10,12 @@ DELETE FROM foo WHERE name = 'bar';
 (source_file
   (delete_statement
     (from_clause
-      (identifier)))
+      (from_item
+        (identifier))))
   (delete_statement
     (from_clause
-      (identifier))
+      (from_item
+        (identifier)))
     (where_clause
       (binary_expression
         (identifier)
@@ -38,9 +40,11 @@ DELETE FROM bar;
         (identifier)
         (select_statement
           (select_clause
-            (select_clause_body
+            (select_item
               (asterisk_expression)))
           (from_clause
-            (identifier)))))
+            (from_item
+              (identifier))))))
     (from_clause
-      (identifier))))
+      (from_item
+        (identifier)))))
