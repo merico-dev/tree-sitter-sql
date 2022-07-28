@@ -294,10 +294,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -978,10 +974,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -1129,10 +1121,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -1272,10 +1260,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -1468,10 +1452,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -1639,10 +1619,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -1843,10 +1819,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -1985,10 +1957,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -2124,10 +2092,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -2272,10 +2236,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -2523,10 +2483,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -2676,10 +2632,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -2818,10 +2770,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -2957,10 +2905,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -3116,10 +3060,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -3252,10 +3192,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -3682,10 +3618,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -3834,10 +3766,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -3973,10 +3901,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -4124,10 +4048,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -4263,10 +4183,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -4991,10 +4907,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -5261,11 +5173,19 @@
       "required": false,
       "types": [
         {
+          "type": "column_names",
+          "named": true
+        },
+        {
           "type": "if_not_exists",
           "named": true
         },
         {
           "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "values_clause",
           "named": true
         }
       ]
@@ -5435,6 +5355,10 @@
           "named": true
         },
         {
+          "type": "combining_query",
+          "named": true
+        },
+        {
           "type": "delete_statement",
           "named": true
         },
@@ -5451,7 +5375,15 @@
           "named": true
         },
         {
+          "type": "select_subexpression",
+          "named": true
+        },
+        {
           "type": "update_statement",
+          "named": true
+        },
+        {
+          "type": "values_clause",
           "named": true
         }
       ]
@@ -5523,10 +5455,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -5710,10 +5638,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -5793,13 +5717,38 @@
   {
     "type": "delete_statement",
     "named": true,
-    "fields": {},
+    "fields": {
+      "table": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "table_alias": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "alias",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "from_clause",
+          "type": "returning_clause",
           "named": true
         },
         {
@@ -5964,10 +5913,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -6218,6 +6163,48 @@
     }
   },
   {
+    "type": "drop_function_statement",
+    "named": true,
+    "fields": {
+      "target": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "function_parameters",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "if_exists",
+          "named": true
+        },
+        {
+          "type": "relationship_behavior",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "drop_identity",
     "named": true,
     "fields": {},
@@ -6275,11 +6262,15 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
           "type": "if_exists",
+          "named": true
+        },
+        {
+          "type": "relationship_behavior",
           "named": true
         }
       ]
@@ -6328,145 +6319,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "epoch_from_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "FALSE",
-          "named": true
-        },
-        {
-          "type": "NULL",
-          "named": true
-        },
-        {
-          "type": "TRUE",
-          "named": true
-        },
-        {
-          "type": "UNKNOWN",
-          "named": true
-        },
-        {
-          "type": "argument_reference",
-          "named": true
-        },
-        {
-          "type": "array_constructor",
-          "named": true
-        },
-        {
-          "type": "array_element_access",
-          "named": true
-        },
-        {
-          "type": "asterisk_expression",
-          "named": true
-        },
-        {
-          "type": "at_time_zone_expression",
-          "named": true
-        },
-        {
-          "type": "between_and_expression",
-          "named": true
-        },
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "boolean_expression",
-          "named": true
-        },
-        {
-          "type": "composite_expression",
-          "named": true
-        },
-        {
-          "type": "conditional_expression",
-          "named": true
-        },
-        {
-          "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
-          "type": "field_selection",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "in_expression",
-          "named": true
-        },
-        {
-          "type": "interval_expression",
-          "named": true
-        },
-        {
-          "type": "is_expression",
-          "named": true
-        },
-        {
-          "type": "isnull_expression",
-          "named": true
-        },
-        {
-          "type": "json_access",
-          "named": true
-        },
-        {
-          "type": "notnull_expression",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "row_constructor",
-          "named": true
-        },
-        {
-          "type": "rows_from_expression",
-          "named": true
-        },
-        {
-          "type": "select_subexpression",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "type_cast",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -6622,10 +6474,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -6778,10 +6626,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -6956,10 +6800,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -7172,10 +7012,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -7373,6 +7209,10 @@
           "named": true
         },
         {
+          "type": "drop_function_statement",
+          "named": true
+        },
+        {
           "type": "drop_statement",
           "named": true
         },
@@ -7472,6 +7312,10 @@
             "named": true
           },
           {
+            "type": "array_type",
+            "named": true
+          },
+          {
             "type": "asterisk_expression",
             "named": true
           },
@@ -7501,10 +7345,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -7573,6 +7413,14 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "table_type",
+            "named": true
+          },
+          {
+            "type": "type",
             "named": true
           },
           {
@@ -7707,10 +7555,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -7902,10 +7746,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -8145,10 +7985,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -8289,10 +8125,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -8443,10 +8275,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -8624,10 +8452,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -8813,10 +8637,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -9119,10 +8939,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -9293,10 +9109,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -9460,10 +9272,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -9604,10 +9412,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -9672,6 +9476,22 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "language",
+    "named": true,
+    "fields": {
+      "content": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "content",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -9831,10 +9651,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -10052,10 +9868,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -10236,12 +10048,32 @@
   {
     "type": "on_delete_action",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "relationship_behavior",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "on_update_action",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "relationship_behavior",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "op_class",
@@ -10380,10 +10212,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -10616,10 +10444,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -10786,10 +10610,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -11021,6 +10841,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "relationship_behavior",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -11210,10 +11040,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -11432,10 +11258,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -11585,10 +11407,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -11817,10 +11635,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -11957,10 +11771,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -12207,10 +12017,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -12488,10 +12294,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -12749,10 +12551,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -13029,6 +12827,10 @@
         },
         {
           "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "drop_function_statement",
           "named": true
         },
         {
@@ -13453,6 +13255,10 @@
           "named": true
         },
         {
+          "type": "drop_function_statement",
+          "named": true
+        },
+        {
           "type": "drop_statement",
           "named": true
         },
@@ -13569,10 +13375,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -13842,10 +13644,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -14013,10 +13811,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -14176,10 +13970,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -14393,10 +14183,6 @@
             "named": true
           },
           {
-            "type": "epoch_from_expression",
-            "named": true
-          },
-          {
             "type": "field_selection",
             "named": true
           },
@@ -14518,6 +14304,10 @@
           "named": true
         },
         {
+          "type": "returning_clause",
+          "named": true
+        },
+        {
           "type": "set_clause",
           "named": true
         },
@@ -14617,10 +14407,6 @@
         },
         {
           "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "epoch_from_expression",
           "named": true
         },
         {
@@ -14871,10 +14657,6 @@
           "named": true
         },
         {
-          "type": "epoch_from_expression",
-          "named": true
-        },
-        {
           "type": "field_selection",
           "named": true
         },
@@ -15078,10 +14860,6 @@
           },
           {
             "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "epoch_from_expression",
             "named": true
           },
           {
@@ -15485,10 +15263,6 @@
   {
     "type": "e'",
     "named": false
-  },
-  {
-    "type": "language",
-    "named": true
   },
   {
     "type": "number",
