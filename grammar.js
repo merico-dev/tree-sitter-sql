@@ -122,6 +122,7 @@ module.exports = grammar({
         $.create_event_trigger_statement,
         $.create_aggregate_statement,
         $.create_policy_statement,
+        $.drop_function_statement,
 
         // TODO: remove from _statement
         $.return_statement,
@@ -152,6 +153,9 @@ module.exports = grammar({
           $.delete_statement,
           $.insert_statement,
           $.update_statement,
+          $.combining_query,
+          $.values_clause,
+          $.select_subexpression,
         ),
         ")",
       ),
@@ -596,7 +600,7 @@ module.exports = grammar({
         field("attribute_name", $._identifier),
         kw("TO"),
         field("new_attribute_name", $._identifier),
-        optional(choice(kw("CASCADE"), kw("RESTRICT"))),
+        optional($.relationship_behavior),
       ),
     add_value: $ =>
       seq(
@@ -768,7 +772,7 @@ module.exports = grammar({
     _function_language: $ =>
       seq(
         kw("LANGUAGE"),
-        alias(choice(/[a-zA-Z]+/, /'[a-zA-Z]+'/), $.language),
+        alias(choice($.identifier, $.string), $.language),
       ),
     _function_return_type: $ =>
       prec.right(choice($.setof, $._type, $.constrained_type)),
@@ -930,8 +934,19 @@ module.exports = grammar({
         optional($.if_exists),
         field("target", commaSep1($._identifier)),
         optional(seq(kw("ON"), field("target_table", $._identifier))),
-        optional(choice(kw("CASCADE"), kw("RESTRICT"))),
+        optional($.relationship_behavior),
       ),
+
+    drop_function_statement: $ =>
+      prec.right(seq(
+        kw("DROP FUNCTION"),
+        optional($.if_exists),
+        field("target", commaSep1(seq(
+          $._identifier,
+          optional($.function_parameters)
+        ))),
+        optional($.relationship_behavior),
+      )),
 
     vacuum_statement: $ =>
       prec.right(
@@ -1293,7 +1308,17 @@ module.exports = grammar({
         kw("TABLE"),
         optional($.if_not_exists),
         field("name", $._identifier),
-        choice(seq(kw("AS"), $.select_statement), $._table_parameters),
+        choice(
+          seq(
+            optional(alias($.identifier_list, $.column_names)),
+            kw("AS"),
+            choice(
+              $.select_statement,
+              $.values_clause,
+            )
+          ),
+          $._table_parameters
+        ),
         optional(kw("WITHOUT OIDS")),
       ),
     _table_parameters: $ =>
@@ -1357,7 +1382,7 @@ module.exports = grammar({
     on_delete_action: $ =>
       seq(kw("ON DELETE"), $._constraint_action),
     _constraint_action: $ =>
-      choice(kw("RESTRICT"), kw("CASCADE"), kw("SET NULL")),
+      choice($.relationship_behavior, kw("SET NULL")),
 
     _column_default_expression: $ =>
       choice(
@@ -1616,22 +1641,21 @@ module.exports = grammar({
       ),
 
     join_clause: $ =>
-      seq(
+      prec.right(seq(
         $.from_item,
         optional(kw("NATURAL")),
         optional($.join_type),
         kw("JOIN"),
         $.from_item,
-        choice($.join_condition, $.using_clause),
-      ),
+        optional(choice($.join_condition, $.using_clause)),
+      )),
     join_type: $ =>
-      seq(
-        choice(
-          kw("INNER"),
-          seq(
-            choice(kw("LEFT"), kw("RIGHT"), kw("FULL")),
-            optional(kw("OUTER")),
-          ),
+      choice(
+        kw("INNER"),
+        kw("CROSS"),
+        seq(
+          choice(kw("LEFT"), kw("RIGHT"), kw("FULL")),
+          optional(kw("OUTER")),
         ),
       ),
     join_condition: $ => seq(kw("ON"), $._expression),
@@ -1686,6 +1710,7 @@ module.exports = grammar({
         $.set_clause,
         optional($.from_clause),
         optional($.where_clause),
+        optional($.returning_clause),
       ),
     set_clause: $ => seq(kw("SET"), commaSep1($.assignment_expression)),
     assignment_expression: $ =>
@@ -1747,9 +1772,16 @@ module.exports = grammar({
       seq("(", commaSep1(choice($._expression, kw("DEFAULT"))), ")"),
 
     // DELETE
-    // TODO: support returning clauses
     _delete_statement: $ =>
-      seq(kw("DELETE"), $.from_clause, optional($.where_clause)),
+      prec.right(seq(
+        kw("DELETE FROM"),
+        optional(kw("ONLY")),
+        field("table", $._identifier),
+        optional("*"),
+        optional(seq(optional(kw("AS")), field("table_alias", $.alias))),
+        optional($.where_clause),
+        optional($.returning_clause)
+      )),
 
     conditional_expression: $ =>
       seq(
@@ -1801,6 +1833,9 @@ module.exports = grammar({
           commaSep1(choice($._expression, $.named_argument)),
           $.select_statement
         ),
+        optional(seq(kw("FROM"), $._expression)),
+        optional(seq(kw("FOR"), $.number)),
+        optional(seq(kw("AS"), $._type)),
         optional($.order_by_clause),
       ),
     named_argument: $ => seq(
@@ -1892,7 +1927,6 @@ module.exports = grammar({
         prec.left(PREC.and, seq(field("left", $._expression), kw("AND"), field("right", $._expression))),
         prec.left(PREC.or, seq(field("left", $._expression), kw("OR"), field("right", $._expression))),
       ),
-    epoch_from_expression: $ => prec.left(seq(kw("EPOCH FROM"), $._expression)),
     at_time_zone_expression: $ =>
       prec.left(
         PREC.primary,
@@ -2007,7 +2041,7 @@ module.exports = grammar({
       ),
     array_element_access: $ =>
     seq(
-      field("subject", choice($.identifier, $.argument_reference, $.array_element_access, $._parenthesized_expression)),
+      field("subject", choice($._identifier, $.argument_reference, $.array_element_access, $._parenthesized_expression)),
       choice(
         seq("[", field("subscript", $._expression), "]"),
         seq("[", field("subscript", seq(optional($._expression), ":", optional($._expression))), "]"),
@@ -2093,7 +2127,6 @@ module.exports = grammar({
         $.rows_from_expression,
         $.array_constructor,
         $.row_constructor,
-        $.epoch_from_expression,
       ),
     _expression: $ => choice($._simple_expression, $.composite_expression),
   },
