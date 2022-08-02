@@ -26,7 +26,7 @@ const comparative_operators = [
   "<@",
   seq(optional(kw("NOT")), kw("LIKE", 1)),
   seq(optional(kw("NOT")), kw("ILIKE", 1)),
-  seq(optional(kw("NOT")), kw("SIMILAR TO")),
+  seq(optional(kw("NOT")), tok("SIMILAR TO")),
   kw("OVERLAPS", 1),
 ];
 
@@ -39,8 +39,7 @@ function kw(keyword, precedence=0) {
   const words = keyword.split(" ");
   const regExps = words.map(createCaseInsensitiveRegex);
 
-  // pattern = regExps.length == 1 ? regExps[0] : seq(...regExps);
-  pattern = regExps.length == 1 ? regExps[0] : seq(...regExps);
+  const pattern = regExps.length == 1 ? regExps[0] : seq(...regExps);
   return precedence !== 0 ? token(prec(precedence, pattern)) : pattern
 }
 
@@ -58,12 +57,21 @@ function createOrReplace(item) {
   );
 }
 
+function tok(keyword) {
+  return token(prec(1, createCaseInsensitiveRegex(keyword)))
+}
+
 function createCaseInsensitiveRegex(word) {
   return new RegExp(
     word
+      .replace(/\s+/g,' ')
+      .trim()
       .split("")
-      .map(letter => `[${letter.toLowerCase()}${letter.toUpperCase()}]`)
-      .join(""),
+      .map(letter =>
+        letter === ' '
+        ? '\\s+'
+        : `[${letter.toLowerCase()}${letter.toUpperCase()}]`
+      ).join("")
   );
 }
 
@@ -1447,7 +1455,7 @@ module.exports = grammar({
     table_constraint_unique: $ =>
       seq(kw("UNIQUE"), alias($.identifier_list, $.column_names)),
     table_constraint_primary_key: $ =>
-      seq(kw("PRIMARY KEY"), alias($.identifier_list, $.column_names)),
+      seq($.primary_key_constraint, alias($.identifier_list, $.column_names)),
     primary_key_constraint: $ => kw("PRIMARY KEY"),
     mode: $ => choice(kw("NOT DEFERRABLE"), kw("DEFERRABLE")),
     initial_mode: $ => seq(kw("INITIALLY"), choice(kw("DEFERRED"), kw("IMMEDIATE"))),
@@ -1932,10 +1940,10 @@ module.exports = grammar({
         PREC.primary,
         seq($._expression, kw("AT TIME ZONE"), $._expression),
       ),
-    NULL: $ => kw("NULL"),
-    TRUE: $ => kw("TRUE"),
-    FALSE: $ => kw("FALSE"),
-    UNKNOWN: $ => kw("UNKNOWN"),
+    NULL: $ => token.immediate(kw("NULL")),
+    TRUE: $ => tok("TRUE"),
+    FALSE: $ => tok("FALSE"),
+    UNKNOWN: $ => tok("UNKNOWN"),
 
     number: $ => {
       const digits = repeat1(/[0-9]+_?/);
@@ -1955,27 +1963,23 @@ module.exports = grammar({
 
     _unquoted_identifier: $ => /[a-zA-Z0-9_]+/,
     _quoted_identifier: $ =>
-      choice(
+      token(choice(
         seq("`", field("name", /[^`]*/), "`"), // MySQL style quoting
         seq('"', field("name", /(""|[^"])*/), '"'), // ANSI QUOTES
-      ),
+      )),
     identifier: $ => choice($._unquoted_identifier, $._quoted_identifier),
     dotted_name: $ => prec.left(PREC.primary, sep2($.identifier, ".")),
     _identifier: $ => prec(PREC.primary, choice($.identifier, $.dotted_name)),
-    string: $ =>
-    seq(
-      choice(
-        seq(
-          choice("'", "e'", "E'"),
-          field("content", alias(/(''|[^'])*/, $.content)),
-          "'"
-        ),
-        seq(
-          $._dollar_quoted_string_tag,
-          field("content", alias($._dollar_quoted_string_content, $.content)),
-          $._dollar_quoted_string_end_tag,
-        ),
-      ),
+    string: $ => choice($._single_quoted_string, $._dollar_quoted_string),
+    _single_quoted_string: $ => token(seq(
+      choice("'", "e'", "E'"),
+      field("content", alias(/(''|[^'])*/, $.content)),
+      "'"
+    )),
+    _dollar_quoted_string: $ => seq(
+      $._dollar_quoted_string_tag,
+      field("content", alias($._dollar_quoted_string_content, $.content)),
+      $._dollar_quoted_string_end_tag,
     ),
     json_access: $ =>
       seq(
@@ -2048,7 +2052,7 @@ module.exports = grammar({
       )
     ),
 
-    row_constructor: $ => seq(kw("ROW"), "(", commaSep($._expression), ")"),
+    row_constructor: $ => seq(kw("ROW", 1), "(", commaSep($._expression), ")"),
     composite_expression: $ =>
       seq("(", $._expression, ",", commaSep1($._expression), ")"),
 

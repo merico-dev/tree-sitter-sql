@@ -1,10 +1,5 @@
 [
   {
-    "type": "NULL",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "add_attribute",
     "named": true,
     "fields": {
@@ -10689,11 +10684,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "column_names",
+          "named": true
+        },
+        {
+          "type": "primary_key_constraint",
           "named": true
         }
       ]
@@ -12943,7 +12942,7 @@
     "fields": {
       "content": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "content",
@@ -14729,7 +14728,7 @@
     "fields": {
       "content": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "content",
@@ -15049,10 +15048,6 @@
     "named": false
   },
   {
-    "type": "\"",
-    "named": false
-  },
-  {
     "type": "#",
     "named": false
   },
@@ -15078,10 +15073,6 @@
   },
   {
     "type": "&&",
-    "named": false
-  },
-  {
-    "type": "'",
     "named": false
   },
   {
@@ -15209,11 +15200,11 @@
     "named": false
   },
   {
-    "type": "E'",
-    "named": false
+    "type": "FALSE",
+    "named": true
   },
   {
-    "type": "FALSE",
+    "type": "NULL",
     "named": true
   },
   {
@@ -15241,10 +15232,6 @@
     "named": false
   },
   {
-    "type": "`",
-    "named": false
-  },
-  {
     "type": "auto_increment_constraint",
     "named": true
   },
@@ -15259,10 +15246,6 @@
   {
     "type": "cost_hint",
     "named": true
-  },
-  {
-    "type": "e'",
-    "named": false
   },
   {
     "type": "number",
