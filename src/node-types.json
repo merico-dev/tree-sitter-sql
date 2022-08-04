@@ -520,15 +520,7 @@
           "named": true
         },
         {
-          "type": "initially_deferred",
-          "named": true
-        },
-        {
-          "type": "initially_immediate",
-          "named": true
-        },
-        {
-          "type": "not_deferrable",
+          "type": "initial_mode",
           "named": true
         }
       ]
@@ -596,6 +588,14 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "if_exists",
+          "named": true
+        },
+        {
+          "type": "if_not_exists",
           "named": true
         },
         {
@@ -5039,6 +5039,14 @@
           "named": true
         },
         {
+          "type": "if_exists",
+          "named": true
+        },
+        {
+          "type": "if_not_exists",
+          "named": true
+        },
+        {
           "type": "increament_by",
           "named": true
         },
@@ -8754,16 +8762,6 @@
     "fields": {}
   },
   {
-    "type": "initially_deferred",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "initially_immediate",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "insert_statement",
     "named": true,
     "fields": {
@@ -9768,11 +9766,6 @@
   },
   {
     "type": "no_minvalue",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "not_deferrable",
     "named": true,
     "fields": {}
   },
