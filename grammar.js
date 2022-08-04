@@ -24,10 +24,6 @@ const comparative_operators = [
   "!~*",
   "@>",
   "<@",
-  seq(optional(kw("NOT")), kw("LIKE", 1)),
-  seq(optional(kw("NOT")), kw("ILIKE", 1)),
-  seq(optional(kw("NOT")), tok("SIMILAR TO")),
-  kw("OVERLAPS", 1),
 ];
 
 // Generate case insentitive match for SQL keyword
@@ -453,14 +449,11 @@ module.exports = grammar({
         seq(
           kw("ALTER CONSTRAINT"),
           field("constraint_name", $._identifier),
-          optional(choice($.deferrable, $.not_deferrable)),
-          optional(choice($.initially_deferred, $.initially_immediate)),
+          optional($.deferrable),
+          optional($.initial_mode),
         ),
       ),
-    deferrable: $ => kw("DEFERRABLE"),
-    not_deferrable: $ => kw("NOT DEFERRABLE"),
-    initially_deferred: $ => kw("INITIALLY DEFERRED"),
-    initially_immediate: $ => kw("INITIALLY IMMEDIATE"),
+    deferrable: $ => seq(optional(kw("NOT")), kw("DEFERRABLE")),
 
     validata_constraint: $ =>
       seq(kw("VALIDATE CONSTRAINT"), field("constraint_name", $._identifier)),
@@ -662,7 +655,7 @@ module.exports = grammar({
       prec.right(
         seq(
           kw("SEQUENCE"),
-          optional(seq(kw("IF"), optional(kw("NOT")), kw("EXISTS"))),
+          optional(choice($.if_exists, $.if_not_exists)),
           $._identifier,
           optional(seq(kw("AS"), $.type)),
           repeat($._sequence_option),
@@ -809,8 +802,9 @@ module.exports = grammar({
     function_body: $ =>
       choice(
         seq(kw("AS"), $.string, optional(seq(",", $.string))),
-        $._simple_statement,
         $._compound_statement,
+        $.select_statement,
+        $.return_statement,
       ),
 
     create_trigger_statement: $ =>
@@ -1424,7 +1418,7 @@ module.exports = grammar({
             alias($.table_constraint_check, $.check),
             alias($.table_constraint_exclude, $.exclude),
           ),
-          optional($.mode),
+          optional(alias($.deferrable, $.mode)),
           optional($.initial_mode),
         ),
       ),
@@ -2077,7 +2071,15 @@ module.exports = grammar({
         [PREC.exp, "^"],
         [PREC.multiplicative, choice(...multiplicative_operators)],
         [PREC.additive, choice(...additive_operators)],
-        [PREC.comparative, choice(...comparative_operators)],
+        [PREC.comparative, choice(
+          ...comparative_operators,
+          seq(optional(kw("NOT")), choice(
+            tok('LIKE'),
+            tok('ILIKE'),
+            tok("SIMILAR TO"),
+            tok("OVERLAPS"),
+          ))
+        )],
       ];
 
       return choice(
