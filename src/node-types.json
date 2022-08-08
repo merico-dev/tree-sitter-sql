@@ -3372,6 +3372,10 @@
           {
             "type": "select_subexpression",
             "named": true
+          },
+          {
+            "type": "values_clause",
+            "named": true
           }
         ]
       },
@@ -3393,6 +3397,10 @@
           },
           {
             "type": "select_subexpression",
+            "named": true
+          },
+          {
+            "type": "values_clause",
             "named": true
           }
         ]
@@ -7261,6 +7269,10 @@
         },
         {
           "type": "vacuum_statement",
+          "named": true
+        },
+        {
+          "type": "values_clause",
           "named": true
         }
       ]
@@ -12140,6 +12152,10 @@
         {
           "type": "select_statement",
           "named": true
+        },
+        {
+          "type": "values_clause",
+          "named": true
         }
       ]
     }
@@ -12876,6 +12892,10 @@
         {
           "type": "vacuum_statement",
           "named": true
+        },
+        {
+          "type": "values_clause",
+          "named": true
         }
       ]
     }
@@ -13296,6 +13316,10 @@
         },
         {
           "type": "vacuum_statement",
+          "named": true
+        },
+        {
+          "type": "values_clause",
           "named": true
         }
       ]

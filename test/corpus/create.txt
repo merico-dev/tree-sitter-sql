@@ -36,8 +36,7 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -46,8 +45,7 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -70,8 +68,7 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -80,8 +77,7 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -90,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `tblsample` (
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (primary_key
+      (primary_key_constraint)
       (column_names
         (identifier)))))
 
@@ -135,8 +131,7 @@ CREATE TABLE IF NOT EXISTS tblsample
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -145,8 +140,7 @@ CREATE TABLE IF NOT EXISTS tblsample
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -169,8 +163,7 @@ CREATE TABLE IF NOT EXISTS tblsample
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -179,8 +172,7 @@ CREATE TABLE IF NOT EXISTS tblsample
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (table_column
       (identifier)
       (type
@@ -189,9 +181,9 @@ CREATE TABLE IF NOT EXISTS tblsample
       (null_constraint
         (NULL))
       (default_clause
-        (string
-          (content))))
+        (string)))
     (primary_key
+      (primary_key_constraint)
       (column_names
         (identifier)))))
 
@@ -370,8 +362,7 @@ END;
           (select_item
             (function_call
               (identifier)
-              (string
-                (content)))))))))
+              (string))))))))
 
 ================================================================================
 CREATE FUNCTION with declare variable
@@ -524,7 +515,8 @@ CREATE TRIGGER trigger1
     (trigger_event)
     (identifier)
     (trigger_body
-      (identifier))))
+      (execute_clause
+        (identifier)))))
 
 ================================================================================
 CREATE TRIGGER execute procedure
@@ -544,7 +536,8 @@ CREATE TRIGGER trigger1
     (trigger_event)
     (identifier)
     (trigger_body
-      (identifier))))
+      (execute_clause
+        (identifier)))))
 
 ================================================================================
 CREATE TRIGGER with preferencing
@@ -568,7 +561,8 @@ CREATE TRIGGER trigger1
       (identifier)
       (identifier))
     (trigger_body
-      (identifier))))
+      (execute_clause
+        (identifier)))))
 
 ================================================================================
 CREATE TRIGGER with condition
@@ -595,7 +589,8 @@ CREATE TRIGGER trigger1
         (asterisk_expression
           (identifier))))
     (trigger_body
-      (identifier))))
+      (execute_clause
+        (identifier)))))
 
 ================================================================================
 CREATE TRIGGER with order
@@ -646,7 +641,8 @@ CREATE TRIGGER trigger1
     (trigger_reference
       (identifier))
     (trigger_body
-      (identifier))))
+      (execute_clause
+        (identifier)))))
 
 ================================================================================
 CREATE TRIGGER with single statement
@@ -715,9 +711,7 @@ CREATE TRIGGER testref BEFORE INSERT ON test1
               (identifier)
               (identifier)))))
       (delete_statement
-        (from_clause
-          (from_item
-            (identifier)))
+        (identifier)
         (where_clause
           (binary_expression
             (identifier)
@@ -1094,3 +1088,54 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS foo(a, b)
               (alias
                 (identifier)))))))
     (data_hint)))
+
+================================================================================
+CREATE TABLE SELECT
+================================================================================
+
+CREATE TABLE tst (n INT, s VARCHAR(10))
+SELECT * FROM (
+  VALUES ROW(1, NULL), ROW(NULL, 'B'), ROW(3, NULL)
+) AS t(n, s);
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_table_statement
+    (identifier)
+    (table_column
+      (identifier)
+      (type
+        (identifier)))
+    (table_column
+      (identifier)
+      (type
+        (identifier)
+        (number)))
+    (select_statement
+      (select_clause
+        (select_item
+          (asterisk_expression)))
+      (from_clause
+        (from_item
+          (aliased_expression
+            (select_subexpression
+              (values_clause
+                (values_item
+                  (row_constructor
+                    (number)
+                    (NULL)))
+                (values_item
+                  (row_constructor
+                    (NULL)
+                    (string)))
+                (values_item
+                  (row_constructor
+                    (number)
+                    (NULL)))))
+            (alias
+              (table_and_columns
+                (identifier)
+                (column_names
+                  (identifier)
+                  (identifier))))))))))
