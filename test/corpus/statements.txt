@@ -40,8 +40,7 @@ SELECT interval '1 minute';
     (select_clause
       (select_item
         (interval_expression
-          (string
-            (content)))))))
+          (string))))))
 
 ================================================================================
 SELECT statement with distinct expression
@@ -316,8 +315,7 @@ SELECT '';
   (select_statement
     (select_clause
       (select_item
-        (string
-          (content))))))
+        (string)))))
 
 ================================================================================
 SELECT statement with dollar quoted string
@@ -362,8 +360,7 @@ SELECT ''::JSONB;
     (select_clause
       (select_item
         (type_cast
-          (string
-            (content))
+          (string)
           (type
             (identifier)))))))
 
@@ -669,8 +666,7 @@ SELECT 'aaaa'
   (select_statement
     (select_clause
       (select_item
-        (string
-          (content))))))
+        (string)))))
 
 ================================================================================
 SELECT weird_string
@@ -684,8 +680,7 @@ SELECT '%{a.b}'
   (select_statement
     (select_clause
       (select_item
-        (string
-          (content))))))
+        (string)))))
 
 ================================================================================
 SELECT field_access
@@ -701,8 +696,7 @@ SELECT foo->>'bar'
       (select_item
         (json_access
           (identifier)
-          (string
-            (content)))))))
+          (string))))))
 
 ================================================================================
 SELECT in clause
@@ -759,12 +753,9 @@ CREATE TYPE colors AS ENUM ('red', 'green', 'blue');
   (create_type_statement
     (identifier)
     (type_spec_enum
-      (string
-        (content))
-      (string
-        (content))
-      (string
-        (content)))))
+      (string)
+      (string)
+      (string))))
 
 ================================================================================
 CREATE TYPE range
@@ -791,7 +782,7 @@ CREATE TYPE base
 ================================================================================
 
 CREATE TYPE type_name (
-  internallength = 16, 
+  internallength = 16,
   input = in_func,
   output = out_func
 );
@@ -802,6 +793,7 @@ CREATE TYPE type_name (
   (create_type_statement
     (identifier)
     (type_spec_base
+      (number)
       (identifier)
       (identifier))))
 
@@ -1095,8 +1087,7 @@ CREATE INDEX foo_idx ON table1 (col2, (lower(col1->>'attr')));
         (identifier)
         (json_access
           (identifier)
-          (string
-            (content)))))))
+          (string))))))
 
 ================================================================================
 CREATE INDEX using
@@ -1242,8 +1233,7 @@ CREATE TABLE public.my_table (
           (function_call
             (identifier))
           (interval_expression
-            (string
-              (content))))))))
+            (string)))))))
 
 ================================================================================
 CREATE TABLE with not null constraint
@@ -1298,8 +1288,7 @@ CREATE TABLE my_table (col1 INT DEFAULT 'hey')
       (type
         (identifier))
       (default_clause
-        (string
-          (content))))))
+        (string)))))
 
 ================================================================================
 CREATE TABLE with primary key constraint
@@ -1376,7 +1365,8 @@ CREATE TABLE my_table (col1 INT REFERENCES table1(col1) ON DELETE SET NULL ON UP
         (identifier_list
           (identifier))
         (on_delete_action)
-        (on_update_action)))))
+        (on_update_action
+          (relationship_behavior))))))
 
 ================================================================================
 CREATE TABLE with unique constraint
@@ -1501,8 +1491,10 @@ CREATE TABLE foo(
         (identifier)
         (identifier_list
           (identifier))
-        (on_update_action)
-        (on_delete_action)))
+        (on_update_action
+          (relationship_behavior))
+        (on_delete_action
+          (relationship_behavior))))
     (table_column
       (identifier)
       (type
@@ -1511,7 +1503,8 @@ CREATE TABLE foo(
         (NULL))
       (references_constraint
         (identifier)
-        (on_update_action)))
+        (on_update_action
+          (relationship_behavior))))
     (table_column
       (identifier)
       (type
@@ -1520,7 +1513,8 @@ CREATE TABLE foo(
         (NULL))
       (references_constraint
         (identifier)
-        (on_delete_action)))))
+        (on_delete_action
+          (relationship_behavior))))))
 
 ================================================================================
 CREATE TABLE with unique constraint
@@ -1572,7 +1566,7 @@ CREATE TABLE foo(
       (type
         (identifier))
       (default_clause
-        (identifier))
+        (NULL))
       (order))))
 
 ================================================================================
@@ -1637,6 +1631,7 @@ CREATE TABLE foo(col1 INT, col2 INT, PRIMARY KEY(col1, col2))
       (type
         (identifier)))
     (primary_key
+      (primary_key_constraint)
       (column_names
         (identifier)
         (identifier)))))
@@ -1723,8 +1718,7 @@ CREATE TABLE foo(
           (identifier)
           (identifier))
         (interval_expression
-          (string
-            (content)))))))
+          (string))))))
 
 ================================================================================
 CREATE TABLE with foreign key constraint with columns specified
@@ -1785,8 +1779,7 @@ CREATE FUNCTION add(integer, integer) RETURNS integer
     (type
       (identifier))
     (function_body
-      (string
-        (content)))
+      (string))
     (language))
   (create_function_statement
     (identifier)
@@ -1827,8 +1820,7 @@ CREATE OR REPLACE FUNCTION add(integer, integer) RETURNS integer
     (type
       (identifier))
     (function_body
-      (string
-        (content)))
+      (string))
     (language)))
 
 ================================================================================
@@ -1851,8 +1843,7 @@ CREATE FUNCTION foo(int) RETURNS integer
     (type
       (identifier))
     (function_body
-      (string
-        (content)))
+      (string))
     (language)
     (null_hint)
     (optimizer_hint)
@@ -1891,8 +1882,7 @@ CREATE FUNCTION add(IN int, OUT int, INOUT int, VARIADIC int) RETURNS int
     (type
       (identifier))
     (function_body
-      (string
-        (content)))
+      (string))
     (language)))
 
 ================================================================================
@@ -1916,8 +1906,7 @@ CREATE FUNCTION add(text) RETURNS SETOF int
       (type
         (identifier)))
     (function_body
-      (string
-        (content)))
+      (string))
     (language)))
 
 ================================================================================
@@ -1944,8 +1933,7 @@ CREATE FUNCTION add(text) RETURNS SETOF int NOT NULL
         (null_constraint
           (NULL))))
     (function_body
-      (string
-        (content)))
+      (string))
     (language)))
 
 ================================================================================
@@ -1967,8 +1955,7 @@ CREATE FUNCTION add(integer) RETURNS integer LANGUAGE SQL AS 'select $1';
       (identifier))
     (language)
     (function_body
-      (string
-        (content)))))
+      (string))))
 
 ================================================================================
 CREATE FUNCTION with optimizer hint
@@ -1990,8 +1977,7 @@ CREATE FUNCTION add(integer) RETURNS integer STABLE LANGUAGE SQL AS 'select $1';
     (optimizer_hint)
     (language)
     (function_body
-      (string
-        (content)))))
+      (string))))
 
 ================================================================================
 CREATE FUNCTION with constrained args
@@ -2016,8 +2002,7 @@ CREATE FUNCTION add(integer NOT NULL) RETURNS integer STABLE LANGUAGE SQL AS 'se
     (optimizer_hint)
     (language)
     (function_body
-      (string
-        (content)))))
+      (string))))
 
 ================================================================================
 CREATE FUNCTION lowercase
@@ -2038,8 +2023,7 @@ create function add(integer) returns integer language sql as 'select $1';
       (identifier))
     (language)
     (function_body
-      (string
-        (content)))))
+      (string))))
 
 ================================================================================
 CREATE FUNCTION highlight function body
@@ -2060,8 +2044,7 @@ create function add(integer) returns integer language sql as 'select a, b';
       (identifier))
     (language)
     (function_body
-      (string
-        (content)))))
+      (string))))
 
 ================================================================================
 CREATE SCHEMA schema
@@ -2089,7 +2072,10 @@ GRANT USAGE ON SCHEMA information_schema TO PUBLIC;
 
 (source_file
   (grant_statement
-    (identifier)))
+    (privileges)
+    (privilege_objects
+      (identifier))
+    (role_specification)))
 
 ================================================================================
 SET
@@ -2109,20 +2095,16 @@ SET SESSION search_path = 'test';
     (identifier))
   (set_statement
     (identifier)
-    (string
-      (content)))
+    (string))
   (set_statement
     (identifier)
-    (string
-      (content)))
+    (string))
   (set_statement
     (identifier)
-    (string
-      (content)))
+    (string))
   (set_statement
     (identifier)
-    (string
-      (content))))
+    (string)))
 
 ================================================================================
 SELECT asterisk expressions
@@ -2205,20 +2187,17 @@ CREATE EXTENSION btree_gist SCHEMA test_schema_diff;
   (create_extension_statement
     (if_not_exists)
     (identifier)
-    (version
-      (content)))
+    (version))
   (create_extension_statement
     (if_not_exists)
     (identifier)
-    (version
-      (content))
+    (version)
     (schema
       (identifier)))
   (create_extension_statement
     (if_not_exists)
     (identifier)
-    (version
-      (content))
+    (version)
     (schema
       (identifier)))
   (create_extension_statement
@@ -2281,9 +2260,11 @@ DROP INDEX CONCURRENTLY idx;
   (drop_statement
     (identifier))
   (drop_statement
-    (identifier))
+    (identifier)
+    (relationship_behavior))
   (drop_statement
-    (identifier))
+    (identifier)
+    (relationship_behavior))
   (drop_statement
     (identifier)
     (identifier)
@@ -2360,6 +2341,7 @@ ALTER SEQUENCE IF EXISTS myseq2 START WITH 10 INCREMENT BY 10 NO MINVALUE NO MAX
       (identifier)))
   (create_statement
     (create_sequence
+      (if_not_exists)
       (identifier)))
   (create_statement
     (create_sequence
@@ -2399,6 +2381,7 @@ ALTER SEQUENCE IF EXISTS myseq2 START WITH 10 INCREMENT BY 10 NO MINVALUE NO MAX
         (identifier))))
   (alter_statement
     (alter_sequence
+      (if_exists)
       (identifier)
       (start_with
         (number))
@@ -2496,8 +2479,7 @@ ALTER TABLE foo
         (function_call
           (identifier)
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))))))
   (alter_table_statement
@@ -2511,7 +2493,8 @@ ALTER TABLE foo
           (identifier)
           (identifier_list
             (identifier))
-          (on_update_action)
+          (on_update_action
+            (relationship_behavior))
           (on_delete_action)))))
   (alter_table_statement
     (identifier)
@@ -2537,8 +2520,10 @@ ALTER TABLE foo
           (identifier)
           (identifier_list
             (identifier))
-          (on_update_action)
-          (on_delete_action)))
+          (on_update_action
+            (relationship_behavior))
+          (on_delete_action
+            (relationship_behavior))))
       (initial_mode)))
   (alter_table_statement
     (identifier)
@@ -2555,7 +2540,8 @@ ALTER TABLE foo
   (alter_table_statement
     (identifier)
     (owner_to
-      (identifier)))
+      (role_specification
+        (identifier))))
   (alter_table_statement
     (identifier)
     (rename_constraint
@@ -2672,14 +2658,15 @@ ALTER TABLE foo
     (alter_column
       (identifier)
       (add_generated
-        (increament_by
-          (number))
-        (minvalue
-          (number))
-        (maxvalue
-          (number))
-        (start_with
-          (number)))))
+        (generated_constraint
+          (increament_by
+            (number))
+          (minvalue
+            (number))
+          (maxvalue
+            (number))
+          (start_with
+            (number))))))
   (alter_table_statement
     (identifier)
     (alter_column
@@ -2713,8 +2700,7 @@ ALTER TABLE foo
             (number))
           (assignment_expression
             (identifier)
-            (string
-              (content)))
+            (string))
           (assignment_expression
             (identifier)
             (array_constructor
@@ -2744,8 +2730,8 @@ ALTER TABLE foo
     (identifier)
     (alter_constraint
       (identifier)
-      (not_deferrable)
-      (initially_deferred)))
+      (deferrable)
+      (initial_mode)))
   (alter_table_statement
     (identifier)
     (validata_constraint
@@ -2870,8 +2856,8 @@ ALTER TABLE foo
     (replica_identity)
     (alter_constraint
       (identifier)
-      (not_deferrable)
-      (initially_deferred))
+      (deferrable)
+      (initial_mode))
     (alter_column
       (identifier)
       (set_generated)
@@ -3012,16 +2998,13 @@ FROM foo;
             (binary_expression
               (identifier)
               (number))
-            (string
-              (content)))
+            (string))
           (conditional_case
             (binary_expression
               (identifier)
               (number))
-            (string
-              (content)))
-          (string
-            (content)))))
+            (string))
+          (string))))
     (from_clause
       (from_item
         (identifier)))))
@@ -3038,20 +3021,15 @@ SELECT 'O''Connor', '''', '''''', ' '' ', ' '' a'' ';
   (select_statement
     (select_clause
       (select_item
-        (string
-          (content)))
+        (string))
       (select_item
-        (string
-          (content)))
+        (string))
       (select_item
-        (string
-          (content)))
+        (string))
       (select_item
-        (string
-          (content)))
+        (string))
       (select_item
-        (string
-          (content))))))
+        (string)))))
 
 ================================================================================
 AT TIME ZONE
@@ -3067,12 +3045,10 @@ SELECT '2001-02-16 20:38:40'::TIMESTAMP AT TIME ZONE 'America/Denver';
       (select_item
         (at_time_zone_expression
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
-          (string
-            (content)))))))
+          (string))))))
 
 ================================================================================
 ALTER SCHEMA
@@ -3089,11 +3065,13 @@ ALTER SCHEMA bar02 RENAME TO bar03;
     (schema
       (identifier)
       (owner_to
-        (identifier))))
+        (role_specification
+          (identifier)))))
   (alter_statement
     (schema
       (identifier)
-      (owner_to)))
+      (owner_to
+        (role_specification))))
   (alter_statement
     (schema
       (identifier)
@@ -3136,16 +3114,20 @@ ALTER TYPE name ALTER ATTRIBUTE attribute_name TYPE integer CASCADE;
   (alter_type_statement
     (identifier)
     (owner_to
-      (identifier)))
+      (role_specification
+        (identifier))))
   (alter_type_statement
     (identifier)
-    (owner_to))
+    (owner_to
+      (role_specification)))
   (alter_type_statement
     (identifier)
-    (owner_to))
+    (owner_to
+      (role_specification)))
   (alter_type_statement
     (identifier)
-    (owner_to))
+    (owner_to
+      (role_specification)))
   (alter_type_statement
     (identifier)
     (rename_to
@@ -3163,44 +3145,38 @@ ALTER TYPE name ALTER ATTRIBUTE attribute_name TYPE integer CASCADE;
     (identifier)
     (rename_attribute
       (identifier)
-      (identifier)))
+      (identifier)
+      (relationship_behavior)))
   (alter_type_statement
     (identifier)
     (rename_attribute
       (identifier)
-      (identifier)))
+      (identifier)
+      (relationship_behavior)))
   (alter_type_statement
     (identifier)
     (add_value
-      (string
-        (content))))
+      (string)))
   (alter_type_statement
     (identifier)
     (add_value
       (if_not_exists)
-      (string
-        (content))))
+      (string)))
   (alter_type_statement
     (identifier)
     (add_value
-      (string
-        (content))
-      (string
-        (content))))
+      (string)
+      (string)))
   (alter_type_statement
     (identifier)
     (add_value
-      (string
-        (content))
-      (string
-        (content))))
+      (string)
+      (string)))
   (alter_type_statement
     (identifier)
     (rename_value
-      (string
-        (content))
-      (string
-        (content))))
+      (string)
+      (string)))
   (alter_type_statement
     (identifier)
     (set_properties
@@ -3298,55 +3274,45 @@ SELECT
       (select_item
         (json_access
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
           (number)))
       (select_item
         (json_access
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
-          (string
-            (content))))
+          (string)))
       (select_item
         (json_access
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
           (number)))
       (select_item
         (json_access
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
-          (string
-            (content))))
+          (string)))
       (select_item
         (json_access
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
-          (string
-            (content))))
+          (string)))
       (select_item
         (json_access
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
-          (string
-            (content)))))))
+          (string))))))
 
 ================================================================================
 COMMENT STATEMENT
@@ -3363,29 +3329,25 @@ COMMENT ON COLUMN foo.bar.baz IS 'This is a comment.';
 (source_file
   (comment_statement
     (identifier)
-    (string
-      (content)))
+    (string))
   (comment_statement
     (identifier)
     (NULL))
   (comment_statement
     (identifier)
-    (string
-      (content)))
+    (string))
   (comment_statement
     (function_call
       (dotted_name
         (identifier)
         (identifier)))
-    (string
-      (content)))
+    (string))
   (comment_statement
     (dotted_name
       (identifier)
       (identifier)
       (identifier))
-    (string
-      (content))))
+    (string)))
 
 ================================================================================
 TRUNCATE STATEMENT
@@ -3521,3 +3483,39 @@ DO LANGUAGE SQL $$UPDATE foo SET a = 1$$;
     (language)
     (string
       (content))))
+
+================================================================================
+VALUES statement
+================================================================================
+
+VALUES ROW(1), ROW(2), ROW(3);
+VALUES ROW(1), ROW(2) UNION VALUES ROW(3), ROW(4);
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (values_clause
+    (values_item
+      (row_constructor
+        (number)))
+    (values_item
+      (row_constructor
+        (number)))
+    (values_item
+      (row_constructor
+        (number))))
+  (combining_query
+    (values_clause
+      (values_item
+        (row_constructor
+          (number)))
+      (values_item
+        (row_constructor
+          (number))))
+    (values_clause
+      (values_item
+        (row_constructor
+          (number)))
+      (values_item
+        (row_constructor
+          (number))))))

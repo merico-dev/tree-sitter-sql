@@ -140,6 +140,7 @@ module.exports = grammar({
         $.combining_query,
         $.vacuum_statement,
         $.do_statement,
+        $.values_clause,
       ),
 
     with_clause: $ =>
@@ -1319,7 +1320,15 @@ module.exports = grammar({
               $.values_clause,
             )
           ),
-          $._table_parameters
+          seq(
+            $._table_parameters,
+            optional(
+              seq(
+                optional(kw("AS")),
+                $.select_statement
+              )
+            )
+          )
         ),
         optional(kw("WITHOUT OIDS")),
       ),
@@ -1668,6 +1677,7 @@ module.exports = grammar({
           $.select_statement,
           $.select_subexpression,
           $._aliased_subquery,
+          $.values_clause,
           $.combining_query,
         ),
       ),
@@ -1696,7 +1706,7 @@ module.exports = grammar({
         seq(
           optional(kw("LATERAL")),
           "(",
-          choice($.select_statement, $.combining_query),
+          choice($.select_statement, $.combining_query, $.values_clause),
           ")",
         ),
       ),
@@ -1770,8 +1780,10 @@ module.exports = grammar({
         optional($.offset_clause),
         optional($.fetch_clause),
       ),
-    values_item: $ =>
+    values_item: $ => choice(
       seq("(", commaSep1(choice($._expression, kw("DEFAULT"))), ")"),
+      $.row_constructor,
+    ),
 
     // DELETE
     _delete_statement: $ =>

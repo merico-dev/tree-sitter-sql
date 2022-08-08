@@ -9,18 +9,13 @@ DELETE FROM foo WHERE name = 'bar';
 
 (source_file
   (delete_statement
-    (from_clause
-      (from_item
-        (identifier))))
+    (identifier))
   (delete_statement
-    (from_clause
-      (from_item
-        (identifier)))
+    (identifier)
     (where_clause
       (binary_expression
         (identifier)
-        (string
-          (content))))))
+        (string)))))
 
 ================================================================================
 DELETE with CTE
@@ -45,6 +40,4 @@ DELETE FROM bar;
           (from_clause
             (from_item
               (identifier))))))
-    (from_clause
-      (from_item
-        (identifier)))))
+    (identifier)))

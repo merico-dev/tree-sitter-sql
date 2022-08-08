@@ -31,8 +31,7 @@ LEFT OUTER JOIN t7 ON t.a = t7.a;
       (select_item
         (aliased_expression
           (interval_expression
-            (string
-              (content)))
+            (string))
           (alias
             (identifier)))))
     (from_clause
@@ -310,8 +309,7 @@ SELECT t.a a, t.b b, t.c c FROM ROWS FROM (
                     (identifier)))))
             (function_call
               (identifier)
-              (string
-                (content)))
+              (string))
             (alias
               (column_definitions
                 (table_column
@@ -1121,8 +1119,7 @@ SELECT array_agg(a) FILTER (WHERE a <> '') FROM foo;
             (where_clause
               (binary_expression
                 (identifier)
-                (string
-                  (content))))))))
+                (string)))))))
     (from_clause
       (from_item
         (identifier)))))
@@ -1719,8 +1716,7 @@ SELECT ROW(t.f1, t.f2, 42) FROM t;
         (row_constructor
           (number)
           (number)
-          (string
-            (content))))))
+          (string)))))
   (select_statement
     (select_clause
       (select_item
@@ -2097,13 +2093,11 @@ SELECT '{"b":2}'::jsonb <@ '{"a":1, "b":2}'::jsonb;
       (select_item
         (binary_expression
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))))))
   (select_statement
@@ -2111,12 +2105,122 @@ SELECT '{"b":2}'::jsonb <@ '{"a":1, "b":2}'::jsonb;
       (select_item
         (binary_expression
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier)))
           (type_cast
-            (string
-              (content))
+            (string)
             (type
               (identifier))))))))
+
+================================================================================
+SELECT FROM VALUES
+================================================================================
+
+SELECT num, str FROM (
+  VALUES ROW(1, 'A'),
+         ROW(2, 'B'),
+         ROW(3, 'C')
+) AS t(num, str);
+SELECT t1.n, t1.s FROM (
+  VALUES ROW(1, 'A'), ROW(2, 'B'), ROW(3, 'C')
+) AS t1(n, s)
+JOIN
+(
+  VALUES ROW(1, 'A'), ROW(4, 'D')
+) AS t2(n, s)
+ON t1.n = t2.n;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (select_statement
+    (select_clause
+      (select_item
+        (identifier))
+      (select_item
+        (identifier)))
+    (from_clause
+      (from_item
+        (aliased_expression
+          (select_subexpression
+            (values_clause
+              (values_item
+                (row_constructor
+                  (number)
+                  (string)))
+              (values_item
+                (row_constructor
+                  (number)
+                  (string)))
+              (values_item
+                (row_constructor
+                  (number)
+                  (string)))))
+          (alias
+            (table_and_columns
+              (identifier)
+              (column_names
+                (identifier)
+                (identifier))))))))
+  (select_statement
+    (select_clause
+      (select_item
+        (dotted_name
+          (identifier)
+          (identifier)))
+      (select_item
+        (dotted_name
+          (identifier)
+          (identifier))))
+    (from_clause
+      (from_item
+        (join_clause
+          (from_item
+            (aliased_expression
+              (select_subexpression
+                (values_clause
+                  (values_item
+                    (row_constructor
+                      (number)
+                      (string)))
+                  (values_item
+                    (row_constructor
+                      (number)
+                      (string)))
+                  (values_item
+                    (row_constructor
+                      (number)
+                      (string)))))
+              (alias
+                (table_and_columns
+                  (identifier)
+                  (column_names
+                    (identifier)
+                    (identifier))))))
+          (from_item
+            (aliased_expression
+              (select_subexpression
+                (values_clause
+                  (values_item
+                    (row_constructor
+                      (number)
+                      (string)))
+                  (values_item
+                    (row_constructor
+                      (number)
+                      (string)))))
+              (alias
+                (table_and_columns
+                  (identifier)
+                  (column_names
+                    (identifier)
+                    (identifier))))))
+          (join_condition
+            (binary_expression
+              (dotted_name
+                (identifier)
+                (identifier))
+              (dotted_name
+                (identifier)
+                (identifier)))))))))
