@@ -11,7 +11,7 @@ const PREC = {
 const multiplicative_operators = ["*", "/", "%", "<<", ">>", "&"];
 const additive_operators = ["+", "-", "|", "#", "||"];
 const comparative_operators = [
-  "<",
+  "<<<",
   "<=",
   "<>",
   "!=",
