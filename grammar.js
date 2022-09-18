@@ -1349,7 +1349,6 @@ module.exports = grammar({
           field("constraints", repeat($._column_constraint)),
         ),
       ),
-
     _column_constraint: $ => choice(
       $.default_clause,
       $.primary_key_constraint,
