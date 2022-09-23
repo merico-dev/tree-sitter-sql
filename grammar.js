@@ -9,7 +9,7 @@ const PREC = {
   or: 1,
 };
 const multiplicative_operators = ["*", "/", "%", "<<", ">>", "&"];
-const additive_operators = ["+", "-", "|", "#", "||"];
+const additive_operators = ["+", "-", "|", tok("#"), "||"];
 const comparative_operators = [
   "<",
   "<=",
