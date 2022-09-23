@@ -3408,6 +3408,21 @@
     }
   },
   {
+    "type": "comment_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "comment_statement",
     "named": true,
     "fields": {
@@ -5188,6 +5203,10 @@
           "named": true
         },
         {
+          "type": "comment_clause",
+          "named": true
+        },
+        {
           "type": "if_not_exists",
           "named": true
         },
@@ -5314,7 +5333,7 @@
         "required": false,
         "types": [
           {
-            "type": "column_names",
+            "type": "view_columns",
             "named": true
           }
         ]
@@ -5338,6 +5357,14 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "comment_clause",
+          "named": true
+        },
+        {
+          "type": "if_not_exists",
+          "named": true
+        },
         {
           "type": "view_body",
           "named": true
@@ -13014,6 +13041,10 @@
             "named": true
           },
           {
+            "type": "comment_clause",
+            "named": true
+          },
+          {
             "type": "default_clause",
             "named": true
           },
@@ -14788,6 +14819,44 @@
     "fields": {}
   },
   {
+    "type": "view_column",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comment_clause",
+          "named": true
+        },
+        {
+          "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "view_columns",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "view_column",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "view_options",
     "named": true,
     "fields": {},
@@ -15066,14 +15135,6 @@
   },
   {
     "type": "#",
-    "named": false
-  },
-  {
-    "type": "#>",
-    "named": false
-  },
-  {
-    "type": "#>>",
     "named": false
   },
   {

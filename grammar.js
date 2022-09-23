@@ -1001,7 +1001,7 @@ module.exports = grammar({
             ))
           ),
           seq(
-            $.identifier,
+            $._identifier,
             choice("=", kw("TO")),
             choice($._expression, kw("DEFAULT")),
           )
@@ -1314,6 +1314,7 @@ module.exports = grammar({
         choice(
           seq(
             optional(alias($.identifier_list, $.column_names)),
+            optional($.comment_clause),
             kw("AS"),
             choice(
               $.select_statement,
@@ -1322,6 +1323,7 @@ module.exports = grammar({
           ),
           seq(
             $._table_parameters,
+            optional($.comment_clause),
             optional(
               seq(
                 optional(kw("AS")),
@@ -1360,7 +1362,8 @@ module.exports = grammar({
       $.named_constraint,
       $.auto_increment_constraint,
       $.generated_constraint,
-      $.order
+      $.order,
+      $.comment_clause
     ),
     unique_constraint: $ => kw("UNIQUE"),
     null_constraint: $ => seq(optional(kw("NOT")), $.NULL),
@@ -1417,6 +1420,8 @@ module.exports = grammar({
         $._column_default_expression,
       ),
 
+    comment_clause: $ => seq(kw("COMMENT"), optional("="), $.string),
+
     _table_constraint: $ =>
       prec.right(
         seq(
@@ -1471,13 +1476,18 @@ module.exports = grammar({
           optional(createCaseInsensitiveRegex("OR REPLACE")),
           optional(choice(kw("TEMPORARY"), kw("TEMP"))),
           kw("VIEW"),
+          optional($.if_not_exists),
           field("name", $._identifier),
-          optional(field("columns", alias($.identifier_list, $.column_names))),
+          optional(field("columns", $.view_columns)),
+          optional($.comment_clause),
           optional($.view_options),
           $.view_body,
           optional($.view_check_option),
         ),
       ),
+    // Support column comments
+    view_columns: $ => seq("(", commaSep1($.view_column), ")"),
+    view_column: $ => seq($._identifier, optional($.comment_clause)),
     // PostgreSQL currently only support the SECURITY_BARRIER option
     option_list: $ =>
       seq("(", commaSep1(choice($._identifier, $.assignment_expression)), ")"),
@@ -1991,7 +2001,7 @@ module.exports = grammar({
     json_access: $ =>
       seq(
         $._expression,
-        choice("->", "->>", "#>", "#>>"),
+        choice("->", "->>", tok("#>"), tok("#>>")),
         choice($.string, $.number),
       ),
     type: $ =>
@@ -2048,11 +2058,11 @@ module.exports = grammar({
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     comment: $ =>
       token(
-        choice(seq("--", /.*/), seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
+        choice(seq("--", /.*/), seq("#", /.*/), seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
       ),
     array_element_access: $ =>
     seq(
-      field("subject", choice($._identifier, $.argument_reference, $.array_element_access, $._parenthesized_expression)),
+      field("subject", choice($._identifier, $.argument_reference, $.array_element_access, $.function_call, $._parenthesized_expression)),
       choice(
         seq("[", field("subscript", $._expression), "]"),
         seq("[", field("subscript", seq(optional($._expression), ":", optional($._expression))), "]"),
