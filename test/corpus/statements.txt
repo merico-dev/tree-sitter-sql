@@ -3532,7 +3532,9 @@ DROP DATABASE music2 FORCE;
 (source_file
   (drop_database_statement
     (identifier)
-    (identifier))
+    (kv_option
+      (identifier)))
   (drop_database_statement
     (identifier)
-    (identifier)))
+    (kv_option
+      (identifier))))

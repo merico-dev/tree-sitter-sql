@@ -86,9 +86,6 @@ module.exports = grammar({
     $._dollar_quoted_string_end_tag,
   ],
   word: $ => $._unquoted_identifier,
-  conflicts: $ => [
-    [$._option, $.kv_option],
-  ],
 
   rules: {
     source_file: $ => optional(seq(sep1($._statement, ";"), optional(";"))),
@@ -927,7 +924,7 @@ module.exports = grammar({
       field('name', $._identifier),
       optional(seq(
         optional(choice(kw('WITH'), kw('DEFAULT'))),
-        field('options', repeat($._option))
+        field('options', repeat($.kv_option))
       ))
     ),
     drop_database_statement: $ => seq(
@@ -936,7 +933,7 @@ module.exports = grammar({
       field('name', $._identifier),
       optional(seq(
         optional(kw('WITH')),
-        field('options', commaSep1($._option))
+        field('options', commaSep1($.kv_option))
       ))
     ),
 
@@ -1513,10 +1510,9 @@ module.exports = grammar({
     view_columns: $ => seq("(", commaSep1($.view_column), ")"),
     view_column: $ => seq($._identifier, optional($.comment_clause)),
     // PostgreSQL currently only support the SECURITY_BARRIER option
-    kv_option: $ => seq(field('key', $._identifier), optional('='), field('value', $._simple_expression)),
-    _option: $ => choice($._identifier, $.kv_option),
+    kv_option: $ => prec.right(seq(field('key', $._identifier), optional(seq(optional('='), field('value', $._simple_expression))))),
     option_list: $ =>
-      seq("(", commaSep1($._option), ")"),
+      seq("(", commaSep1($.kv_option), ")"),
     view_options: $ => seq(kw("WITH"), $.option_list),
     // MySQL support
     view_check_option: $ =>

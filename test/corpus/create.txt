@@ -843,7 +843,8 @@ CREATE VIEW foo WITH(security_barrier) AS SELECT 1;
     (identifier)
     (view_options
       (option_list
-        (identifier)))
+        (kv_option
+          (identifier))))
     (view_body
       (select_statement
         (select_clause
@@ -981,7 +982,8 @@ CREATE MATERIALIZED VIEW foo WITH (
             (identifier)
             (identifier))
           (number))
-        (identifier)
+        (kv_option
+          (identifier))
         (kv_option
           (identifier)
           (number))))
@@ -1070,7 +1072,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS foo(a, b)
             (identifier)
             (identifier))
           (number))
-        (identifier)
+        (kv_option
+          (identifier))
         (kv_option
           (identifier)
           (number))))

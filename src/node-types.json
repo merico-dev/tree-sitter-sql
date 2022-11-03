@@ -4448,14 +4448,6 @@
         "required": false,
         "types": [
           {
-            "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "kv_option",
             "named": true
           }
@@ -6249,14 +6241,6 @@
           {
             "type": ",",
             "named": false
-          },
-          {
-            "type": "dotted_name",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
           },
           {
             "type": "kv_option",
@@ -9634,7 +9618,7 @@
       },
       "value": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "(",
@@ -10400,14 +10384,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
         {
           "type": "kv_option",
           "named": true
@@ -13231,14 +13207,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "dotted_name",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
         {
           "type": "kv_option",
           "named": true
