@@ -86,6 +86,9 @@ module.exports = grammar({
     $._dollar_quoted_string_end_tag,
   ],
   word: $ => $._unquoted_identifier,
+  conflicts: $ => [
+    [$._option, $.kv_option],
+  ],
 
   rules: {
     source_file: $ => optional(seq(sep1($._statement, ";"), optional(";"))),
@@ -121,12 +124,14 @@ module.exports = grammar({
         $.create_table_statement,
         $.create_index_statement,
         $.create_schema_statement,
+        $.create_database_statement,
         $.create_role_statement,
         $.create_extension_statement,
         $.create_event_trigger_statement,
         $.create_aggregate_statement,
         $.create_policy_statement,
         $.drop_function_statement,
+        $.drop_database_statement,
 
         // TODO: remove from _statement
         $.return_statement,
@@ -916,6 +921,25 @@ module.exports = grammar({
       ),
     create_schema_statement: $ =>
       seq(kw("CREATE SCHEMA"), optional($.if_not_exists), $._identifier),
+    create_database_statement: $ => seq(
+      kw("CREATE DATABASE"),
+      optional($.if_not_exists),
+      field('name', $._identifier),
+      optional(seq(
+        optional(choice(kw('WITH'), kw('DEFAULT'))),
+        field('options', repeat($._option))
+      ))
+    ),
+    drop_database_statement: $ => seq(
+      kw("DROP DATABASE"),
+      optional($.if_exists),
+      field('name', $._identifier),
+      optional(seq(
+        optional(kw('WITH')),
+        field('options', commaSep1($._option))
+      ))
+    ),
+
     drop_statement: $ =>
       seq(
         kw("DROP"),
@@ -1489,8 +1513,10 @@ module.exports = grammar({
     view_columns: $ => seq("(", commaSep1($.view_column), ")"),
     view_column: $ => seq($._identifier, optional($.comment_clause)),
     // PostgreSQL currently only support the SECURITY_BARRIER option
+    kv_option: $ => seq(field('key', $._identifier), optional('='), field('value', $._simple_expression)),
+    _option: $ => choice($._identifier, $.kv_option),
     option_list: $ =>
-      seq("(", commaSep1(choice($._identifier, $.assignment_expression)), ")"),
+      seq("(", commaSep1($._option), ")"),
     view_options: $ => seq(kw("WITH"), $.option_list),
     // MySQL support
     view_check_option: $ =>

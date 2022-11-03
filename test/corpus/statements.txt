@@ -1116,7 +1116,7 @@ CREATE UNIQUE INDEX bttest_multi_idx ON bttest_multi USING btree (id) INCLUDE (d
       (identifier))
     (index_with_clause
       (storage_parameters
-        (assignment_expression
+        (kv_option
           (identifier)
           (identifier)))))
   (create_index_statement
@@ -3519,3 +3519,20 @@ VALUES ROW(1), ROW(2) UNION VALUES ROW(3), ROW(4);
       (values_item
         (row_constructor
           (number))))))
+
+================================================================================
+DROP DATABASE statement
+================================================================================
+
+DROP DATABASE music2 WITH FORCE;
+DROP DATABASE music2 FORCE;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (drop_database_statement
+    (identifier)
+    (identifier))
+  (drop_database_statement
+    (identifier)
+    (identifier)))
