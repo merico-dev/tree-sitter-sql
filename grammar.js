@@ -121,12 +121,14 @@ module.exports = grammar({
         $.create_table_statement,
         $.create_index_statement,
         $.create_schema_statement,
+        $.create_database_statement,
         $.create_role_statement,
         $.create_extension_statement,
         $.create_event_trigger_statement,
         $.create_aggregate_statement,
         $.create_policy_statement,
         $.drop_function_statement,
+        $.drop_database_statement,
 
         // TODO: remove from _statement
         $.return_statement,
@@ -916,6 +918,25 @@ module.exports = grammar({
       ),
     create_schema_statement: $ =>
       seq(kw("CREATE SCHEMA"), optional($.if_not_exists), $._identifier),
+    create_database_statement: $ => seq(
+      kw("CREATE DATABASE"),
+      optional($.if_not_exists),
+      field('name', $._identifier),
+      optional(seq(
+        optional(choice(kw('WITH'), kw('DEFAULT'))),
+        field('options', repeat($.kv_option))
+      ))
+    ),
+    drop_database_statement: $ => seq(
+      kw("DROP DATABASE"),
+      optional($.if_exists),
+      field('name', $._identifier),
+      optional(seq(
+        optional(kw('WITH')),
+        field('options', commaSep1($.kv_option))
+      ))
+    ),
+
     drop_statement: $ =>
       seq(
         kw("DROP"),
@@ -1489,8 +1510,9 @@ module.exports = grammar({
     view_columns: $ => seq("(", commaSep1($.view_column), ")"),
     view_column: $ => seq($._identifier, optional($.comment_clause)),
     // PostgreSQL currently only support the SECURITY_BARRIER option
+    kv_option: $ => prec.right(seq(field('key', $._identifier), optional(seq(optional('='), field('value', $._simple_expression))))),
     option_list: $ =>
-      seq("(", commaSep1(choice($._identifier, $.assignment_expression)), ")"),
+      seq("(", commaSep1($.kv_option), ")"),
     view_options: $ => seq(kw("WITH"), $.option_list),
     // MySQL support
     view_check_option: $ =>

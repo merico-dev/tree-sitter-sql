@@ -794,9 +794,11 @@ CREATE VIEW foo(a, b) AS SELECT 1 a, 2 b;
 (source_file
   (create_view_statement
     (identifier)
-    (column_names
-      (identifier)
-      (identifier))
+    (view_columns
+      (view_column
+        (identifier))
+      (view_column
+        (identifier)))
     (view_body
       (select_statement
         (select_clause
@@ -841,7 +843,8 @@ CREATE VIEW foo WITH(security_barrier) AS SELECT 1;
     (identifier)
     (view_options
       (option_list
-        (identifier)))
+        (kv_option
+          (identifier))))
     (view_body
       (select_statement
         (select_clause
@@ -974,13 +977,14 @@ CREATE MATERIALIZED VIEW foo WITH (
     (identifier)
     (view_options
       (option_list
-        (assignment_expression
+        (kv_option
           (dotted_name
             (identifier)
             (identifier))
           (number))
-        (identifier)
-        (assignment_expression
+        (kv_option
+          (identifier))
+        (kv_option
           (identifier)
           (number))))
     (view_body
@@ -1063,13 +1067,14 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS foo(a, b)
       (identifier))
     (view_options
       (option_list
-        (assignment_expression
+        (kv_option
           (dotted_name
             (identifier)
             (identifier))
           (number))
-        (identifier)
-        (assignment_expression
+        (kv_option
+          (identifier))
+        (kv_option
           (identifier)
           (number))))
     (tablespace_hint
@@ -1139,3 +1144,47 @@ SELECT * FROM (
                 (column_names
                   (identifier)
                   (identifier))))))))))
+
+================================================================================
+CREATE DATABASE statements
+================================================================================
+
+CREATE DATABASE music2
+    LOCALE = 'sv_SE.iso885915'
+    TEMPLATE template0;
+CREATE DATABASE music2
+WITH
+    LOCALE = 'sv_SE.iso885915'
+    TEMPLATE template0;
+CREATE DATABASE music2
+DEFAULT
+    LOCALE = 'sv_SE.iso885915'
+    TEMPLATE template0;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_database_statement
+    (identifier)
+    (kv_option
+      (identifier)
+      (string))
+    (kv_option
+      (identifier)
+      (identifier)))
+  (create_database_statement
+    (identifier)
+    (kv_option
+      (identifier)
+      (string))
+    (kv_option
+      (identifier)
+      (identifier)))
+  (create_database_statement
+    (identifier)
+    (kv_option
+      (identifier)
+      (string))
+    (kv_option
+      (identifier)
+      (identifier))))
