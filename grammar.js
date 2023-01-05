@@ -85,6 +85,10 @@ module.exports = grammar({
     $._dollar_quoted_string_content,
     $._dollar_quoted_string_end_tag,
   ],
+  conflicts: $ => [
+    [$.declare_section],
+    [$.null_constraint, $._simple_expression]
+  ],
   word: $ => $._unquoted_identifier,
 
   rules: {
@@ -716,12 +720,13 @@ module.exports = grammar({
         field("name", $._identifier),
         field("parameters", $.function_parameters),
         optional(seq(kw("RETURNS"), field("return_type", $._function_return_type))),
-        repeat(
-          choice(
-            field("hint", $._function_hint),
-            field("body", $.function_body),
-          ),
-        ),
+        repeat(field("hint", $._function_hint)),
+        optional(seq(
+          choice(kw("IS"), kw("AS")),
+          optional($.declare_section),
+        )),
+        field("body", $.function_body),
+        repeat(field("hint", $._function_hint)),
       ),
     _function_hint: $ =>
       choice(
@@ -739,15 +744,13 @@ module.exports = grammar({
         $.deterministic_hint,
         $.sql_hint,
         $.sql_security_hint,
+        $.dynamic_result_sets_hint,
+        $.invoker_rights_hint,
       ),
 
     window_hint: $ => kw("WINDOW"),
     leakproof_hint: $ => seq(optional(kw("NOT")), kw("LEAKPROOF")),
-    external_hint: $ =>
-      choice(
-        seq(optional(kw("EXTERNAL")), kw("SECURITY INVOKER")),
-        seq(optional(kw("EXTERNAL")), kw("SECURITY DEFINER")),
-      ),
+    external_hint: $ => seq(optional(kw("EXTERNAL")), kw("SECURITY"), $.role_specification),
     optimizer_hint: $ => choice(kw("VOLATILE"), kw("IMMUTABLE"), kw("STABLE")),
     parallel_hint: $ => seq(kw("PARALLEL"), $._parallel_option_value),
     _parallel_option_value: $ => choice(
@@ -761,6 +764,7 @@ module.exports = grammar({
         kw("RETURNS NULL ON NULL INPUT"),
         kw("STRICT"),
       ),
+
     // MySQL hints
     deterministic_hint: $ => seq(optional(kw("NOT")), kw("DETERMINISTIC")),
     sql_hint: $ =>
@@ -771,7 +775,13 @@ module.exports = grammar({
         kw("MODIFIES SQL DATA"),
       ),
     sql_security_hint: $ =>
-      seq(kw("SQL SECURITY"), choice(kw("DEFINER"), kw("INVOKER"))),
+      seq(kw("SQL SECURITY"), $.role_specification),
+
+    // Teradata hints
+    dynamic_result_sets_hint: $ => seq(kw("DYNAMIC RESULT SETS"), field("num_result_sets", $.number)),
+
+    // Oracle hints
+    invoker_rights_hint: $ => seq(kw("AUTHID"), $.role_specification),
 
     _function_language: $ =>
       seq(
@@ -787,8 +797,16 @@ module.exports = grammar({
       seq("(", optional(commaSep1($.function_parameter)), ")"),
     function_parameter: $ =>
       seq(
-        field("argmode", optional($.function_argmode)),
-        field("name", optional($.identifier)),
+        choice(
+          seq(
+            field("argmode", optional($.function_argmode)),
+            field("name", optional($.identifier)),
+          ),
+          seq(
+            field("name", optional($.identifier)),
+            field("argmode", optional($.function_argmode)),
+          ),
+        ),
         field("type", choice($._type, $.constrained_type)),
         optional(seq(
           choice("=", kw("DEFAULT")),
@@ -797,18 +815,19 @@ module.exports = grammar({
       ),
     function_argmode: $ => choice(
       kw("IN"),
-      kw("OUT"),
+      seq(optional(kw("IN")), kw("OUT"), optional(kw("NOCOPY"))),
       kw("INOUT"),
       kw("VARIADIC")
     ),
 
-    function_body: $ =>
+    function_body: $ => seq(
       choice(
-        seq(kw("AS"), $.string, optional(seq(",", $.string))),
+        seq($.string, optional(seq(",", $.string))),
         $._compound_statement,
         $.select_statement,
         $.return_statement,
       ),
+    ),
 
     create_trigger_statement: $ =>
       seq(
@@ -1120,6 +1139,8 @@ module.exports = grammar({
         kw("CURRENT_ROLE"),
         kw("CURRENT_USER"),
         kw("SESSION_USER"),
+        kw("DEFINER"),
+        kw("INVOKER"),
       ),
 
     alter_default_privileges_statement: $ => seq(
@@ -2180,6 +2201,53 @@ module.exports = grammar({
         $.row_constructor,
       ),
     _expression: $ => choice($._simple_expression, $.composite_expression),
+
+
+    //////////////////////////////////// PL/SQL ////////////////////////////////////
+
+    _type_definition: $ => choice($.subtype_definition),
+    subtype_definition: $ => seq(
+      kw("SUBTYPE"),
+      field("name", $.identifier),
+      kw("IS"),
+      field("base_type", $._type),
+      optional(choice(
+        field("constraint", $.range),
+        $.character_set
+      )),
+      optional($.null_constraint)
+     ),
+    range: $ => seq(
+      kw("RANGE"),
+      field("low_value", $.number),
+      tok(".."),
+      field("high_value", $.number)
+    ),
+    character_set: $ => seq(tok("CHARACTER SET"), $.identifier),
+
+    constant_declaration: $ => seq(
+      field("name", $.identifier),
+      tok("CONSTANT"),
+      field("datatype", $._type),
+      optional($.null_constraint),
+      choice(kw("DEFAULT"), tok(":=")),
+      field("value", $._expression),
+    ),
+    variable_declaration: $ => seq(
+      field("name", $.identifier),
+      field("datatype", $._type),
+      optional($.null_constraint),
+      optional(choice(kw("DEFAULT"), tok(":="))),
+      field("default_value", $._expression),
+    ),
+
+    declare_section: $ => repeat1(
+      seq(choice(
+        $._type_definition,
+        $.constant_declaration,
+        $.variable_declaration
+      ), ";")
+    ),
   },
 });
 
