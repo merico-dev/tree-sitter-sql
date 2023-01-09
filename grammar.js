@@ -701,10 +701,7 @@ module.exports = grammar({
         optional(seq(field("begin_label", $.identifier), ":")),
         kw("BEGIN"),
         optional(kw("ATOMIC")),
-        seq(
-          sep1($._simple_statement, ";"),
-          optional(";"),
-        ),
+        $._pl_sql_statements,
         kw("END"),
         optional(field("end_label", $.identifier)),
       )),
@@ -2205,7 +2202,29 @@ module.exports = grammar({
 
     //////////////////////////////////// PL/SQL ////////////////////////////////////
 
-    _type_definition: $ => choice($.subtype_definition),
+    declare_section: $ => repeat1(
+      seq(choice(
+        /* TODO:
+         * cursor_declaration,
+         * collection_variable_decl,
+         * cursor_variable_declaration,
+         * exception_declaration,
+         * record_variable_declaration
+         */
+        $._type_definition,
+        $.constant_declaration,
+        $.variable_declaration
+      ), ";")
+    ),
+
+    _type_definition: $ => choice(
+      /* TODO:
+       * collection_type_definition,
+       * record_type_definition,
+       * ref_cursor_type_definition
+       */
+      $.subtype_definition
+    ),
     subtype_definition: $ => seq(
       kw("SUBTYPE"),
       field("name", $.identifier),
@@ -2228,26 +2247,80 @@ module.exports = grammar({
     constant_declaration: $ => seq(
       field("name", $.identifier),
       tok("CONSTANT"),
-      field("datatype", $._type),
+      field("datatype", choice(
+        $._type,
+        $.type_attribute,
+        $.rowtype_attribute
+      )),
       optional($.null_constraint),
       choice(kw("DEFAULT"), tok(":=")),
       field("value", $._expression),
     ),
     variable_declaration: $ => seq(
       field("name", $.identifier),
-      field("datatype", $._type),
+      field("datatype", choice(
+        $._type,
+        $.type_attribute,
+        $.rowtype_attribute
+      )),
       optional($.null_constraint),
       optional(choice(kw("DEFAULT"), tok(":="))),
       field("default_value", $._expression),
     ),
-
-    declare_section: $ => repeat1(
-      seq(choice(
-        $._type_definition,
-        $.constant_declaration,
-        $.variable_declaration
-      ), ";")
+    type_attribute: $ => seq(
+      field("object", $._identifier),
+      "%TYPE",
     ),
+    rowtype_attribute: $ => seq(
+      field("object", $._identifier),
+      "%ROWTYPE",
+    ),
+
+    /* TODO: make the last semicolon optional
+     * _pl_sql_statements: $ => seq(
+     *   sep1($._pl_sql_statement, ";"),
+     *   optional(";"),
+     * ),
+     */
+    _pl_sql_statements: $ => repeat1(seq($._pl_sql_statement, ";")),
+    _pl_sql_statement: $ => choice(
+      $._simple_statement,
+      $.assignment_statement,
+      $.if_statement
+    ),
+    assignment_statement: $ => seq(
+      field("target", choice(
+        /* TODO:
+         * collection target,
+         * cursor target,
+         * placeholder
+         */
+        $._identifier
+      )),
+      tok(":="),
+      field("value", $._expression)
+    ),
+
+    if_statement: $ => seq(
+      kw("IF"),
+      field("condition", $._expression),
+      kw("THEN"),
+      $._pl_sql_statements,
+      repeat($.elsif_clause),
+      optional($.else_clause),
+      kw("END IF")
+    ),
+    elsif_clause: $ => seq(
+      tok("ELSIF"),
+      field("condition", $._expression),
+      kw("THEN"),
+      $._pl_sql_statements,
+    ),
+    else_clause: $ => seq(
+      kw("ELSE"),
+      $._pl_sql_statements,
+    ),
+
   },
 });
 
