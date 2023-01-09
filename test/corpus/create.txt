@@ -357,12 +357,13 @@ END;
     (null_hint)
     (parallel_hint)
     (function_body
-      (select_statement
-        (select_clause
-          (select_item
-            (function_call
-              (identifier)
-              (string))))))))
+      (compound_statement
+        (select_statement
+          (select_clause
+            (select_item
+              (function_call
+                (identifier)
+                (string)))))))))
 
 ================================================================================
 CREATE FUNCTION with declare variable
@@ -391,30 +392,31 @@ END
       (identifier)
       (number))
     (function_body
-      (declare_statement
-        (identifier)
-        (type
+      (compound_statement
+        (declare_statement
           (identifier)
-          (number)
-          (number))
-        (default_clause
-          (number)))
-      (select_statement
-        (select_clause
-          (select_item
+          (type
             (identifier)
-            (identifier)))
-        (from_clause
-          (from_item
-            (identifier)))
-        (where_clause
-          (binary_expression
+            (number)
+            (number))
+          (default_clause
+            (number)))
+        (select_statement
+          (select_clause
+            (select_item
+              (identifier)
+              (identifier)))
+          (from_clause
+            (from_item
+              (identifier)))
+          (where_clause
+            (binary_expression
+              (identifier)
+              (identifier))))
+        (return_statement
+          (function_call
             (identifier)
-            (identifier))))
-      (return_statement
-        (function_call
-          (identifier)
-          (identifier))))))
+            (identifier)))))))
 
 ================================================================================
 CREATE FUNCTION without return type
@@ -438,11 +440,12 @@ END
           (identifier)
           (number))))
     (function_body
-      (set_statement
-        (identifier)
-        (function_call
+      (compound_statement
+        (set_statement
           (identifier)
-          (number))))))
+          (function_call
+            (identifier)
+            (number)))))))
 
 ================================================================================
 CREATE FUNCTION with default parameter values
@@ -697,41 +700,42 @@ CREATE TRIGGER testref BEFORE INSERT ON test1
     (trigger_event)
     (identifier)
     (trigger_body
-      (insert_statement
-        (identifier)
-        (set_clause
-          (assignment_expression
-            (identifier)
-            (dotted_name
+      (compound_statement
+        (insert_statement
+          (identifier)
+          (set_clause
+            (assignment_expression
               (identifier)
-              (identifier)))
-          (assignment_expression
-            (identifier)
-            (dotted_name
+              (dotted_name
+                (identifier)
+                (identifier)))
+            (assignment_expression
               (identifier)
-              (identifier)))))
-      (delete_statement
-        (identifier)
-        (where_clause
-          (binary_expression
-            (identifier)
-            (dotted_name
-              (identifier)
-              (identifier)))))
-      (update_statement
-        (identifier)
-        (set_clause
-          (assignment_expression
-            (identifier)
+              (dotted_name
+                (identifier)
+                (identifier)))))
+        (delete_statement
+          (identifier)
+          (where_clause
             (binary_expression
               (identifier)
-              (number))))
-        (where_clause
-          (binary_expression
-            (identifier)
-            (dotted_name
+              (dotted_name
+                (identifier)
+                (identifier)))))
+        (update_statement
+          (identifier)
+          (set_clause
+            (assignment_expression
               (identifier)
-              (identifier))))))))
+              (binary_expression
+                (identifier)
+                (number))))
+          (where_clause
+            (binary_expression
+              (identifier)
+              (dotted_name
+                (identifier)
+                (identifier)))))))))
 
 ================================================================================
 CREATE VIEW

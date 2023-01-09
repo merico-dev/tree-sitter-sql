@@ -87,7 +87,7 @@ module.exports = grammar({
   ],
   conflicts: $ => [
     [$.declare_section],
-    [$.null_constraint, $._simple_expression]
+    [$.null_constraint, $._simple_expression],
   ],
   word: $ => $._unquoted_identifier,
 
@@ -100,14 +100,8 @@ module.exports = grammar({
         $.savepoint_statement,
         $.commit_statement,
         $.rollback_statement,
-        $.create_trigger_statement,
-        $.create_function_statement,
-        $._simple_statement,
-      ),
-
-    _simple_statement: $ =>
-      choice(
         $.pg_command,
+
         $.select_statement,
         $.update_statement,
         $.insert_statement,
@@ -147,6 +141,9 @@ module.exports = grammar({
         $.vacuum_statement,
         $.do_statement,
         $.values_clause,
+
+        $.create_trigger_statement,
+        $.create_function_statement,
       ),
 
     with_clause: $ =>
@@ -696,9 +693,8 @@ module.exports = grammar({
 
     pg_command: $ => seq(/\\[a-zA-Z]+/, /[^\r\n]*/),
 
-    _compound_statement: $ =>
+    compound_statement: $ =>
       prec.right(seq(
-        optional(seq(field("begin_label", $.identifier), ":")),
         kw("BEGIN"),
         optional(kw("ATOMIC")),
         $._pl_sql_statements,
@@ -820,7 +816,7 @@ module.exports = grammar({
     function_body: $ => seq(
       choice(
         seq($.string, optional(seq(",", $.string))),
-        $._compound_statement,
+        seq(optional($.label), $.compound_statement),
         $.select_statement,
         $.return_statement,
       ),
@@ -882,8 +878,8 @@ module.exports = grammar({
         $.execute_clause,
         // PostgreSQL style trigger body
         // MySQL style trigger body
-        $._simple_statement,
-        $._compound_statement,
+        $._statement,
+        $.compound_statement,
       ),
     execute_clause: $ =>
       seq(
@@ -2283,11 +2279,14 @@ module.exports = grammar({
      * ),
      */
     _pl_sql_statements: $ => repeat1(seq($._pl_sql_statement, ";")),
-    _pl_sql_statement: $ => choice(
-      $._simple_statement,
+    _pl_sql_statement: $ => seq(optional($.label), choice(
+      $._statement,
+      $.compound_statement,
       $.assignment_statement,
-      $.if_statement
-    ),
+      $.if_statement,
+      $.basic_loop_statement,
+      $.function_call,
+    )),
     assignment_statement: $ => seq(
       field("target", choice(
         /* TODO:
@@ -2320,6 +2319,18 @@ module.exports = grammar({
       kw("ELSE"),
       $._pl_sql_statements,
     ),
+
+    label: $ => choice(
+      seq($.identifier, ':'),
+      seq("<<", $.identifier, ">>")
+    ),
+    basic_loop_statement: $ => seq(
+      tok("LOOP"),
+      $._pl_sql_statements,
+      kw("END LOOP"),
+      optional(field("end_label", $.identifier)),
+    ),
+
 
   },
 });

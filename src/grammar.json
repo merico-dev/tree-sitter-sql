@@ -73,23 +73,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "create_trigger_statement"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "create_function_statement"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_simple_statement"
-        }
-      ]
-    },
-    "_simple_statement": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
           "name": "pg_command"
         },
         {
@@ -235,6 +218,14 @@
         {
           "type": "SYMBOL",
           "name": "values_clause"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "create_trigger_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "create_function_statement"
         }
       ]
     },
@@ -4307,37 +4298,12 @@
         }
       ]
     },
-    "_compound_statement": {
+    "compound_statement": {
       "type": "PREC_RIGHT",
       "value": 0,
       "content": {
         "type": "SEQ",
         "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "FIELD",
-                    "name": "begin_label",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "identifier"
-                    }
-                  },
-                  {
-                    "type": "STRING",
-                    "value": ":"
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
           {
             "type": "PATTERN",
             "value": "[bB][eE][gG][iI][nN]"
@@ -5440,8 +5406,25 @@
               ]
             },
             {
-              "type": "SYMBOL",
-              "name": "_compound_statement"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "label"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "compound_statement"
+                }
+              ]
             },
             {
               "type": "SYMBOL",
@@ -5818,11 +5801,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_simple_statement"
+          "name": "_statement"
         },
         {
           "type": "SYMBOL",
-          "name": "_compound_statement"
+          "name": "compound_statement"
         }
       ]
     },
@@ -18123,19 +18106,48 @@
       }
     },
     "_pl_sql_statement": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_simple_statement"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "label"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
-          "type": "SYMBOL",
-          "name": "assignment_statement"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "if_statement"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "compound_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "assignment_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "if_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "basic_loop_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "function_call"
+            }
+          ]
         }
       ]
     },
@@ -18275,6 +18287,90 @@
         {
           "type": "SYMBOL",
           "name": "_pl_sql_statements"
+        }
+      ]
+    },
+    "label": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "<<"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": ">>"
+            }
+          ]
+        }
+      ]
+    },
+    "basic_loop_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "PATTERN",
+              "value": "[lL][oO][oO][pP]"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_pl_sql_statements"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[eE][nN][dD]"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[lL][oO][oO][pP]"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "end_label",
+              "content": {
+                "type": "SYMBOL",
+                "name": "identifier"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     }
