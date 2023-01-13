@@ -2286,6 +2286,10 @@ module.exports = grammar({
       $.if_statement,
       $.basic_loop_statement,
       $.function_call,
+      $.exit_statement,
+      $.continue_statement,
+      $.while_loop_statement,
+      $.for_loop_statement,
     )),
     assignment_statement: $ => seq(
       field("target", choice(
@@ -2330,7 +2334,64 @@ module.exports = grammar({
       kw("END LOOP"),
       optional(field("end_label", $.identifier)),
     ),
+    exit_statement: $ => seq(
+      tok("EXIT"),
+      field("label", optional($.identifier)),
+      optional(seq(kw("WHEN"), field("condition", $._expression))),
+    ),
+    continue_statement: $ => seq(
+      tok("CONTINUE"),
+      field("label", optional($.identifier)),
+      optional(seq(kw("WHEN"), field("condition", $._expression))),
+    ),
 
+    while_loop_statement: $ => seq(
+      tok("WHILE"),
+      field("condition", $._expression),
+      tok("LOOP"),
+      $._pl_sql_statements,
+      kw("END LOOP"),
+      optional(field("end_label", $.identifier)),
+    ),
+
+    for_loop_statement: $ => seq(
+      tok("FOR"),
+      field("iterator", $.iterator),
+      kw("LOOP"),
+      $._pl_sql_statements,
+      kw("END LOOP"),
+      optional(field("end_label", $.identifier)),
+    ),
+    iterator: $ => seq(
+      $.iterand_decl,
+      optional(seq(",", $.iterand_decl)),
+      kw('IN'),
+      repeat1(seq(
+        $.qual_iteration_ctl,
+        optional(seq(",", $.qual_iteration_ctl))
+      )),
+    ),
+    iterand_decl: $ => seq(
+      $.identifier,
+      optional(choice(
+        token("MUTABLE"),
+        kw("IMMUTABLE")
+      )),
+      optional($._type)
+    ),
+    qual_iteration_ctl: $ => seq(
+      optional(kw("REVERSE")),
+      $._iteration_control,
+      optional(seq(kw("WHILE"), $._expression)),
+      optional(seq(kw("WHEN"), $._expression))
+    ),
+    _iteration_control: $ => choice($.stepped_control),
+    stepped_control: $ => seq(
+      field("low_bound", $.number),
+      tok(".."),
+      field("high_bound", $.number),
+      optional(seq(kw("BY"), field("step", $.number)))
+    ),
 
   },
 });
