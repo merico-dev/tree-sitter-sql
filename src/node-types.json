@@ -697,10 +697,6 @@
             "named": true
           },
           {
-            "type": "disable_row_level_security",
-            "named": true
-          },
-          {
             "type": "disable_rule",
             "named": true
           },
@@ -717,10 +713,6 @@
             "named": true
           },
           {
-            "type": "enable_row_level_security",
-            "named": true
-          },
-          {
             "type": "enable_rule",
             "named": true
           },
@@ -729,15 +721,7 @@
             "named": true
           },
           {
-            "type": "force_row_level_security",
-            "named": true
-          },
-          {
             "type": "inherit",
-            "named": true
-          },
-          {
-            "type": "no_force_row_level_security",
             "named": true
           },
           {
@@ -778,6 +762,10 @@
           },
           {
             "type": "set_logged",
+            "named": true
+          },
+          {
+            "type": "set_row_level_security",
             "named": true
           },
           {
@@ -6888,11 +6876,6 @@
     "fields": {}
   },
   {
-    "type": "disable_row_level_security",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "disable_rule",
     "named": true,
     "fields": {
@@ -8022,11 +8005,6 @@
     }
   },
   {
-    "type": "enable_row_level_security",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "enable_rule",
     "named": true,
     "fields": {
@@ -8862,11 +8840,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "force_row_level_security",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "foreign_key",
@@ -12348,11 +12321,6 @@
     "fields": {}
   },
   {
-    "type": "no_force_row_level_security",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "no_inherit",
     "named": true,
     "fields": {
@@ -15175,6 +15143,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "set_row_level_security",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "set_schema",
