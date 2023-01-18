@@ -18556,8 +18556,15 @@
           }
         },
         {
-          "type": "PATTERN",
-          "value": "[lL][oO][oO][pP]"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "PATTERN",
+              "value": "[lL][oO][oO][pP]"
+            }
+          }
         },
         {
           "type": "SYMBOL",
@@ -18627,37 +18634,29 @@
           "value": "[iI][nN]"
         },
         {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "qual_iteration_ctl"
-              },
-              {
-                "type": "CHOICE",
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "qual_iteration_ctl"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
                 "members": [
                   {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": ","
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "qual_iteration_ctl"
-                      }
-                    ]
+                    "type": "STRING",
+                    "value": ","
                   },
                   {
-                    "type": "BLANK"
+                    "type": "SYMBOL",
+                    "name": "qual_iteration_ctl"
                   }
                 ]
               }
-            ]
-          }
+            }
+          ]
         }
       ]
     },
@@ -18677,8 +18676,12 @@
                 {
                   "type": "TOKEN",
                   "content": {
-                    "type": "STRING",
-                    "value": "MUTABLE"
+                    "type": "PREC",
+                    "value": 1,
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "[mM][uU][tT][aA][bB][lL][eE]"
+                    }
                   }
                 },
                 {
@@ -18713,8 +18716,15 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[rR][eE][vV][eE][rR][sS][eE]"
+              "type": "TOKEN",
+              "content": {
+                "type": "PREC",
+                "value": 1,
+                "content": {
+                  "type": "PATTERN",
+                  "value": "[rR][eE][vV][eE][rR][sS][eE]"
+                }
+              }
             },
             {
               "type": "BLANK"
@@ -18775,6 +18785,26 @@
         {
           "type": "SYMBOL",
           "name": "stepped_control"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "single_expression_control"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "values_of_control"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "pairs_of_control"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "indices_of_control"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cursor_iteration_control"
         }
       ]
     },
@@ -18786,7 +18816,7 @@
           "name": "low_bound",
           "content": {
             "type": "SYMBOL",
-            "name": "number"
+            "name": "_expression"
           }
         },
         {
@@ -18805,7 +18835,7 @@
           "name": "high_bound",
           "content": {
             "type": "SYMBOL",
-            "name": "number"
+            "name": "_expression"
           }
         },
         {
@@ -18832,6 +18862,130 @@
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "single_expression_control": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[rR][eE][pP][eE][aA][tT]"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        }
+      ]
+    },
+    "values_of_control": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "PATTERN",
+              "value": "[vV][aA][lL][uU][eE][sS]\\s+[oO][fF]"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_ctl_expr"
+        }
+      ]
+    },
+    "pairs_of_control": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "PATTERN",
+              "value": "[pP][aA][iI][rR][sS]\\s+[oO][fF]"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_ctl_expr"
+        }
+      ]
+    },
+    "indices_of_control": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "PATTERN",
+              "value": "[iI][nN][dD][iI][cC][eE][sS]\\s+[oO][fF]"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_ctl_expr"
+        }
+      ]
+    },
+    "_ctl_expr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_statement"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        }
+      ]
+    },
+    "cursor_iteration_control": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_statement"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
         }
       ]
     }

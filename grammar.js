@@ -2355,7 +2355,7 @@ module.exports = grammar({
     for_loop_statement: $ => seq(
       tok("FOR"),
       field("iterator", $.iterator),
-      kw("LOOP"),
+      tok("LOOP"),
       $._pl_sql_statements,
       kw("END LOOP"),
       optional(field("end_label", $.identifier)),
@@ -2364,31 +2364,61 @@ module.exports = grammar({
       $.iterand_decl,
       optional(seq(",", $.iterand_decl)),
       kw('IN'),
-      repeat1(seq(
-        $.qual_iteration_ctl,
-        optional(seq(",", $.qual_iteration_ctl))
-      )),
+      commaSep1($.qual_iteration_ctl),
     ),
     iterand_decl: $ => seq(
       $.identifier,
       optional(choice(
-        token("MUTABLE"),
+        tok("MUTABLE"),
         kw("IMMUTABLE")
       )),
       optional($._type)
     ),
     qual_iteration_ctl: $ => seq(
-      optional(kw("REVERSE")),
+      optional(tok("REVERSE")),
       $._iteration_control,
       optional(seq(kw("WHILE"), $._expression)),
       optional(seq(kw("WHEN"), $._expression))
     ),
-    _iteration_control: $ => choice($.stepped_control),
+    _iteration_control: $ => choice(
+      $.stepped_control,
+      $.single_expression_control,
+      $.values_of_control,
+      $.pairs_of_control,
+      $.indices_of_control,
+      $.cursor_iteration_control,
+    ),
     stepped_control: $ => seq(
-      field("low_bound", $.number),
+      field("low_bound", $._expression),
       tok(".."),
-      field("high_bound", $.number),
+      field("high_bound", $._expression),
       optional(seq(kw("BY"), field("step", $.number)))
+    ),
+    single_expression_control: $ => seq(
+      optional(kw("REPEAT")),
+      $._expression,
+    ),
+    values_of_control: $ => seq(
+      tok("VALUES OF"),
+      $._ctl_expr
+    ),
+    pairs_of_control: $ => seq(
+      tok("PAIRS OF"),
+      $._ctl_expr
+    ),
+    indices_of_control: $ => seq(
+      tok("INDICES OF"),
+      $._ctl_expr
+    ),
+    _ctl_expr: $ => choice(
+      $._expression,
+      seq("(", $._statement, ")")
+    ),
+    cursor_iteration_control: $ => seq(
+      "(",
+      // $.identifier,
+      $._statement,
+      ")"
     ),
 
   },
