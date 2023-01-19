@@ -1676,6 +1676,41 @@
     }
   },
   {
+    "type": "assoc_array_type_def",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "null_constraint",
+          "named": true
+        },
+        {
+          "type": "rowtype_attribute",
+          "named": true
+        },
+        {
+          "type": "table_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_attribute",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "asterisk_expression",
     "named": true,
     "fields": {},
@@ -2046,6 +2081,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -2059,6 +2098,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "null_statement",
           "named": true
         },
         {
@@ -3688,6 +3731,40 @@
     }
   },
   {
+    "type": "collection_type_definition",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "assoc_array_type_def",
+          "named": true
+        },
+        {
+          "type": "nested_table_type_def",
+          "named": true
+        },
+        {
+          "type": "varray_type_def",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "column_definitions",
     "named": true,
     "fields": {},
@@ -4261,6 +4338,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -4274,6 +4355,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "null_statement",
           "named": true
         },
         {
@@ -6795,6 +6880,10 @@
       "required": true,
       "types": [
         {
+          "type": "collection_type_definition",
+          "named": true
+        },
+        {
           "type": "constant_declaration",
           "named": true
         },
@@ -7759,6 +7848,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -7772,6 +7865,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "null_statement",
           "named": true
         },
         {
@@ -8121,6 +8218,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -8134,6 +8235,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "null_statement",
           "named": true
         },
         {
@@ -8958,6 +9063,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -8971,6 +9080,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "null_statement",
           "named": true
         },
         {
@@ -10016,6 +10129,21 @@
     }
   },
   {
+    "type": "goto_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "grant",
     "named": true,
     "fields": {},
@@ -10850,6 +10978,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -10863,6 +10995,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "null_statement",
           "named": true
         },
         {
@@ -12800,6 +12936,33 @@
       "types": [
         {
           "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nested_table_type_def",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "null_constraint",
+          "named": true
+        },
+        {
+          "type": "table_type",
+          "named": true
+        },
+        {
+          "type": "type",
           "named": true
         }
       ]
@@ -19339,6 +19502,44 @@
     }
   },
   {
+    "type": "varray_type_def",
+    "named": true,
+    "fields": {
+      "size_limit": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_type",
+          "named": true
+        },
+        {
+          "type": "null_constraint",
+          "named": true
+        },
+        {
+          "type": "table_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "version",
     "named": true,
     "fields": {
@@ -19889,6 +20090,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "grant_statement",
           "named": true
         },
@@ -19902,6 +20107,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "null_statement",
           "named": true
         },
         {
@@ -20267,6 +20476,10 @@
   },
   {
     "type": "cost_hint",
+    "named": true
+  },
+  {
+    "type": "null_statement",
     "named": true
   },
   {

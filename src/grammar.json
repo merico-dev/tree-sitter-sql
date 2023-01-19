@@ -17724,6 +17724,217 @@
         {
           "type": "SYMBOL",
           "name": "subtype_definition"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "collection_type_definition"
+        }
+      ]
+    },
+    "collection_type_definition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[tT][yY][pP][eE]"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "PATTERN",
+          "value": "[iI][sS]"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "assoc_array_type_def"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "varray_type_def"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "nested_table_type_def"
+            }
+          ]
+        }
+      ]
+    },
+    "assoc_array_type_def": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[tT][aA][bB][lL][eE]"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[oO][fF]"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "null_constraint"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[iI][nN][dD][eE][xX]"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[bB][yY]"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_type"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "type_attribute"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "rowtype_attribute"
+            }
+          ]
+        }
+      ]
+    },
+    "varray_type_def": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[vV][aA][rR][rR][aA][yY]"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "PATTERN",
+                      "value": "[vV][aA][rR][yY][iI][nN][gG]"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[aA][rR][rR][aA][yY]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "FIELD",
+          "name": "size_limit",
+          "content": {
+            "type": "SYMBOL",
+            "name": "number"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[oO][fF]"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "null_constraint"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "nested_table_type_def": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[tT][aA][bB][lL][eE]"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[oO][fF]"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "null_constraint"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -18123,6 +18334,19 @@
             {
               "type": "SYMBOL",
               "name": "for_loop_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "goto_statement"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "NULL"
+              },
+              "named": true,
+              "value": "null_statement"
             }
           ]
         }
@@ -18986,6 +19210,26 @@
         {
           "type": "STRING",
           "value": ")"
+        }
+      ]
+    },
+    "goto_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "PATTERN",
+              "value": "[gG][oO][tT][oO]"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
         }
       ]
     }

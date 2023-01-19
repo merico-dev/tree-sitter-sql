@@ -2217,7 +2217,46 @@ module.exports = grammar({
        * record_type_definition,
        * ref_cursor_type_definition
        */
-      $.subtype_definition
+      $.subtype_definition,
+      $.collection_type_definition,
+    ),
+    collection_type_definition: $ => seq(
+      kw("TYPE"),
+      field("name", $.identifier),
+      kw("IS"),
+      choice(
+        $.assoc_array_type_def,
+        $.varray_type_def,
+        $.nested_table_type_def,
+      ),
+     ),
+    assoc_array_type_def: $ => seq(
+      kw("TABLE OF"),
+      $._type,
+      optional($.null_constraint),
+      kw("INDEX BY"),
+      choice(
+        $._type,
+        $.type_attribute,
+        $.rowtype_attribute
+      ),
+    ),
+    varray_type_def: $ => seq(
+      choice(
+        kw("VARRAY"),
+        seq(optional(kw("VARYING")), kw("ARRAY"))
+      ),
+      "(",
+      field("size_limit", $.number),
+      ")",
+      kw("OF"),
+      $._type,
+      optional($.null_constraint)
+    ),
+    nested_table_type_def: $ => seq(
+      kw("TABLE OF"),
+      $._type,
+      optional($.null_constraint),
     ),
     subtype_definition: $ => seq(
       kw("SUBTYPE"),
@@ -2288,6 +2327,8 @@ module.exports = grammar({
       $.continue_statement,
       $.while_loop_statement,
       $.for_loop_statement,
+      $.goto_statement,
+      alias($.NULL, $.null_statement),
     )),
     assignment_statement: $ => seq(
       field("target", choice(
@@ -2420,6 +2461,8 @@ module.exports = grammar({
       $._statement,
       ")"
     ),
+
+    goto_statement: $ => seq(tok("GOTO"), $.identifier),
 
   },
 });
