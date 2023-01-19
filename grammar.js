@@ -2199,7 +2199,6 @@ module.exports = grammar({
     declare_section: $ => repeat1(
       seq(choice(
         /* TODO:
-         * cursor_declaration,
          * collection_variable_decl,
          * cursor_variable_declaration,
          * exception_declaration,
@@ -2207,13 +2206,14 @@ module.exports = grammar({
          */
         $._type_definition,
         $.constant_declaration,
-        $.variable_declaration
+        $.variable_declaration,
+        $.cursor_declaration,
+        $.cursor_definition,
       ), ";")
     ),
 
     _type_definition: $ => choice(
       /* TODO:
-       * collection_type_definition,
        * record_type_definition,
        * ref_cursor_type_definition
        */
@@ -2296,9 +2296,11 @@ module.exports = grammar({
         $.type_attribute,
         $.rowtype_attribute
       )),
-      optional($.null_constraint),
-      optional(choice(kw("DEFAULT"), tok(":="))),
-      field("default_value", $._expression),
+      optional(seq(
+        optional($.null_constraint),
+        choice(kw("DEFAULT"), tok(":=")),
+        field("default_value", $._expression),
+      )),
     ),
     type_attribute: $ => seq(
       field("object", $._identifier),
@@ -2307,6 +2309,41 @@ module.exports = grammar({
     rowtype_attribute: $ => seq(
       field("object", $._identifier),
       "%ROWTYPE",
+    ),
+
+    cursor_declaration: $ => seq(
+      tok("CURSOR"),
+      field("name", $.identifier),
+      optional(seq(
+        "(", commaSep1($.cursor_parameter_dec), ")"
+      )),
+      kw("RETURN"),
+      choice($.rowtype_attribute, $.type_attribute),
+    ),
+    cursor_definition: $ => seq(
+      tok("CURSOR"),
+      field("name", $.identifier),
+      optional(seq(
+        "(", commaSep1($.cursor_parameter_dec), ")"
+      )),
+      optional(seq(
+        kw("RETURN"),
+        choice($.rowtype_attribute, $.type_attribute),
+      )),
+      kw("IS"),
+      choice(
+        $.select_statement,
+        $.combining_query,
+      )
+    ),
+    cursor_parameter_dec: $ => seq(
+      field("name", $.identifier),
+      optional(kw("IN")),
+      field("datatype",$._type),
+      optional(seq(
+        choice(kw("DEFAULT"), tok(":=")),
+        field("default_value", $._expression),
+      )),
     ),
 
     /* TODO: make the last semicolon optional
@@ -2329,6 +2366,7 @@ module.exports = grammar({
       $.for_loop_statement,
       $.goto_statement,
       alias($.NULL, $.null_statement),
+      $.forall_statement,
     )),
     assignment_statement: $ => seq(
       field("target", choice(
@@ -2449,7 +2487,13 @@ module.exports = grammar({
     ),
     indices_of_control: $ => seq(
       tok("INDICES OF"),
-      $._ctl_expr
+      $._ctl_expr,
+      optional(seq(
+        kw("BETWEEN"),
+        field("low_bound", $._expression),
+        kw("AND"),
+        field("high_bound", $._expression),
+      ))
     ),
     _ctl_expr: $ => choice(
       $._expression,
@@ -2460,6 +2504,19 @@ module.exports = grammar({
       // $.identifier,
       $._statement,
       ")"
+    ),
+
+    forall_statement: $ => seq(
+      tok("FORALL"),
+      field("index", $.identifier),
+      kw("IN"),
+      alias(choice(
+        $.stepped_control,
+        $.indices_of_control,
+        $.values_of_control
+      ), $.bounds_clause),
+      optional(kw("SAVE EXCEPTIONS")),
+      $._statement,
     ),
 
     goto_statement: $ => seq(tok("GOTO"), $.identifier),
