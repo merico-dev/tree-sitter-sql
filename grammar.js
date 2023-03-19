@@ -85,6 +85,10 @@ module.exports = grammar({
     $._dollar_quoted_string_content,
     $._dollar_quoted_string_end_tag,
   ],
+  conflicts: $ => [
+    [$.declare_section],
+    [$.null_constraint, $._simple_expression],
+  ],
   word: $ => $._unquoted_identifier,
 
   rules: {
@@ -96,14 +100,8 @@ module.exports = grammar({
         $.savepoint_statement,
         $.commit_statement,
         $.rollback_statement,
-        $.create_trigger_statement,
-        $.create_function_statement,
-        $._simple_statement,
-      ),
-
-    _simple_statement: $ =>
-      choice(
         $.pg_command,
+
         $.select_statement,
         $.update_statement,
         $.insert_statement,
@@ -143,6 +141,9 @@ module.exports = grammar({
         $.vacuum_statement,
         $.do_statement,
         $.values_clause,
+
+        $.create_trigger_statement,
+        $.create_function_statement,
       ),
 
     with_clause: $ =>
@@ -496,10 +497,11 @@ module.exports = grammar({
         kw("RULE"),
         field("rule_name", $._identifier),
       ),
-    disable_row_level_security: $ => kw("DISABLE ROW LEVEL SECURITY"),
-    enable_row_level_security: $ => kw("ENABLE ROW LEVEL SECURITY"),
-    force_row_level_security: $ => kw("FORCE ROW LEVEL SECURITY"),
-    no_force_row_level_security: $ => kw("NO FORCE ROW LEVEL SECURITY"),
+    set_row_level_security: $ => seq(choice(
+      kw("DISABLE"),
+      kw("ENABLE"),
+      seq(optional(kw("NO")), tok("FORCE")),
+    ), kw("ROW LEVEL SECURITY")),
     cluster_on: $ => seq(kw("CLUSTER ON"), field("index_name", $._identifier)),
     set_without_cluster: $ => kw("SET WITHOUT CLUSTER"),
     set_without_oids: $ => kw("SET WITHOUT OIDS"),
@@ -558,10 +560,7 @@ module.exports = grammar({
         $.enable_trigger,
         $.disable_rule,
         $.enable_rule,
-        $.disable_row_level_security,
-        $.enable_row_level_security,
-        $.force_row_level_security,
-        $.no_force_row_level_security,
+        $.set_row_level_security,
         $.cluster_on,
         $.set_without_cluster,
         $.set_without_oids,
@@ -692,15 +691,15 @@ module.exports = grammar({
 
     pg_command: $ => seq(/\\[a-zA-Z]+/, /[^\r\n]*/),
 
-    _compound_statement: $ =>
+    compound_statement: $ =>
       prec.right(seq(
-        optional(seq(field("begin_label", $.identifier), ":")),
         kw("BEGIN"),
         optional(kw("ATOMIC")),
-        seq(
-          sep1($._simple_statement, ";"),
-          optional(";"),
-        ),
+        $._pl_sql_statements,
+        optional(seq(
+          kw("EXCEPTION"),
+          repeat($.exception_handler),
+        )),
         kw("END"),
         optional(field("end_label", $.identifier)),
       )),
@@ -716,12 +715,13 @@ module.exports = grammar({
         field("name", $._identifier),
         field("parameters", $.function_parameters),
         optional(seq(kw("RETURNS"), field("return_type", $._function_return_type))),
-        repeat(
-          choice(
-            field("hint", $._function_hint),
-            field("body", $.function_body),
-          ),
-        ),
+        repeat(field("hint", $._function_hint)),
+        optional(seq(
+          choice(kw("IS"), kw("AS")),
+          optional($.declare_section),
+        )),
+        field("body", $.function_body),
+        repeat(field("hint", $._function_hint)),
       ),
     _function_hint: $ =>
       choice(
@@ -739,15 +739,13 @@ module.exports = grammar({
         $.deterministic_hint,
         $.sql_hint,
         $.sql_security_hint,
+        $.dynamic_result_sets_hint,
+        $.invoker_rights_hint,
       ),
 
     window_hint: $ => kw("WINDOW"),
     leakproof_hint: $ => seq(optional(kw("NOT")), kw("LEAKPROOF")),
-    external_hint: $ =>
-      choice(
-        seq(optional(kw("EXTERNAL")), kw("SECURITY INVOKER")),
-        seq(optional(kw("EXTERNAL")), kw("SECURITY DEFINER")),
-      ),
+    external_hint: $ => seq(optional(kw("EXTERNAL")), kw("SECURITY"), $.role_specification),
     optimizer_hint: $ => choice(kw("VOLATILE"), kw("IMMUTABLE"), kw("STABLE")),
     parallel_hint: $ => seq(kw("PARALLEL"), $._parallel_option_value),
     _parallel_option_value: $ => choice(
@@ -761,6 +759,7 @@ module.exports = grammar({
         kw("RETURNS NULL ON NULL INPUT"),
         kw("STRICT"),
       ),
+
     // MySQL hints
     deterministic_hint: $ => seq(optional(kw("NOT")), kw("DETERMINISTIC")),
     sql_hint: $ =>
@@ -771,7 +770,13 @@ module.exports = grammar({
         kw("MODIFIES SQL DATA"),
       ),
     sql_security_hint: $ =>
-      seq(kw("SQL SECURITY"), choice(kw("DEFINER"), kw("INVOKER"))),
+      seq(kw("SQL SECURITY"), $.role_specification),
+
+    // Teradata hints
+    dynamic_result_sets_hint: $ => seq(kw("DYNAMIC RESULT SETS"), field("num_result_sets", $.number)),
+
+    // Oracle hints
+    invoker_rights_hint: $ => seq(kw("AUTHID"), $.role_specification),
 
     _function_language: $ =>
       seq(
@@ -787,8 +792,16 @@ module.exports = grammar({
       seq("(", optional(commaSep1($.function_parameter)), ")"),
     function_parameter: $ =>
       seq(
-        field("argmode", optional($.function_argmode)),
-        field("name", optional($.identifier)),
+        choice(
+          seq(
+            field("argmode", optional($.function_argmode)),
+            field("name", optional($.identifier)),
+          ),
+          seq(
+            field("name", optional($.identifier)),
+            field("argmode", optional($.function_argmode)),
+          ),
+        ),
         field("type", choice($._type, $.constrained_type)),
         optional(seq(
           choice("=", kw("DEFAULT")),
@@ -797,18 +810,19 @@ module.exports = grammar({
       ),
     function_argmode: $ => choice(
       kw("IN"),
-      kw("OUT"),
+      seq(optional(kw("IN")), kw("OUT"), optional(kw("NOCOPY"))),
       kw("INOUT"),
       kw("VARIADIC")
     ),
 
-    function_body: $ =>
+    function_body: $ => seq(
       choice(
-        seq(kw("AS"), $.string, optional(seq(",", $.string))),
-        $._compound_statement,
+        seq($.string, optional(seq(",", $.string))),
+        seq(optional($.label), $.compound_statement),
         $.select_statement,
         $.return_statement,
       ),
+    ),
 
     create_trigger_statement: $ =>
       seq(
@@ -866,8 +880,8 @@ module.exports = grammar({
         $.execute_clause,
         // PostgreSQL style trigger body
         // MySQL style trigger body
-        $._simple_statement,
-        $._compound_statement,
+        $._statement,
+        $.compound_statement,
       ),
     execute_clause: $ =>
       seq(
@@ -1120,6 +1134,8 @@ module.exports = grammar({
         kw("CURRENT_ROLE"),
         kw("CURRENT_USER"),
         kw("SESSION_USER"),
+        kw("DEFINER"),
+        kw("INVOKER"),
       ),
 
     alter_default_privileges_statement: $ => seq(
@@ -1478,7 +1494,7 @@ module.exports = grammar({
       ),
     table_constraint_foreign_key: $ =>
       seq(
-        kw("FOREIGN KEY"),
+        tok("FOREIGN KEY"),
         alias($.identifier_list, $.column_names),
         $.references_constraint,
       ),
@@ -1755,7 +1771,7 @@ module.exports = grammar({
         $.set_clause,
         optional($.from_clause),
         optional($.where_clause),
-        optional($.returning_clause),
+        optional($._returning_clause),
       ),
     set_clause: $ => seq(kw("SET"), commaSep1($.assignment_expression)),
     assignment_expression: $ =>
@@ -1788,7 +1804,7 @@ module.exports = grammar({
           $.set_clause,
         ),
         optional($.on_conflict),
-        optional($.returning_clause),
+        optional($._returning_clause),
       ),
     overriding_value: $ =>
       seq(kw("OVERRIDING"), choice(kw("SYSTEM"), kw("USER")), kw("VALUE")),
@@ -1827,7 +1843,7 @@ module.exports = grammar({
         optional("*"),
         optional(seq(optional(kw("AS")), field("table_alias", $.alias))),
         optional($.where_clause),
-        optional($.returning_clause)
+        optional($._returning_clause),
       )),
 
     conditional_expression: $ =>
@@ -2180,6 +2196,390 @@ module.exports = grammar({
         $.row_constructor,
       ),
     _expression: $ => choice($._simple_expression, $.composite_expression),
+
+
+    //////////////////////////////////// PL/SQL ////////////////////////////////////
+
+    declare_section: $ => repeat1(
+      seq(choice(
+        /* TODO:
+         * collection_variable_decl,
+         * cursor_variable_declaration,
+         * record_variable_declaration
+         */
+        $._type_definition,
+        $.constant_declaration,
+        $.variable_declaration,
+        $.cursor_declaration,
+        $.cursor_definition,
+      ), ";")
+    ),
+
+    _type_definition: $ => choice(
+      /* TODO:
+       * record_type_definition,
+       * ref_cursor_type_definition
+       */
+      $.subtype_definition,
+      $.collection_type_definition,
+    ),
+    collection_type_definition: $ => seq(
+      kw("TYPE"),
+      field("name", $.identifier),
+      kw("IS"),
+      choice(
+        $.assoc_array_type_def,
+        $.varray_type_def,
+        $.nested_table_type_def,
+      ),
+     ),
+    assoc_array_type_def: $ => seq(
+      kw("TABLE OF"),
+      $._type,
+      optional($.null_constraint),
+      kw("INDEX BY"),
+      choice(
+        $._type,
+        $.type_attribute,
+        $.rowtype_attribute
+      ),
+    ),
+    varray_type_def: $ => seq(
+      choice(
+        kw("VARRAY"),
+        seq(optional(kw("VARYING")), kw("ARRAY"))
+      ),
+      "(",
+      field("size_limit", $.number),
+      ")",
+      kw("OF"),
+      $._type,
+      optional($.null_constraint)
+    ),
+    nested_table_type_def: $ => seq(
+      kw("TABLE OF"),
+      $._type,
+      optional($.null_constraint),
+    ),
+    subtype_definition: $ => seq(
+      kw("SUBTYPE"),
+      field("name", $.identifier),
+      kw("IS"),
+      field("base_type", $._type),
+      optional(choice(
+        field("constraint", $.range),
+        $.character_set
+      )),
+      optional($.null_constraint)
+     ),
+    range: $ => seq(
+      kw("RANGE"),
+      field("low_value", $.number),
+      tok(".."),
+      field("high_value", $.number)
+    ),
+    character_set: $ => seq(tok("CHARACTER SET"), $.identifier),
+
+    constant_declaration: $ => seq(
+      field("name", $.identifier),
+      tok("CONSTANT"),
+      field("datatype", choice(
+        $._type,
+        $.type_attribute,
+        $.rowtype_attribute
+      )),
+      optional($.null_constraint),
+      choice(kw("DEFAULT"), tok(":=")),
+      field("value", $._expression),
+    ),
+    variable_declaration: $ => seq(
+      field("name", $.identifier),
+      field("datatype", choice(
+        $._type,
+        $.type_attribute,
+        $.rowtype_attribute
+      )),
+      optional(seq(
+        optional($.null_constraint),
+        choice(kw("DEFAULT"), tok(":=")),
+        field("default_value", $._expression),
+      )),
+    ),
+    type_attribute: $ => seq(
+      field("object", $._identifier),
+      "%TYPE",
+    ),
+    rowtype_attribute: $ => seq(
+      field("object", $._identifier),
+      "%ROWTYPE",
+    ),
+
+    cursor_declaration: $ => seq(
+      tok("CURSOR"),
+      field("name", $.identifier),
+      optional(seq(
+        "(", commaSep1($.cursor_parameter_dec), ")"
+      )),
+      kw("RETURN"),
+      choice($.rowtype_attribute, $.type_attribute),
+    ),
+    cursor_definition: $ => seq(
+      tok("CURSOR"),
+      field("name", $.identifier),
+      optional(seq(
+        "(", commaSep1($.cursor_parameter_dec), ")"
+      )),
+      optional(seq(
+        kw("RETURN"),
+        choice($.rowtype_attribute, $.type_attribute),
+      )),
+      kw("IS"),
+      choice(
+        $.select_statement,
+        $.combining_query,
+      )
+    ),
+    cursor_parameter_dec: $ => seq(
+      field("name", $.identifier),
+      optional(kw("IN")),
+      field("datatype",$._type),
+      optional(seq(
+        choice(kw("DEFAULT"), tok(":=")),
+        field("default_value", $._expression),
+      )),
+    ),
+
+    exception_handler: $ => seq(
+      kw("WHEN"),
+      choice(
+        sep1($.identifier, kw("OR")),
+        kw("OTHERS"),
+      ),
+      kw("THEN"),
+      $._pl_sql_statements,
+    ),
+
+    /* TODO: make the last semicolon optional
+     * _pl_sql_statements: $ => seq(
+     *   sep1($._pl_sql_statement, ";"),
+     *   optional(";"),
+     * ),
+     */
+    _pl_sql_statements: $ => repeat1(seq($._pl_sql_statement, ";")),
+    _pl_sql_statement: $ => seq(optional($.label), choice(
+      $._statement,
+      $.compound_statement,
+      $.assignment_statement,
+      $.if_statement,
+      $.basic_loop_statement,
+      $.function_call,
+      $.exit_statement,
+      $.continue_statement,
+      $.while_loop_statement,
+      $.for_loop_statement,
+      $.goto_statement,
+      alias($.NULL, $.null_statement),
+      $.forall_statement,
+      $.open_statement,
+      $.close_statement,
+      $.open_for_statement,
+      $.fetch_statement,
+      $.raise_statement,
+    )),
+    assignment_statement: $ => seq(
+      field("target", choice(
+        /* TODO:
+         * collection target,
+         * cursor target,
+         * placeholder
+         */
+        $._identifier
+      )),
+      tok(":="),
+      field("value", $._expression)
+    ),
+
+    if_statement: $ => seq(
+      kw("IF"),
+      field("condition", $._expression),
+      kw("THEN"),
+      $._pl_sql_statements,
+      repeat($.elsif_clause),
+      optional($.else_clause),
+      kw("END IF")
+    ),
+    elsif_clause: $ => seq(
+      tok("ELSIF"),
+      field("condition", $._expression),
+      kw("THEN"),
+      $._pl_sql_statements,
+    ),
+    else_clause: $ => seq(
+      kw("ELSE"),
+      $._pl_sql_statements,
+    ),
+
+    label: $ => choice(
+      seq($.identifier, ':'),
+      seq("<<", $.identifier, ">>")
+    ),
+    basic_loop_statement: $ => seq(
+      tok("LOOP"),
+      $._pl_sql_statements,
+      kw("END LOOP"),
+      optional(field("end_label", $.identifier)),
+    ),
+    exit_statement: $ => seq(
+      tok("EXIT"),
+      field("label", optional($.identifier)),
+      optional(seq(kw("WHEN"), field("condition", $._expression))),
+    ),
+    continue_statement: $ => seq(
+      tok("CONTINUE"),
+      field("label", optional($.identifier)),
+      optional(seq(kw("WHEN"), field("condition", $._expression))),
+    ),
+
+    while_loop_statement: $ => seq(
+      tok("WHILE"),
+      field("condition", $._expression),
+      tok("LOOP"),
+      $._pl_sql_statements,
+      kw("END LOOP"),
+      optional(field("end_label", $.identifier)),
+    ),
+
+    for_loop_statement: $ => seq(
+      tok("FOR"),
+      field("iterator", $.iterator),
+      tok("LOOP"),
+      $._pl_sql_statements,
+      kw("END LOOP"),
+      optional(field("end_label", $.identifier)),
+    ),
+    iterator: $ => seq(
+      $.iterand_decl,
+      optional(seq(",", $.iterand_decl)),
+      kw('IN'),
+      commaSep1($.qual_iteration_ctl),
+    ),
+    iterand_decl: $ => seq(
+      $.identifier,
+      optional(choice(
+        tok("MUTABLE"),
+        kw("IMMUTABLE")
+      )),
+      optional($._type)
+    ),
+    qual_iteration_ctl: $ => seq(
+      optional(tok("REVERSE")),
+      $._iteration_control,
+      optional(seq(kw("WHILE"), $._expression)),
+      optional(seq(kw("WHEN"), $._expression))
+    ),
+    _iteration_control: $ => choice(
+      $.stepped_control,
+      $.single_expression_control,
+      $.values_of_control,
+      $.pairs_of_control,
+      $.indices_of_control,
+      $.cursor_iteration_control,
+    ),
+    stepped_control: $ => seq(
+      field("low_bound", $._expression),
+      tok(".."),
+      field("high_bound", $._expression),
+      optional(seq(kw("BY"), field("step", $.number)))
+    ),
+    single_expression_control: $ => seq(
+      optional(kw("REPEAT")),
+      $._expression,
+    ),
+    values_of_control: $ => seq(
+      tok("VALUES OF"),
+      $._ctl_expr
+    ),
+    pairs_of_control: $ => seq(
+      tok("PAIRS OF"),
+      $._ctl_expr
+    ),
+    indices_of_control: $ => seq(
+      tok("INDICES OF"),
+      $._ctl_expr,
+      optional(seq(
+        kw("BETWEEN"),
+        field("low_bound", $._expression),
+        kw("AND"),
+        field("high_bound", $._expression),
+      ))
+    ),
+    _ctl_expr: $ => choice(
+      $._expression,
+      seq("(", $._statement, ")")
+    ),
+    cursor_iteration_control: $ => seq(
+      "(",
+      // $.identifier,
+      $._statement,
+      ")"
+    ),
+
+    forall_statement: $ => seq(
+      tok("FORALL"),
+      field("index", $.identifier),
+      kw("IN"),
+      alias(choice(
+        $.stepped_control,
+        $.indices_of_control,
+        $.values_of_control
+      ), $.bounds_clause),
+      optional(kw("SAVE EXCEPTIONS")),
+      $._statement,
+    ),
+
+    goto_statement: $ => seq(tok("GOTO"), $.identifier),
+
+    open_statement: $ => seq(
+      tok("OPEN"),
+      $.identifier,
+      "(", commaSep1(choice($._expression, $.named_argument)), ")"
+    ),
+    close_statement: $ => seq(tok("CLOSE"), $.identifier),
+    open_for_statement: $ => seq(
+      tok("OPEN"),
+      $.identifier,
+      kw("FOR"),
+      choice(
+        $.select_statement,
+        $.identifier,
+        $.string,
+      ),
+      optional($.bind_variables)
+    ),
+    bind_variables: $ => seq(kw("USING"), commaSep(seq(optional("IN"), optional("OUT"), $._expression))),
+
+    into_clause: $ => seq(kw("INTO"), commaSep1($.identifier)),
+    bulk_collect_into_clause: $ => seq(tok("BULK"), kw("COLLECT"), kw("INTO"), commaSep1($.identifier)),
+    returning_into_clause: $ => seq(
+      choice(
+        // TODO: kw("RETURN"),
+        kw("RETURNING")
+      ),
+      commaSep($._identifier),
+      choice(choice($.into_clause, $.bulk_collect_into_clause))
+    ),
+    _returning_clause: $ => choice($.returning_clause, $.returning_into_clause),
+    fetch_statement: $ => seq(
+      kw("FETCH"),
+      $.identifier,
+      choice(
+        $.into_clause,
+        seq($.bulk_collect_into_clause, optional($.limit_clause))
+      )
+    ),
+
+    raise_statement: $ => seq(tok("RAISE"), optional($.identifier)),
+
   },
 });
 

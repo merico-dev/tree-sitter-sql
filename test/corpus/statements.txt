@@ -2776,16 +2776,16 @@ ALTER TABLE foo
       (identifier)))
   (alter_table_statement
     (identifier)
-    (disable_row_level_security))
+    (set_row_level_security))
   (alter_table_statement
     (identifier)
-    (enable_row_level_security))
+    (set_row_level_security))
   (alter_table_statement
     (identifier)
-    (force_row_level_security))
+    (set_row_level_security))
   (alter_table_statement
     (identifier)
-    (no_force_row_level_security))
+    (set_row_level_security))
   (alter_table_statement
     (identifier)
     (cluster_on
