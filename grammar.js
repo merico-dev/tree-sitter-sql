@@ -696,6 +696,10 @@ module.exports = grammar({
         kw("BEGIN"),
         optional(kw("ATOMIC")),
         $._pl_sql_statements,
+        optional(seq(
+          kw("EXCEPTION"),
+          repeat($.exception_handler),
+        )),
         kw("END"),
         optional(field("end_label", $.identifier)),
       )),
@@ -1767,7 +1771,7 @@ module.exports = grammar({
         $.set_clause,
         optional($.from_clause),
         optional($.where_clause),
-        optional($.returning_clause),
+        optional($._returning_clause),
       ),
     set_clause: $ => seq(kw("SET"), commaSep1($.assignment_expression)),
     assignment_expression: $ =>
@@ -1800,7 +1804,7 @@ module.exports = grammar({
           $.set_clause,
         ),
         optional($.on_conflict),
-        optional($.returning_clause),
+        optional($._returning_clause),
       ),
     overriding_value: $ =>
       seq(kw("OVERRIDING"), choice(kw("SYSTEM"), kw("USER")), kw("VALUE")),
@@ -1839,7 +1843,7 @@ module.exports = grammar({
         optional("*"),
         optional(seq(optional(kw("AS")), field("table_alias", $.alias))),
         optional($.where_clause),
-        optional($.returning_clause)
+        optional($._returning_clause),
       )),
 
     conditional_expression: $ =>
@@ -2201,7 +2205,6 @@ module.exports = grammar({
         /* TODO:
          * collection_variable_decl,
          * cursor_variable_declaration,
-         * exception_declaration,
          * record_variable_declaration
          */
         $._type_definition,
@@ -2346,6 +2349,16 @@ module.exports = grammar({
       )),
     ),
 
+    exception_handler: $ => seq(
+      kw("WHEN"),
+      choice(
+        sep1($.identifier, kw("OR")),
+        kw("OTHERS"),
+      ),
+      kw("THEN"),
+      $._pl_sql_statements,
+    ),
+
     /* TODO: make the last semicolon optional
      * _pl_sql_statements: $ => seq(
      *   sep1($._pl_sql_statement, ";"),
@@ -2367,6 +2380,11 @@ module.exports = grammar({
       $.goto_statement,
       alias($.NULL, $.null_statement),
       $.forall_statement,
+      $.open_statement,
+      $.close_statement,
+      $.open_for_statement,
+      $.fetch_statement,
+      $.raise_statement,
     )),
     assignment_statement: $ => seq(
       field("target", choice(
@@ -2520,6 +2538,47 @@ module.exports = grammar({
     ),
 
     goto_statement: $ => seq(tok("GOTO"), $.identifier),
+
+    open_statement: $ => seq(
+      tok("OPEN"),
+      $.identifier,
+      "(", commaSep1(choice($._expression, $.named_argument)), ")"
+    ),
+    close_statement: $ => seq(tok("CLOSE"), $.identifier),
+    open_for_statement: $ => seq(
+      tok("OPEN"),
+      $.identifier,
+      kw("FOR"),
+      choice(
+        $.select_statement,
+        $.identifier,
+        $.string,
+      ),
+      optional($.bind_variables)
+    ),
+    bind_variables: $ => seq(kw("USING"), commaSep(seq(optional("IN"), optional("OUT"), $._expression))),
+
+    into_clause: $ => seq(kw("INTO"), commaSep1($.identifier)),
+    bulk_collect_into_clause: $ => seq(tok("BULK"), kw("COLLECT"), kw("INTO"), commaSep1($.identifier)),
+    returning_into_clause: $ => seq(
+      choice(
+        // TODO: kw("RETURN"),
+        kw("RETURNING")
+      ),
+      commaSep($._identifier),
+      choice(choice($.into_clause, $.bulk_collect_into_clause))
+    ),
+    _returning_clause: $ => choice($.returning_clause, $.returning_into_clause),
+    fetch_statement: $ => seq(
+      kw("FETCH"),
+      $.identifier,
+      choice(
+        $.into_clause,
+        seq($.bulk_collect_into_clause, optional($.limit_clause))
+      )
+    ),
+
+    raise_statement: $ => seq(tok("RAISE"), optional($.identifier)),
 
   },
 });

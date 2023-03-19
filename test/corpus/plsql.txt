@@ -1314,3 +1314,225 @@ END;
                 (binary_expression
                   (identifier)
                   (number))))))))))
+
+================================================================================
+OPEN statement
+================================================================================
+
+CREATE PROCEDURE proc()
+IS
+BEGIN
+  OPEN cur('ST_CLERK', 5000);
+END;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (identifier)
+    (function_parameters)
+    (function_body
+      (compound_statement
+        (open_statement
+          (identifier)
+          (string)
+          (number))))))
+
+================================================================================
+CLOSE statement
+================================================================================
+
+CREATE PROCEDURE proc()
+IS
+BEGIN
+  CLOSE cur;
+END;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (identifier)
+    (function_parameters)
+    (function_body
+      (compound_statement
+        (close_statement
+          (identifier))))))
+
+================================================================================
+OPEN FOR statement
+================================================================================
+
+CREATE PROCEDURE proc()
+IS
+BEGIN
+  OPEN cur FOR SELECT * FROM foo;
+  OPEN cur FOR 'SELECT * FROM TABLE(:1)' USING v1;
+  stmt := 'SELECT * FROM foo WHERE id = :i';
+  OPEN cur FOR stmt USING 'value';
+END;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (identifier)
+    (function_parameters)
+    (function_body
+      (compound_statement
+        (open_for_statement
+          (identifier)
+          (select_statement
+            (select_clause
+              (select_item
+                (asterisk_expression)))
+            (from_clause
+              (from_item
+                (identifier)))))
+        (open_for_statement
+          (identifier)
+          (string)
+          (bind_variables
+            (identifier)))
+        (assignment_statement
+          (identifier)
+          (string))
+        (open_for_statement
+          (identifier)
+          (identifier)
+          (bind_variables
+            (string)))))))
+
+================================================================================
+Exception handlers
+================================================================================
+
+CREATE PROCEDURE proc()
+IS
+BEGIN
+  temp := col;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE ('No Data found' || temp);
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE ('Unexpected error');
+END;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (identifier)
+    (function_parameters)
+    (function_body
+      (compound_statement
+        (assignment_statement
+          (identifier)
+          (identifier))
+        (exception_handler
+          (identifier)
+          (function_call
+            (dotted_name
+              (identifier)
+              (identifier))
+            (binary_expression
+              (string)
+              (identifier))))
+        (exception_handler
+          (function_call
+            (dotted_name
+              (identifier)
+              (identifier))
+            (string)))))))
+
+================================================================================
+FETCH statement
+================================================================================
+
+CREATE PROCEDURE proc()
+IS
+BEGIN
+  FETCH c1 INTO v1, v2, v3;
+  FETCH c1 BULK COLLECT INTO v1, v2, v3 LIMIT 10;
+END;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (identifier)
+    (function_parameters)
+    (function_body
+      (compound_statement
+        (fetch_statement
+          (identifier)
+          (into_clause
+            (identifier)
+            (identifier)
+            (identifier)))
+        (fetch_statement
+          (identifier)
+          (bulk_collect_into_clause
+            (identifier)
+            (identifier)
+            (identifier))
+          (limit_clause
+            (number)))))))
+
+================================================================================
+RAISE statement
+================================================================================
+
+CREATE PROCEDURE proc()
+IS
+BEGIN
+  RAISE;
+  RAISE INVALID_NUMBER;
+  RAISE exception1;
+END;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (identifier)
+    (function_parameters)
+    (function_body
+      (compound_statement
+        (raise_statement)
+        (raise_statement
+          (identifier))
+        (raise_statement
+          (identifier))))))
+
+================================================================================
+RETURNING INTO clause
+================================================================================
+
+DELETE FROM foo RETURNING a, b INTO x, y;
+DELETE FROM foo RETURNING INTO x, y;
+DELETE FROM foo RETURNING BULK COLLECT INTO x, y;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (delete_statement
+    (identifier)
+    (returning_into_clause
+      (identifier)
+      (identifier)
+      (into_clause
+        (identifier)
+        (identifier))))
+  (delete_statement
+    (identifier)
+    (returning_into_clause
+      (into_clause
+        (identifier)
+        (identifier))))
+  (delete_statement
+    (identifier)
+    (returning_into_clause
+      (bulk_collect_into_clause
+        (identifier)
+        (identifier)))))
