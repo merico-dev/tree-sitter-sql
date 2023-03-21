@@ -6458,6 +6458,16 @@
           }
         ]
       },
+      "declarations": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "declare_section",
+            "named": true
+          }
+        ]
+      },
       "hint": {
         "multiple": true,
         "required": false,
@@ -6592,16 +6602,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "declare_section",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -19311,9 +19311,17 @@
         ]
       },
       "constraint": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "character_set",
+            "named": true
+          },
+          {
+            "type": "null_constraint",
+            "named": true
+          },
           {
             "type": "range",
             "named": true
@@ -19330,20 +19338,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "character_set",
-          "named": true
-        },
-        {
-          "type": "null_constraint",
-          "named": true
-        }
-      ]
     }
   },
   {
