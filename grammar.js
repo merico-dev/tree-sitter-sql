@@ -718,7 +718,7 @@ module.exports = grammar({
         repeat(field("hint", $._function_hint)),
         optional(seq(
           choice(kw("IS"), kw("AS")),
-          optional($.declare_section),
+          optional(field("declarations", $.declare_section)),
         )),
         field("body", $.function_body),
         repeat(field("hint", $._function_hint)),
@@ -2266,11 +2266,8 @@ module.exports = grammar({
       field("name", $.identifier),
       kw("IS"),
       field("base_type", $._type),
-      optional(choice(
-        field("constraint", $.range),
-        $.character_set
-      )),
-      optional($.null_constraint)
+      optional(field("constraint", choice($.range, $.character_set))),
+      optional(field("constraint", $.null_constraint))
      ),
     range: $ => seq(
       kw("RANGE"),
