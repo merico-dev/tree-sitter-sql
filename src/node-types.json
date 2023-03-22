@@ -8765,256 +8765,261 @@
   {
     "type": "else_clause",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "alter_default_privileges_statement",
-          "named": true
-        },
-        {
-          "type": "alter_statement",
-          "named": true
-        },
-        {
-          "type": "alter_table_statement",
-          "named": true
-        },
-        {
-          "type": "alter_type_statement",
-          "named": true
-        },
-        {
-          "type": "assignment_statement",
-          "named": true
-        },
-        {
-          "type": "basic_loop_statement",
-          "named": true
-        },
-        {
-          "type": "begin_statement",
-          "named": true
-        },
-        {
-          "type": "close_statement",
-          "named": true
-        },
-        {
-          "type": "combining_query",
-          "named": true
-        },
-        {
-          "type": "comment_statement",
-          "named": true
-        },
-        {
-          "type": "commit_statement",
-          "named": true
-        },
-        {
-          "type": "compound_statement",
-          "named": true
-        },
-        {
-          "type": "continue_statement",
-          "named": true
-        },
-        {
-          "type": "create_aggregate_statement",
-          "named": true
-        },
-        {
-          "type": "create_database_statement",
-          "named": true
-        },
-        {
-          "type": "create_domain_statement",
-          "named": true
-        },
-        {
-          "type": "create_event_trigger_statement",
-          "named": true
-        },
-        {
-          "type": "create_extension_statement",
-          "named": true
-        },
-        {
-          "type": "create_function_statement",
-          "named": true
-        },
-        {
-          "type": "create_index_statement",
-          "named": true
-        },
-        {
-          "type": "create_materialized_view_statement",
-          "named": true
-        },
-        {
-          "type": "create_policy_statement",
-          "named": true
-        },
-        {
-          "type": "create_role_statement",
-          "named": true
-        },
-        {
-          "type": "create_schema_statement",
-          "named": true
-        },
-        {
-          "type": "create_statement",
-          "named": true
-        },
-        {
-          "type": "create_table_statement",
-          "named": true
-        },
-        {
-          "type": "create_trigger_statement",
-          "named": true
-        },
-        {
-          "type": "create_type_statement",
-          "named": true
-        },
-        {
-          "type": "create_view_statement",
-          "named": true
-        },
-        {
-          "type": "declare_statement",
-          "named": true
-        },
-        {
-          "type": "delete_statement",
-          "named": true
-        },
-        {
-          "type": "do_statement",
-          "named": true
-        },
-        {
-          "type": "drop_database_statement",
-          "named": true
-        },
-        {
-          "type": "drop_function_statement",
-          "named": true
-        },
-        {
-          "type": "drop_statement",
-          "named": true
-        },
-        {
-          "type": "exit_statement",
-          "named": true
-        },
-        {
-          "type": "fetch_statement",
-          "named": true
-        },
-        {
-          "type": "for_loop_statement",
-          "named": true
-        },
-        {
-          "type": "forall_statement",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "goto_statement",
-          "named": true
-        },
-        {
-          "type": "grant_statement",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "insert_statement",
-          "named": true
-        },
-        {
-          "type": "label",
-          "named": true
-        },
-        {
-          "type": "null_statement",
-          "named": true
-        },
-        {
-          "type": "open_for_statement",
-          "named": true
-        },
-        {
-          "type": "open_statement",
-          "named": true
-        },
-        {
-          "type": "pg_command",
-          "named": true
-        },
-        {
-          "type": "raise_statement",
-          "named": true
-        },
-        {
-          "type": "return_statement",
-          "named": true
-        },
-        {
-          "type": "revoke_statement",
-          "named": true
-        },
-        {
-          "type": "rollback_statement",
-          "named": true
-        },
-        {
-          "type": "savepoint_statement",
-          "named": true
-        },
-        {
-          "type": "select_statement",
-          "named": true
-        },
-        {
-          "type": "set_statement",
-          "named": true
-        },
-        {
-          "type": "truncate_statement",
-          "named": true
-        },
-        {
-          "type": "update_statement",
-          "named": true
-        },
-        {
-          "type": "vacuum_statement",
-          "named": true
-        },
-        {
-          "type": "values_clause",
-          "named": true
-        },
-        {
-          "type": "while_loop_statement",
-          "named": true
-        }
-      ]
+    "fields": {
+      "consequence": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "alter_default_privileges_statement",
+            "named": true
+          },
+          {
+            "type": "alter_statement",
+            "named": true
+          },
+          {
+            "type": "alter_table_statement",
+            "named": true
+          },
+          {
+            "type": "alter_type_statement",
+            "named": true
+          },
+          {
+            "type": "assignment_statement",
+            "named": true
+          },
+          {
+            "type": "basic_loop_statement",
+            "named": true
+          },
+          {
+            "type": "begin_statement",
+            "named": true
+          },
+          {
+            "type": "close_statement",
+            "named": true
+          },
+          {
+            "type": "combining_query",
+            "named": true
+          },
+          {
+            "type": "comment_statement",
+            "named": true
+          },
+          {
+            "type": "commit_statement",
+            "named": true
+          },
+          {
+            "type": "compound_statement",
+            "named": true
+          },
+          {
+            "type": "continue_statement",
+            "named": true
+          },
+          {
+            "type": "create_aggregate_statement",
+            "named": true
+          },
+          {
+            "type": "create_database_statement",
+            "named": true
+          },
+          {
+            "type": "create_domain_statement",
+            "named": true
+          },
+          {
+            "type": "create_event_trigger_statement",
+            "named": true
+          },
+          {
+            "type": "create_extension_statement",
+            "named": true
+          },
+          {
+            "type": "create_function_statement",
+            "named": true
+          },
+          {
+            "type": "create_index_statement",
+            "named": true
+          },
+          {
+            "type": "create_materialized_view_statement",
+            "named": true
+          },
+          {
+            "type": "create_policy_statement",
+            "named": true
+          },
+          {
+            "type": "create_role_statement",
+            "named": true
+          },
+          {
+            "type": "create_schema_statement",
+            "named": true
+          },
+          {
+            "type": "create_statement",
+            "named": true
+          },
+          {
+            "type": "create_table_statement",
+            "named": true
+          },
+          {
+            "type": "create_trigger_statement",
+            "named": true
+          },
+          {
+            "type": "create_type_statement",
+            "named": true
+          },
+          {
+            "type": "create_view_statement",
+            "named": true
+          },
+          {
+            "type": "declare_statement",
+            "named": true
+          },
+          {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
+            "type": "do_statement",
+            "named": true
+          },
+          {
+            "type": "drop_database_statement",
+            "named": true
+          },
+          {
+            "type": "drop_function_statement",
+            "named": true
+          },
+          {
+            "type": "drop_statement",
+            "named": true
+          },
+          {
+            "type": "exit_statement",
+            "named": true
+          },
+          {
+            "type": "fetch_statement",
+            "named": true
+          },
+          {
+            "type": "for_loop_statement",
+            "named": true
+          },
+          {
+            "type": "forall_statement",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "goto_statement",
+            "named": true
+          },
+          {
+            "type": "grant_statement",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "insert_statement",
+            "named": true
+          },
+          {
+            "type": "label",
+            "named": true
+          },
+          {
+            "type": "null_statement",
+            "named": true
+          },
+          {
+            "type": "open_for_statement",
+            "named": true
+          },
+          {
+            "type": "open_statement",
+            "named": true
+          },
+          {
+            "type": "pg_command",
+            "named": true
+          },
+          {
+            "type": "raise_statement",
+            "named": true
+          },
+          {
+            "type": "return_statement",
+            "named": true
+          },
+          {
+            "type": "revoke_statement",
+            "named": true
+          },
+          {
+            "type": "rollback_statement",
+            "named": true
+          },
+          {
+            "type": "savepoint_statement",
+            "named": true
+          },
+          {
+            "type": "select_statement",
+            "named": true
+          },
+          {
+            "type": "set_statement",
+            "named": true
+          },
+          {
+            "type": "truncate_statement",
+            "named": true
+          },
+          {
+            "type": "update_statement",
+            "named": true
+          },
+          {
+            "type": "vacuum_statement",
+            "named": true
+          },
+          {
+            "type": "values_clause",
+            "named": true
+          },
+          {
+            "type": "while_loop_statement",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -9158,257 +9163,261 @@
             "named": true
           }
         ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "alter_default_privileges_statement",
+            "named": true
+          },
+          {
+            "type": "alter_statement",
+            "named": true
+          },
+          {
+            "type": "alter_table_statement",
+            "named": true
+          },
+          {
+            "type": "alter_type_statement",
+            "named": true
+          },
+          {
+            "type": "assignment_statement",
+            "named": true
+          },
+          {
+            "type": "basic_loop_statement",
+            "named": true
+          },
+          {
+            "type": "begin_statement",
+            "named": true
+          },
+          {
+            "type": "close_statement",
+            "named": true
+          },
+          {
+            "type": "combining_query",
+            "named": true
+          },
+          {
+            "type": "comment_statement",
+            "named": true
+          },
+          {
+            "type": "commit_statement",
+            "named": true
+          },
+          {
+            "type": "compound_statement",
+            "named": true
+          },
+          {
+            "type": "continue_statement",
+            "named": true
+          },
+          {
+            "type": "create_aggregate_statement",
+            "named": true
+          },
+          {
+            "type": "create_database_statement",
+            "named": true
+          },
+          {
+            "type": "create_domain_statement",
+            "named": true
+          },
+          {
+            "type": "create_event_trigger_statement",
+            "named": true
+          },
+          {
+            "type": "create_extension_statement",
+            "named": true
+          },
+          {
+            "type": "create_function_statement",
+            "named": true
+          },
+          {
+            "type": "create_index_statement",
+            "named": true
+          },
+          {
+            "type": "create_materialized_view_statement",
+            "named": true
+          },
+          {
+            "type": "create_policy_statement",
+            "named": true
+          },
+          {
+            "type": "create_role_statement",
+            "named": true
+          },
+          {
+            "type": "create_schema_statement",
+            "named": true
+          },
+          {
+            "type": "create_statement",
+            "named": true
+          },
+          {
+            "type": "create_table_statement",
+            "named": true
+          },
+          {
+            "type": "create_trigger_statement",
+            "named": true
+          },
+          {
+            "type": "create_type_statement",
+            "named": true
+          },
+          {
+            "type": "create_view_statement",
+            "named": true
+          },
+          {
+            "type": "declare_statement",
+            "named": true
+          },
+          {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
+            "type": "do_statement",
+            "named": true
+          },
+          {
+            "type": "drop_database_statement",
+            "named": true
+          },
+          {
+            "type": "drop_function_statement",
+            "named": true
+          },
+          {
+            "type": "drop_statement",
+            "named": true
+          },
+          {
+            "type": "exit_statement",
+            "named": true
+          },
+          {
+            "type": "fetch_statement",
+            "named": true
+          },
+          {
+            "type": "for_loop_statement",
+            "named": true
+          },
+          {
+            "type": "forall_statement",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "goto_statement",
+            "named": true
+          },
+          {
+            "type": "grant_statement",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "insert_statement",
+            "named": true
+          },
+          {
+            "type": "label",
+            "named": true
+          },
+          {
+            "type": "null_statement",
+            "named": true
+          },
+          {
+            "type": "open_for_statement",
+            "named": true
+          },
+          {
+            "type": "open_statement",
+            "named": true
+          },
+          {
+            "type": "pg_command",
+            "named": true
+          },
+          {
+            "type": "raise_statement",
+            "named": true
+          },
+          {
+            "type": "return_statement",
+            "named": true
+          },
+          {
+            "type": "revoke_statement",
+            "named": true
+          },
+          {
+            "type": "rollback_statement",
+            "named": true
+          },
+          {
+            "type": "savepoint_statement",
+            "named": true
+          },
+          {
+            "type": "select_statement",
+            "named": true
+          },
+          {
+            "type": "set_statement",
+            "named": true
+          },
+          {
+            "type": "truncate_statement",
+            "named": true
+          },
+          {
+            "type": "update_statement",
+            "named": true
+          },
+          {
+            "type": "vacuum_statement",
+            "named": true
+          },
+          {
+            "type": "values_clause",
+            "named": true
+          },
+          {
+            "type": "while_loop_statement",
+            "named": true
+          }
+        ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "alter_default_privileges_statement",
-          "named": true
-        },
-        {
-          "type": "alter_statement",
-          "named": true
-        },
-        {
-          "type": "alter_table_statement",
-          "named": true
-        },
-        {
-          "type": "alter_type_statement",
-          "named": true
-        },
-        {
-          "type": "assignment_statement",
-          "named": true
-        },
-        {
-          "type": "basic_loop_statement",
-          "named": true
-        },
-        {
-          "type": "begin_statement",
-          "named": true
-        },
-        {
-          "type": "close_statement",
-          "named": true
-        },
-        {
-          "type": "combining_query",
-          "named": true
-        },
-        {
-          "type": "comment_statement",
-          "named": true
-        },
-        {
-          "type": "commit_statement",
-          "named": true
-        },
-        {
-          "type": "compound_statement",
-          "named": true
-        },
-        {
-          "type": "continue_statement",
-          "named": true
-        },
-        {
-          "type": "create_aggregate_statement",
-          "named": true
-        },
-        {
-          "type": "create_database_statement",
-          "named": true
-        },
-        {
-          "type": "create_domain_statement",
-          "named": true
-        },
-        {
-          "type": "create_event_trigger_statement",
-          "named": true
-        },
-        {
-          "type": "create_extension_statement",
-          "named": true
-        },
-        {
-          "type": "create_function_statement",
-          "named": true
-        },
-        {
-          "type": "create_index_statement",
-          "named": true
-        },
-        {
-          "type": "create_materialized_view_statement",
-          "named": true
-        },
-        {
-          "type": "create_policy_statement",
-          "named": true
-        },
-        {
-          "type": "create_role_statement",
-          "named": true
-        },
-        {
-          "type": "create_schema_statement",
-          "named": true
-        },
-        {
-          "type": "create_statement",
-          "named": true
-        },
-        {
-          "type": "create_table_statement",
-          "named": true
-        },
-        {
-          "type": "create_trigger_statement",
-          "named": true
-        },
-        {
-          "type": "create_type_statement",
-          "named": true
-        },
-        {
-          "type": "create_view_statement",
-          "named": true
-        },
-        {
-          "type": "declare_statement",
-          "named": true
-        },
-        {
-          "type": "delete_statement",
-          "named": true
-        },
-        {
-          "type": "do_statement",
-          "named": true
-        },
-        {
-          "type": "drop_database_statement",
-          "named": true
-        },
-        {
-          "type": "drop_function_statement",
-          "named": true
-        },
-        {
-          "type": "drop_statement",
-          "named": true
-        },
-        {
-          "type": "exit_statement",
-          "named": true
-        },
-        {
-          "type": "fetch_statement",
-          "named": true
-        },
-        {
-          "type": "for_loop_statement",
-          "named": true
-        },
-        {
-          "type": "forall_statement",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "goto_statement",
-          "named": true
-        },
-        {
-          "type": "grant_statement",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "insert_statement",
-          "named": true
-        },
-        {
-          "type": "label",
-          "named": true
-        },
-        {
-          "type": "null_statement",
-          "named": true
-        },
-        {
-          "type": "open_for_statement",
-          "named": true
-        },
-        {
-          "type": "open_statement",
-          "named": true
-        },
-        {
-          "type": "pg_command",
-          "named": true
-        },
-        {
-          "type": "raise_statement",
-          "named": true
-        },
-        {
-          "type": "return_statement",
-          "named": true
-        },
-        {
-          "type": "revoke_statement",
-          "named": true
-        },
-        {
-          "type": "rollback_statement",
-          "named": true
-        },
-        {
-          "type": "savepoint_statement",
-          "named": true
-        },
-        {
-          "type": "select_statement",
-          "named": true
-        },
-        {
-          "type": "set_statement",
-          "named": true
-        },
-        {
-          "type": "truncate_statement",
-          "named": true
-        },
-        {
-          "type": "update_statement",
-          "named": true
-        },
-        {
-          "type": "vacuum_statement",
-          "named": true
-        },
-        {
-          "type": "values_clause",
-          "named": true
-        },
-        {
-          "type": "while_loop_statement",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -12305,6 +12314,16 @@
     "type": "if_statement",
     "named": true,
     "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "elsif_clause",
+            "named": true
+          }
+        ]
+      },
       "condition": {
         "multiple": true,
         "required": true,
@@ -12442,265 +12461,271 @@
             "named": true
           }
         ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "alter_default_privileges_statement",
+            "named": true
+          },
+          {
+            "type": "alter_statement",
+            "named": true
+          },
+          {
+            "type": "alter_table_statement",
+            "named": true
+          },
+          {
+            "type": "alter_type_statement",
+            "named": true
+          },
+          {
+            "type": "assignment_statement",
+            "named": true
+          },
+          {
+            "type": "basic_loop_statement",
+            "named": true
+          },
+          {
+            "type": "begin_statement",
+            "named": true
+          },
+          {
+            "type": "close_statement",
+            "named": true
+          },
+          {
+            "type": "combining_query",
+            "named": true
+          },
+          {
+            "type": "comment_statement",
+            "named": true
+          },
+          {
+            "type": "commit_statement",
+            "named": true
+          },
+          {
+            "type": "compound_statement",
+            "named": true
+          },
+          {
+            "type": "continue_statement",
+            "named": true
+          },
+          {
+            "type": "create_aggregate_statement",
+            "named": true
+          },
+          {
+            "type": "create_database_statement",
+            "named": true
+          },
+          {
+            "type": "create_domain_statement",
+            "named": true
+          },
+          {
+            "type": "create_event_trigger_statement",
+            "named": true
+          },
+          {
+            "type": "create_extension_statement",
+            "named": true
+          },
+          {
+            "type": "create_function_statement",
+            "named": true
+          },
+          {
+            "type": "create_index_statement",
+            "named": true
+          },
+          {
+            "type": "create_materialized_view_statement",
+            "named": true
+          },
+          {
+            "type": "create_policy_statement",
+            "named": true
+          },
+          {
+            "type": "create_role_statement",
+            "named": true
+          },
+          {
+            "type": "create_schema_statement",
+            "named": true
+          },
+          {
+            "type": "create_statement",
+            "named": true
+          },
+          {
+            "type": "create_table_statement",
+            "named": true
+          },
+          {
+            "type": "create_trigger_statement",
+            "named": true
+          },
+          {
+            "type": "create_type_statement",
+            "named": true
+          },
+          {
+            "type": "create_view_statement",
+            "named": true
+          },
+          {
+            "type": "declare_statement",
+            "named": true
+          },
+          {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
+            "type": "do_statement",
+            "named": true
+          },
+          {
+            "type": "drop_database_statement",
+            "named": true
+          },
+          {
+            "type": "drop_function_statement",
+            "named": true
+          },
+          {
+            "type": "drop_statement",
+            "named": true
+          },
+          {
+            "type": "exit_statement",
+            "named": true
+          },
+          {
+            "type": "fetch_statement",
+            "named": true
+          },
+          {
+            "type": "for_loop_statement",
+            "named": true
+          },
+          {
+            "type": "forall_statement",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "goto_statement",
+            "named": true
+          },
+          {
+            "type": "grant_statement",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "insert_statement",
+            "named": true
+          },
+          {
+            "type": "label",
+            "named": true
+          },
+          {
+            "type": "null_statement",
+            "named": true
+          },
+          {
+            "type": "open_for_statement",
+            "named": true
+          },
+          {
+            "type": "open_statement",
+            "named": true
+          },
+          {
+            "type": "pg_command",
+            "named": true
+          },
+          {
+            "type": "raise_statement",
+            "named": true
+          },
+          {
+            "type": "return_statement",
+            "named": true
+          },
+          {
+            "type": "revoke_statement",
+            "named": true
+          },
+          {
+            "type": "rollback_statement",
+            "named": true
+          },
+          {
+            "type": "savepoint_statement",
+            "named": true
+          },
+          {
+            "type": "select_statement",
+            "named": true
+          },
+          {
+            "type": "set_statement",
+            "named": true
+          },
+          {
+            "type": "truncate_statement",
+            "named": true
+          },
+          {
+            "type": "update_statement",
+            "named": true
+          },
+          {
+            "type": "vacuum_statement",
+            "named": true
+          },
+          {
+            "type": "values_clause",
+            "named": true
+          },
+          {
+            "type": "while_loop_statement",
+            "named": true
+          }
+        ]
+      },
+      "failure": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "else_clause",
+            "named": true
+          }
+        ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "alter_default_privileges_statement",
-          "named": true
-        },
-        {
-          "type": "alter_statement",
-          "named": true
-        },
-        {
-          "type": "alter_table_statement",
-          "named": true
-        },
-        {
-          "type": "alter_type_statement",
-          "named": true
-        },
-        {
-          "type": "assignment_statement",
-          "named": true
-        },
-        {
-          "type": "basic_loop_statement",
-          "named": true
-        },
-        {
-          "type": "begin_statement",
-          "named": true
-        },
-        {
-          "type": "close_statement",
-          "named": true
-        },
-        {
-          "type": "combining_query",
-          "named": true
-        },
-        {
-          "type": "comment_statement",
-          "named": true
-        },
-        {
-          "type": "commit_statement",
-          "named": true
-        },
-        {
-          "type": "compound_statement",
-          "named": true
-        },
-        {
-          "type": "continue_statement",
-          "named": true
-        },
-        {
-          "type": "create_aggregate_statement",
-          "named": true
-        },
-        {
-          "type": "create_database_statement",
-          "named": true
-        },
-        {
-          "type": "create_domain_statement",
-          "named": true
-        },
-        {
-          "type": "create_event_trigger_statement",
-          "named": true
-        },
-        {
-          "type": "create_extension_statement",
-          "named": true
-        },
-        {
-          "type": "create_function_statement",
-          "named": true
-        },
-        {
-          "type": "create_index_statement",
-          "named": true
-        },
-        {
-          "type": "create_materialized_view_statement",
-          "named": true
-        },
-        {
-          "type": "create_policy_statement",
-          "named": true
-        },
-        {
-          "type": "create_role_statement",
-          "named": true
-        },
-        {
-          "type": "create_schema_statement",
-          "named": true
-        },
-        {
-          "type": "create_statement",
-          "named": true
-        },
-        {
-          "type": "create_table_statement",
-          "named": true
-        },
-        {
-          "type": "create_trigger_statement",
-          "named": true
-        },
-        {
-          "type": "create_type_statement",
-          "named": true
-        },
-        {
-          "type": "create_view_statement",
-          "named": true
-        },
-        {
-          "type": "declare_statement",
-          "named": true
-        },
-        {
-          "type": "delete_statement",
-          "named": true
-        },
-        {
-          "type": "do_statement",
-          "named": true
-        },
-        {
-          "type": "drop_database_statement",
-          "named": true
-        },
-        {
-          "type": "drop_function_statement",
-          "named": true
-        },
-        {
-          "type": "drop_statement",
-          "named": true
-        },
-        {
-          "type": "else_clause",
-          "named": true
-        },
-        {
-          "type": "elsif_clause",
-          "named": true
-        },
-        {
-          "type": "exit_statement",
-          "named": true
-        },
-        {
-          "type": "fetch_statement",
-          "named": true
-        },
-        {
-          "type": "for_loop_statement",
-          "named": true
-        },
-        {
-          "type": "forall_statement",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "goto_statement",
-          "named": true
-        },
-        {
-          "type": "grant_statement",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "insert_statement",
-          "named": true
-        },
-        {
-          "type": "label",
-          "named": true
-        },
-        {
-          "type": "null_statement",
-          "named": true
-        },
-        {
-          "type": "open_for_statement",
-          "named": true
-        },
-        {
-          "type": "open_statement",
-          "named": true
-        },
-        {
-          "type": "pg_command",
-          "named": true
-        },
-        {
-          "type": "raise_statement",
-          "named": true
-        },
-        {
-          "type": "return_statement",
-          "named": true
-        },
-        {
-          "type": "revoke_statement",
-          "named": true
-        },
-        {
-          "type": "rollback_statement",
-          "named": true
-        },
-        {
-          "type": "savepoint_statement",
-          "named": true
-        },
-        {
-          "type": "select_statement",
-          "named": true
-        },
-        {
-          "type": "set_statement",
-          "named": true
-        },
-        {
-          "type": "truncate_statement",
-          "named": true
-        },
-        {
-          "type": "update_statement",
-          "named": true
-        },
-        {
-          "type": "vacuum_statement",
-          "named": true
-        },
-        {
-          "type": "values_clause",
-          "named": true
-        },
-        {
-          "type": "while_loop_statement",
-          "named": true
-        }
-      ]
     }
   },
   {
