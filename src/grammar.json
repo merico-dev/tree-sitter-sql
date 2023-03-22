@@ -18807,27 +18807,39 @@
           "value": "[tT][hH][eE][nN]"
         },
         {
-          "type": "SYMBOL",
-          "name": "_pl_sql_statements"
-        },
-        {
-          "type": "REPEAT",
+          "type": "FIELD",
+          "name": "consequence",
           "content": {
             "type": "SYMBOL",
-            "name": "elsif_clause"
+            "name": "_pl_sql_statements"
           }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
+          "type": "FIELD",
+          "name": "alternative",
+          "content": {
+            "type": "REPEAT",
+            "content": {
               "type": "SYMBOL",
-              "name": "else_clause"
-            },
-            {
-              "type": "BLANK"
+              "name": "elsif_clause"
             }
-          ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "failure",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "else_clause"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
         },
         {
           "type": "SEQ",
@@ -18871,8 +18883,12 @@
           "value": "[tT][hH][eE][nN]"
         },
         {
-          "type": "SYMBOL",
-          "name": "_pl_sql_statements"
+          "type": "FIELD",
+          "name": "consequence",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_pl_sql_statements"
+          }
         }
       ]
     },
@@ -18884,8 +18900,12 @@
           "value": "[eE][lL][sS][eE]"
         },
         {
-          "type": "SYMBOL",
-          "name": "_pl_sql_statements"
+          "type": "FIELD",
+          "name": "consequence",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_pl_sql_statements"
+          }
         }
       ]
     },

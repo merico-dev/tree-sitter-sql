@@ -2400,20 +2400,20 @@ module.exports = grammar({
       kw("IF"),
       field("condition", $._expression),
       kw("THEN"),
-      $._pl_sql_statements,
-      repeat($.elsif_clause),
-      optional($.else_clause),
+      field("consequence", $._pl_sql_statements),
+      field("alternative", repeat($.elsif_clause)),
+      field("failure", optional($.else_clause)),
       kw("END IF")
     ),
     elsif_clause: $ => seq(
       tok("ELSIF"),
       field("condition", $._expression),
       kw("THEN"),
-      $._pl_sql_statements,
+      field("consequence", $._pl_sql_statements),
     ),
     else_clause: $ => seq(
       kw("ELSE"),
-      $._pl_sql_statements,
+      field("consequence", $._pl_sql_statements),
     ),
 
     label: $ => choice(
