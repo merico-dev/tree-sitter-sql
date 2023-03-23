@@ -14137,47 +14137,61 @@
   {
     "type": "iterand_decl",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "array_type",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "table_type",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        }
-      ]
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "table_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
     "type": "iterator",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "iterand_decl",
-          "named": true
-        },
-        {
-          "type": "qual_iteration_ctl",
-          "named": true
-        }
-      ]
+    "fields": {
+      "control": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "qual_iteration_ctl",
+            "named": true
+          }
+        ]
+      },
+      "iterand": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "iterand_decl",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

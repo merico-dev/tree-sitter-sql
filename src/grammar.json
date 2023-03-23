@@ -19247,8 +19247,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "iterand_decl"
+          "type": "FIELD",
+          "name": "iterand",
+          "content": {
+            "type": "SYMBOL",
+            "name": "iterand_decl"
+          }
         },
         {
           "type": "CHOICE",
@@ -19261,8 +19265,12 @@
                   "value": ","
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "iterand_decl"
+                  "type": "FIELD",
+                  "name": "iterand",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "iterand_decl"
+                  }
                 }
               ]
             },
@@ -19279,8 +19287,12 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "qual_iteration_ctl"
+              "type": "FIELD",
+              "name": "control",
+              "content": {
+                "type": "SYMBOL",
+                "name": "qual_iteration_ctl"
+              }
             },
             {
               "type": "REPEAT",
@@ -19292,8 +19304,12 @@
                     "value": ","
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "qual_iteration_ctl"
+                    "type": "FIELD",
+                    "name": "control",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "qual_iteration_ctl"
+                    }
                   }
                 ]
               }
@@ -19306,8 +19322,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "identifier"
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
         },
         {
           "type": "CHOICE",
@@ -19341,8 +19361,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "_type"
+              "type": "FIELD",
+              "name": "type",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_type"
+              }
             },
             {
               "type": "BLANK"
