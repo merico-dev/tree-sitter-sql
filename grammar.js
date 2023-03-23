@@ -2455,18 +2455,18 @@ module.exports = grammar({
       optional(field("end_label", $.identifier)),
     ),
     iterator: $ => seq(
-      $.iterand_decl,
-      optional(seq(",", $.iterand_decl)),
+      field("iterand", $.iterand_decl),
+      optional(seq(",", field("iterand", $.iterand_decl))),
       kw('IN'),
-      commaSep1($.qual_iteration_ctl),
+      commaSep1(field("control", $.qual_iteration_ctl)),
     ),
     iterand_decl: $ => seq(
-      $.identifier,
+      field("name", $.identifier),
       optional(choice(
         tok("MUTABLE"),
         kw("IMMUTABLE")
       )),
-      optional($._type)
+      optional(field("type", $._type))
     ),
     qual_iteration_ctl: $ => seq(
       optional(tok("REVERSE")),
