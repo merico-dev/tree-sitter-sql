@@ -2315,26 +2315,26 @@ module.exports = grammar({
       tok("CURSOR"),
       field("name", $.identifier),
       optional(seq(
-        "(", commaSep1($.cursor_parameter_dec), ")"
+        "(", commaSep1(field("parameter", $.cursor_parameter_dec)), ")"
       )),
       kw("RETURN"),
-      choice($.rowtype_attribute, $.type_attribute),
+      field("return_type", choice($.rowtype_attribute, $.type_attribute)),
     ),
     cursor_definition: $ => seq(
       tok("CURSOR"),
       field("name", $.identifier),
       optional(seq(
-        "(", commaSep1($.cursor_parameter_dec), ")"
+        "(", commaSep1(field("parameter", $.cursor_parameter_dec)), ")"
       )),
       optional(seq(
         kw("RETURN"),
-        choice($.rowtype_attribute, $.type_attribute),
+        field("return_type", choice($.rowtype_attribute, $.type_attribute)),
       )),
       kw("IS"),
-      choice(
+      field("query", choice(
         $.select_statement,
         $.combining_query,
-      )
+      ))
     ),
     cursor_parameter_dec: $ => seq(
       field("name", $.identifier),
@@ -2525,26 +2525,26 @@ module.exports = grammar({
       tok("FORALL"),
       field("index", $.identifier),
       kw("IN"),
-      alias(choice(
+      field("bounds", alias(choice(
         $.stepped_control,
         $.indices_of_control,
         $.values_of_control
-      ), $.bounds_clause),
+      ), $.bounds_clause)),
       optional(kw("SAVE EXCEPTIONS")),
-      $._statement,
+      field("statement", $._statement),
     ),
 
     goto_statement: $ => seq(tok("GOTO"), field("label", $.identifier)),
 
     open_statement: $ => seq(
       tok("OPEN"),
-      $.identifier,
-      "(", commaSep1(choice($._expression, $.named_argument)), ")"
+      field("cursor", $.identifier),
+      "(", commaSep1(field("arguments", choice($._expression, $.named_argument))), ")"
     ),
-    close_statement: $ => seq(tok("CLOSE"), $.identifier),
+    close_statement: $ => seq(tok("CLOSE"), field("cursor", $.identifier)),
     open_for_statement: $ => seq(
       tok("OPEN"),
-      $.identifier,
+      field("cursor", $.identifier),
       kw("FOR"),
       choice(
         $.select_statement,
