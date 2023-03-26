@@ -2235,14 +2235,14 @@ module.exports = grammar({
      ),
     assoc_array_type_def: $ => seq(
       kw("TABLE OF"),
-      $._type,
+      field("type", $._type),
       optional($.null_constraint),
       kw("INDEX BY"),
-      choice(
+      field("index", choice(
         $._type,
         $.type_attribute,
         $.rowtype_attribute
-      ),
+      )),
     ),
     varray_type_def: $ => seq(
       choice(
@@ -2253,12 +2253,12 @@ module.exports = grammar({
       field("size_limit", $.number),
       ")",
       kw("OF"),
-      $._type,
+      field("type", $._type),
       optional($.null_constraint)
     ),
     nested_table_type_def: $ => seq(
       kw("TABLE OF"),
-      $._type,
+      field("type", $._type),
       optional($.null_constraint),
     ),
     subtype_definition: $ => seq(
@@ -2534,7 +2534,7 @@ module.exports = grammar({
       $._statement,
     ),
 
-    goto_statement: $ => seq(tok("GOTO"), $.identifier),
+    goto_statement: $ => seq(tok("GOTO"), field("label", $.identifier)),
 
     open_statement: $ => seq(
       tok("OPEN"),
