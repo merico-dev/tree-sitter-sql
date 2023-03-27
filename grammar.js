@@ -698,7 +698,7 @@ module.exports = grammar({
         $._pl_sql_statements,
         optional(seq(
           kw("EXCEPTION"),
-          repeat($.exception_handler),
+          field("exception_handlers", repeat($.exception_handler)),
         )),
         kw("END"),
         optional(field("end_label", $.identifier)),
@@ -2348,12 +2348,12 @@ module.exports = grammar({
 
     exception_handler: $ => seq(
       kw("WHEN"),
-      choice(
+      field("exceptions", choice(
         sep1($.identifier, kw("OR")),
-        kw("OTHERS"),
-      ),
+        alias(kw("OTHERS"), $.identifier),
+      )),
       kw("THEN"),
-      $._pl_sql_statements,
+      field("body", $._pl_sql_statements),
     ),
 
     /* TODO: make the last semicolon optional
@@ -2546,11 +2546,12 @@ module.exports = grammar({
       tok("OPEN"),
       field("cursor", $.identifier),
       kw("FOR"),
-      choice(
+      field("query", choice(
         $.select_statement,
+        $.combining_query,
         $.identifier,
         $.string,
-      ),
+      )),
       optional($.bind_variables)
     ),
     bind_variables: $ => seq(kw("USING"), commaSep(seq(optional("IN"), optional("OUT"), $._expression))),
@@ -2562,20 +2563,20 @@ module.exports = grammar({
         // TODO: kw("RETURN"),
         kw("RETURNING")
       ),
-      commaSep($._identifier),
-      choice(choice($.into_clause, $.bulk_collect_into_clause))
+      commaSep(field("columns", $._identifier)),
+      field("into", choice($.into_clause, $.bulk_collect_into_clause))
     ),
     _returning_clause: $ => choice($.returning_clause, $.returning_into_clause),
     fetch_statement: $ => seq(
       kw("FETCH"),
-      $.identifier,
-      choice(
+      field("cursor", $.identifier),
+      field("into", choice(
         $.into_clause,
         seq($.bulk_collect_into_clause, optional($.limit_clause))
-      )
+      ))
     ),
 
-    raise_statement: $ => seq(tok("RAISE"), optional($.identifier)),
+    raise_statement: $ => seq(tok("RAISE"), optional(field("exception", $.identifier))),
 
   },
 });

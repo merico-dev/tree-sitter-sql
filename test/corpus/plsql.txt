@@ -1439,6 +1439,7 @@ END;
               (string)
               (identifier))))
         (exception_handler
+          (identifier)
           (function_call
             (dotted_name
               (identifier)
