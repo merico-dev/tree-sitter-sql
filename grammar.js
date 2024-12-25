@@ -2017,11 +2017,16 @@ module.exports = grammar({
     },
 
     _unquoted_identifier: $ => /[a-zA-Z0-9_]+/,
+    
     _quoted_identifier: $ =>
       token(choice(
         seq("`", field("name", /[^`]*/), "`"), // MySQL style quoting
-        seq('"', field("name", /(""|[^"])*/), '"'), // ANSI QUOTES
-      )),
+        seq('"', repeat(choice(
+          token.immediate(prec(1, /[^\\"\n]+/)),  // 普通字符
+          seq('\\', '"'),                          // 转义的双引号
+          '""'
+        )), '"'), // ANSI QUOTES
+    )),
     identifier: $ => choice($._unquoted_identifier, $._quoted_identifier),
     dotted_name: $ => prec.left(PREC.primary, sep2($.identifier, ".")),
     _identifier: $ => prec(PREC.primary, choice($.identifier, $.dotted_name)),
