@@ -1537,3 +1537,38 @@ DELETE FROM foo RETURNING BULK COLLECT INTO x, y;
       (bulk_collect_into_clause
         (identifier)
         (identifier)))))
+
+================================================================================
+EXECUTE IMMEDIATE statement
+================================================================================
+
+CREATE PROCEDURE proc()
+IS
+BEGIN
+  EXECUTE IMMEDIATE 'TRUNCATE TABLE test_table';
+  EXECUTE IMMEDIATE 'DELETE FROM test_table WHERE id = :1' USING v_id;
+  EXECUTE IMMEDIATE v_sql_string;
+  EXECUTE IMMEDIATE v_sql_string USING v_param1, v_param2;
+END;
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (create_function_statement
+    (identifier)
+    (function_parameters)
+    (function_body
+      (compound_statement
+        (execute_immediate_statement
+          (string))
+        (execute_immediate_statement
+          (string)
+          (bind_variables
+            (identifier)))
+        (execute_immediate_statement
+          (identifier))
+        (execute_immediate_statement
+          (identifier)
+          (bind_variables
+            (identifier)
+            (identifier)))))))
