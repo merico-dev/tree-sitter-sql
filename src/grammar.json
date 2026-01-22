@@ -18834,6 +18834,10 @@
             {
               "type": "SYMBOL",
               "name": "raise_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "execute_immediate_statement"
             }
           ]
         }
@@ -20159,6 +20163,56 @@
           ]
         }
       ]
+    },
+    "execute_immediate_statement": {
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[eE][xX][eE][cC][uU][tT][eE]"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[iI][mM][mM][eE][dD][iI][aA][tT][eE]"
+          },
+          {
+            "type": "FIELD",
+            "name": "sql_string",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "string"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_identifier"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "bind_variables"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "into_clause": {
       "type": "SEQ",

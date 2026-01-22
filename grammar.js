@@ -2387,6 +2387,7 @@ module.exports = grammar({
       $.open_for_statement,
       $.fetch_statement,
       $.raise_statement,
+      $.execute_immediate_statement,
     )),
     assignment_statement: $ => seq(
       field("target", choice(
@@ -2560,6 +2561,15 @@ module.exports = grammar({
       optional($.bind_variables)
     ),
     bind_variables: $ => seq(kw("USING"), commaSep(seq(optional("IN"), optional("OUT"), $._expression))),
+
+    // Oracle EXECUTE IMMEDIATE statement
+    // Higher precedence to resolve conflict with execute_clause
+    execute_immediate_statement: $ => prec(2, seq(
+      kw("EXECUTE"),
+      kw("IMMEDIATE"),
+      field("sql_string", choice($.string, $._identifier, $._expression)),
+      optional($.bind_variables)
+    )),
 
     into_clause: $ => seq(kw("INTO"), commaSep1($.identifier)),
     bulk_collect_into_clause: $ => seq(tok("BULK"), kw("COLLECT"), kw("INTO"), commaSep1($.identifier)),
