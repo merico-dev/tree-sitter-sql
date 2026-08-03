@@ -88,6 +88,7 @@ module.exports = grammar({
   conflicts: $ => [
     [$.declare_section],
     [$.null_constraint, $._simple_expression],
+    [$.recovery_values_item, $.composite_expression],
   ],
   word: $ => $._unquoted_identifier,
 
@@ -141,6 +142,7 @@ module.exports = grammar({
         $.vacuum_statement,
         $.do_statement,
         $.values_clause,
+        $.recovery_values_statement,
 
         $.create_trigger_statement,
         $.create_function_statement,
@@ -1644,7 +1646,7 @@ module.exports = grammar({
     where_clause: $ => seq(kw("WHERE"), field("condition", $._expression)),
     alias: $ =>
       prec.right(
-        choice($.identifier, $.table_and_columns, $.column_definitions),
+        choice($.identifier, $.table_and_columns, $.column_definitions, $.string),
       ),
     aliased_expression: $ => seq(field("expression", $._expression), optional(kw("AS")), field("alias", $.alias)),
     identifier_list: $ => seq("(", commaSep1($._identifier), ")"),
@@ -1833,6 +1835,14 @@ module.exports = grammar({
       seq("(", commaSep1(choice($._expression, kw("DEFAULT"))), ")"),
       $.row_constructor,
     ),
+    recovery_values_statement: $ =>
+      seq(
+        field("items", commaSep1($.recovery_values_item)),
+        ")",
+        optional(seq($.identifier, optional($.identifier_list))),
+      ),
+    recovery_values_item: $ =>
+      seq("(", commaSep1(choice($._expression, kw("DEFAULT"))), ")"),
 
     // DELETE
     _delete_statement: $ =>

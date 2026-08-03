@@ -196,6 +196,10 @@
           "named": true
         },
         {
+          "type": "string",
+          "named": true
+        },
+        {
           "type": "table_and_columns",
           "named": true
         }
@@ -2162,6 +2166,10 @@
           "named": true
         },
         {
+          "type": "recovery_values_statement",
+          "named": true
+        },
+        {
           "type": "return_statement",
           "named": true
         },
@@ -4105,6 +4113,10 @@
           "named": true
         },
         {
+          "type": "recovery_values_statement",
+          "named": true
+        },
+        {
           "type": "return_statement",
           "named": true
         },
@@ -5214,6 +5226,10 @@
         },
         {
           "type": "raise_statement",
+          "named": true
+        },
+        {
+          "type": "recovery_values_statement",
           "named": true
         },
         {
@@ -7764,6 +7780,10 @@
           "named": true
         },
         {
+          "type": "recovery_values_statement",
+          "named": true
+        },
+        {
           "type": "return_statement",
           "named": true
         },
@@ -9037,6 +9057,10 @@
             "named": true
           },
           {
+            "type": "recovery_values_statement",
+            "named": true
+          },
+          {
             "type": "return_statement",
             "named": true
           },
@@ -9439,6 +9463,10 @@
             "named": true
           },
           {
+            "type": "recovery_values_statement",
+            "named": true
+          },
+          {
             "type": "return_statement",
             "named": true
           },
@@ -9740,6 +9768,10 @@
           },
           {
             "type": "raise_statement",
+            "named": true
+          },
+          {
+            "type": "recovery_values_statement",
             "named": true
           },
           {
@@ -10775,6 +10807,10 @@
           "named": true
         },
         {
+          "type": "recovery_values_statement",
+          "named": true
+        },
+        {
           "type": "return_statement",
           "named": true
         },
@@ -10979,6 +11015,10 @@
           },
           {
             "type": "pg_command",
+            "named": true
+          },
+          {
+            "type": "recovery_values_statement",
             "named": true
           },
           {
@@ -12928,6 +12968,10 @@
             "named": true
           },
           {
+            "type": "recovery_values_statement",
+            "named": true
+          },
+          {
             "type": "return_statement",
             "named": true
           },
@@ -13855,6 +13899,10 @@
         },
         {
           "type": "pg_command",
+          "named": true
+        },
+        {
+          "type": "recovery_values_statement",
           "named": true
         },
         {
@@ -16258,6 +16306,10 @@
           "named": true
         },
         {
+          "type": "recovery_values_statement",
+          "named": true
+        },
+        {
           "type": "return_statement",
           "named": true
         },
@@ -16937,6 +16989,175 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "recovery_values_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "FALSE",
+          "named": true
+        },
+        {
+          "type": "NULL",
+          "named": true
+        },
+        {
+          "type": "TRUE",
+          "named": true
+        },
+        {
+          "type": "UNKNOWN",
+          "named": true
+        },
+        {
+          "type": "argument_reference",
+          "named": true
+        },
+        {
+          "type": "array_constructor",
+          "named": true
+        },
+        {
+          "type": "array_element_access",
+          "named": true
+        },
+        {
+          "type": "asterisk_expression",
+          "named": true
+        },
+        {
+          "type": "at_time_zone_expression",
+          "named": true
+        },
+        {
+          "type": "between_and_expression",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_expression",
+          "named": true
+        },
+        {
+          "type": "composite_expression",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
+          "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "field_selection",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "in_expression",
+          "named": true
+        },
+        {
+          "type": "interval_expression",
+          "named": true
+        },
+        {
+          "type": "is_expression",
+          "named": true
+        },
+        {
+          "type": "isnull_expression",
+          "named": true
+        },
+        {
+          "type": "json_access",
+          "named": true
+        },
+        {
+          "type": "notnull_expression",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "row_constructor",
+          "named": true
+        },
+        {
+          "type": "rows_from_expression",
+          "named": true
+        },
+        {
+          "type": "select_subexpression",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type_cast",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "recovery_values_statement",
+    "named": true,
+    "fields": {
+      "items": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "recovery_values_item",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "identifier_list",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -19238,6 +19459,10 @@
           "named": true
         },
         {
+          "type": "recovery_values_statement",
+          "named": true
+        },
+        {
           "type": "return_statement",
           "named": true
         },
@@ -20025,6 +20250,10 @@
         },
         {
           "type": "pg_command",
+          "named": true
+        },
+        {
+          "type": "recovery_values_statement",
           "named": true
         },
         {
@@ -21749,6 +21978,10 @@
           "named": true
         },
         {
+          "type": "recovery_values_statement",
+          "named": true
+        },
+        {
           "type": "return_statement",
           "named": true
         },
@@ -22653,6 +22886,10 @@
         },
         {
           "type": "raise_statement",
+          "named": true
+        },
+        {
+          "type": "recovery_values_statement",
           "named": true
         },
         {
